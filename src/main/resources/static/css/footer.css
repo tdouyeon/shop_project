@@ -1,0 +1,16 @@
+  .page_footer{
+     display: flex;
+     margin: 0% 2%;
+    }
+    .block{
+        flex: 1;
+        margin: 2% 5%;
+    }
+    .tt{
+        font-weight: 500;
+        font-size: medium;
+        margin-bottom: 5px;
+    }
+    .ct{
+        color: darkslategrey;
+    }

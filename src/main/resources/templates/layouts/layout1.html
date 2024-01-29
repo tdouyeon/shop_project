@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <!-- Link Swiper's CSS -->
+    <title>Title</title>
+    <meta name=”viewport” content=”width=device-width, initial-scale=1”>
+    <!-- CSS only -->
+    <link th:href="@{/css/layout1.css}" rel="stylesheet">
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
+    <th:block layout:fragment="css"></th:block>
+
+    <!--font-->
+    <!-- JS, Popper.js and Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <th:block layout:fragment="script"></th:block>
+</head>
+<body>
+    <div th:replace="~{fragments/header::header}"></div>
+
+    <div layout:fragment="content" class="content"></div>
+
+    <div th:replace="~{fragments/footer::footer}"></div>
+</body>
+</html>
