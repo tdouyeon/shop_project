@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
 @RequestMapping("/members")
 @Controller
 @RequiredArgsConstructor
@@ -28,53 +31,49 @@ public class MemberController {
         return "member/memberForm";
     }
 
+    @GetMapping(value = "/sendSMS")
+    @ResponseBody
+    public String sendSMS(String to) throws IOException {
+             return memberService.sendMmsByResourcePath(to);
+    }
+
+    @PostMapping("/{num}/confirmNum")
+    @ResponseBody
+    ResponseEntity confirmNum(@PathVariable("num") String num) throws Exception {
+        if(memberService.checkNumber(num)){
+            return new ResponseEntity<String>("인증이 완료되었습니다.", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("인증번호가 잘못 입력되었습니다.", HttpStatus.BAD_REQUEST);
+    }
+
     @PostMapping(value = "/new")
-    public String memberForm(@Valid MemberFormDto memberFormDto,
+    public String memberForm(@Valid MemberFormDto memberFormDto, @RequestParam("role") String role,
                              BindingResult bindingResult, HttpServletRequest request, Model model){
         String [] arr = request.getParameterValues("chk");
         if(bindingResult.hasErrors()){
-            return "member/memberForm";
+                return "member/memberForm";
         }
         if(!arr[0].equals("on") || !arr[1].equals("on")){
             model.addAttribute("errorMessage","이용약관에 동의해주세요.");
             return "member/memberForm";
         }
         try {
-            Member member = Member.createMember(memberFormDto, passwordEncoder);
-            String chk = String.join(", ", arr);
-            member.setChk(chk);
-            memberService.saveMember(member);
-        }catch(IllegalStateException e){
-            model.addAttribute("errorMessage",e.getMessage());
-            return "member/memberForm";
-        }
-        return "redirect:/";
-    }
+            Member member;
+            if(role ==null) {
+                model.addAttribute("errorMessage","역할 항목을 체크해주세요.");
+                return "member/memberForm";
+            } else if(role.equals("관리자")) {
+                member = Member.createAdmin(memberFormDto, passwordEncoder);
+            } else {
+                member = Member.createMember(memberFormDto, passwordEncoder);
 
-    @GetMapping(value = "/adminNew")
-    public String adminForm(Model model){
-        model.addAttribute("memberFormDto",new MemberFormDto());
-        return "admins/adminForm";
-    }
-    @PostMapping(value = "/adminNew")
-    public String adminForm(@Valid MemberFormDto memberFormDto,
-                             BindingResult bindingResult,HttpServletRequest request, Model model){
-        String [] arr = request.getParameterValues("chk");
-        if(bindingResult.hasErrors()){
-            return "admins/adminForm";
-        }
-        if(!arr[0].equals("on") || !arr[1].equals("on")){
-            model.addAttribute("errorMessage","이용약관에 동의해주세요.");
-            return "admins/adminForm";
-        }
-        try {
-            Member member = Member.createAdmin(memberFormDto, passwordEncoder);
+            }
             String chk = String.join(", ", arr);
             member.setChk(chk);
             memberService.saveMember(member);
         }catch(IllegalStateException e){
             model.addAttribute("errorMessage",e.getMessage());
-            return "admins/adminForm";
+            return "member/memberForm";
         }
         return "redirect:/";
     }
@@ -84,20 +83,10 @@ public class MemberController {
         return "/member/memberLoginForm";
     }
 
-    @GetMapping(value = "/adminLogin")
-    public String loginAdmin(){
-        return "/member/memberLoginForm";
-    }
-    @GetMapping(value = "/adminLogin/error")
-    public String loginAdminError(Model model){
-        model.addAttribute("loginErrorMsg","아이디 또는 비밀번호를 확인해주세요");
-        return "/member/memberLoginForm";
-    }
     @PostMapping("/{email}/mailConfirm")
     @ResponseBody
     String mailConfirm(@PathVariable("email") String email) throws Exception {
-        String num = emailService.sendEmail(email) + "";
-        return num;
+        return emailService.sendEmail(email);
     }
 
     @PostMapping("/{number}/confirmNumber")

@@ -85,14 +85,14 @@ public class EmailService {
     }
 
     // 실제 메일 전송
-    public int sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    public String sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
         // 메일 전송에 필요한 정보 설정
         MimeMessage message = createMail(email);
         // 실제 메일 전송
         javaMailSender.send(message);
 
         // 인증 코드 반환
-        return number;
+        return number+"";
     }
 
     public boolean checkNumber(String num){

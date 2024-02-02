@@ -66,7 +66,7 @@
             margin-top: 20px;
             width: 30px;
         }
-        .confirm{
+        .confirm, .confirmN{
             display: none;
         }
 
@@ -103,12 +103,7 @@
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        $(document).ready(function(){
-          var errorMessage = [[${errorMessage}]];
-          if(errorMessage != null){
-            alert(errorMessage);
-          }
-        });
+
 
         $(document).off().on("click", "#sendEmail", function(e) {
         e.preventDefault();
@@ -178,6 +173,10 @@
         });
         });
 window.onload = function () {
+var errorMessage = [[${errorMessage}]];
+if(errorMessage != null){
+alert(errorMessage);
+}
 const checkAll = document.getElementById('chkAll');
 const chks = document.querySelectorAll('.chk');
 const chkBoxLength = chks.length;
@@ -208,14 +207,81 @@ for (chk of chks){
         }
       })
 }
- }
+}
+
+   $(document).one("click", "#sendNum", function(e) {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+	const to = $('#tel').val();
+	console.log(to);
+
+	$.ajax ({
+		url: '/members/sendSMS',
+		type: 'GET',
+		data: {
+			"to" : to
+		},
+		beforeSend : function(xhr){
+        xhr.setRequestHeader(header,token);
+        },
+		success: function(data) {
+			const checkNum = data;
+			alert("인증번호 전송이 완료 되었습니다.");
+			$(".confirmN").css("display","flex");
+		}
+	});
+});
+
+
+         $(document).one("click", "#checkN", function(e) {
+        e.preventDefault();
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var num = $("#userNum").val();
+        var url = "/members/" + num + "/confirmNum"
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: num,
+            beforeSend : function(xhr){
+            xhr.setRequestHeader(header,token);
+            },
+            dataType : "text",
+            cache : false,
+            async: false,
+            success: function(result, status) {
+            alert(result);
+
+            $(".confirmN").css("display","none");
+            $("#sendNum").html("인증 완료");
+            $("#sendNum").css("background-color","white");
+            $("#sendNum").css("color","black");
+            $("#sendNum").css("border","1px solid gray");
+            },
+            error: function(jqXHR, status, error) {
+            if(jqXHR.status == '400'){
+            alert("인증번호가 잘못 입력되었습니다");
+            location.href='/members/new';
+            }else{
+                alert(jqXHR.responseText);
+            }
+            }
+        });
+        });
+
     </script>
 </th:block>
 </head>
 <div layout:fragment="content">
     <div id="container">
     <form action="/members/new" role="form" method="post" th:object="${memberFormDto}">
+        <input type="hidden" name="admin" th:value="0">
         <span class="join_title">JOIN</span>
+        <div class="form-group">
+            <label><input type ="checkbox" name="role" th:value="관리자">관리자</label>
+            <label><input type="checkbox" name="role" th:value="유저">유저</label>
+        </div>
         <div class="form-group">
             <label th:for="name" class="label">NAME</label>
             <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력해주세요.">
@@ -236,10 +302,10 @@ for (chk of chks){
         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect date</p>
         </div>
         <div class="form-group confirm mar">
-            <label for="confirmNumber" class="label valiInput">NUMBER</label>
+            <label for="confirmNumber" class="label">NUMBER</label>
             <div class="form-group btn_validate">
             <input type="text" class="form-control valiInput"  id="confirmNumber">
-            <button class="btn " type="button" id="checkEmail">인증번호 확인</button>
+            <button class="btn" type="button" id="checkEmail">인증번호 확인</button>
             </div>
         </div>
         <div class="form-group">
@@ -256,12 +322,23 @@ for (chk of chks){
         <div class="form-group error">
         <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect date</p>
         </div>
-        <div class="form-group">
-            <label th:for="tel" class="label">PHONE</label>
-            <input type="text" th:field="*{tel}" class="form-control" placeholder="전화번호를 입력해주세요.">
+
+        <div class="form-group mar">
+            <label th:for="tel" class="label ">PHONE</label>
+            <div class="form-group btn_validate">
+                <input type="text" th:field="*{tel}" name="tel" id="tel" class="form-control valiInput" placeholder="전화번호를 입력해주세요.">
+                <button class="btn button" type="button" id="sendNum">연락처 인증</button>
+            </div>
         </div>
         <div class="form-group error">
-        <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError">Incorrect date</p>
+            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect date</p>
+        </div>
+        <div class="form-group confirmN mar">
+            <label for="confirmNumber" class="label lnputNum">NUMBER</label>
+            <div class="form-group btn_validate">
+                <input type="text" class="form-control valiInput"  id="userNum">
+                <button class="btn" type="button" id="checkN">인증번호 확인</button>
+            </div>
         </div>
         <div id="joinForm">
         <ul class="join_box">
