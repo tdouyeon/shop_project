@@ -47,28 +47,18 @@ public class MemberController {
     }
 
     @PostMapping(value = "/new")
-    public String memberForm(@Valid MemberFormDto memberFormDto, @RequestParam("role") String role,
-                             BindingResult bindingResult, HttpServletRequest request, Model model){
-        String [] arr = request.getParameterValues("chk");
+    public String memberForm(@Valid MemberFormDto memberFormDto,  BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
                 return "member/memberForm";
         }
-        if(!arr[0].equals("on") || !arr[1].equals("on")){
-            model.addAttribute("errorMessage","이용약관에 동의해주세요.");
-            return "member/memberForm";
-        }
         try {
             Member member;
-            if(role ==null) {
-                model.addAttribute("errorMessage","역할 항목을 체크해주세요.");
-                return "member/memberForm";
-            } else if(role.equals("관리자")) {
+            if(memberFormDto.getRole().equals("관리자")) {
                 member = Member.createAdmin(memberFormDto, passwordEncoder);
             } else {
                 member = Member.createMember(memberFormDto, passwordEncoder);
-
             }
-            String chk = String.join(", ", arr);
+            String chk = String.join(", ", memberFormDto.getChk());
             member.setChk(chk);
             memberService.saveMember(member);
         }catch(IllegalStateException e){

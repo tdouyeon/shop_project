@@ -37,12 +37,6 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .failureUrl("/members/login/error")
                 )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/admins/adminLogin")
-                        .defaultSuccessUrl("/")
-                        .usernameParameter("email")
-                        .failureUrl("/members/adminLogin/error")
-                )
                 .logout(logout-> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                         .logoutSuccessUrl("/")

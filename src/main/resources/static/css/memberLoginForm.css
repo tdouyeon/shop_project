@@ -1,0 +1,154 @@
+
+#container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.main{ width: 400px; }
+
+input, button{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.google, .naver, .kakao{
+    display: inline;
+    border: none;
+    background: none;
+    margin: 30px 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.google{ width: 53px; height: 53px; }
+
+.naver{ width: 50px; height: 50px; }
+
+.kakao{ width: 53px; height: 53px; }
+
+.form{
+    width: 100%;
+    height: 40px;
+    padding: 3px 0px 0px 10px;
+    border: 0px;
+    font-size: 100%;
+    vertical-align: middle;
+}
+
+.mainForm{
+    font-size: 15px;
+    color: #222222;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
+    margin-bottom: 10px;
+}
+.login_title{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 30px;
+    font-size: 16px;
+    text-align: center;
+    align-items: center;
+    font-weight: 600;
+    color: black;
+}
+input::placeholder { color: #aaaaaa; }
+
+input:focus { outline: none; }
+
+.hin{
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0%;  /* right로만 바꿔주면 오 - 왼 */
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    transition: 0.5s;
+}
+
+label {
+    position: absolute;
+    color: #aaa;
+    left: 10px;
+    font-size: 11px;
+    bottom: 8px;
+    transition: all .2s;
+    vertical-align: middle;
+}
+
+input:focus ~ label, input:valid ~ label {
+    font-size: 13px;
+    bottom: 30px;
+    color: #666;
+    font-weight: 500;
+}
+
+input:focus ~ span, input:valid ~ span { width: 100%; }
+
+.error{ color: #bd2130; }
+
+.btn{
+    min-width: 90px;
+    font-size: 12px;
+    display: inline-block;
+    padding: 10px 12px;
+    border: 1px solid #666;
+    border-radius: 2px;
+    background-color: #000;
+    text-align: center;
+    color: #fff;
+}
+
+.btn_login{
+    background-color: black;
+    color: white;
+    margin-top: 20px;
+    width: 30px;
+}
+
+.btn_join{
+    background-color: white;
+    color: black;
+    margin-top: 20px;
+    width: 30px;
+}
+
+a{ list-style: none; color: gray; }
+
+span{
+    font-size: 10px;
+    color: #666;
+    display: inline-block;
+    vertical-align: top;
+    padding: 0px 2px;
+    display: flex;
+    justify-content: right;
+}
+
+.etc{ display: flex; flex-direction: column; }
+
+.lo_jo{ display: flex; justify-content: center; }
+
+.btn_join:hover{
+    background-color: black;
+    color: white;
+    transition: 0.5s ease-in-out;
+    margin-top: 20px;
+    width: 30px;
+}
+
+.sns{
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 768px){
+.google{ margin: 30px 10px 30px 30%; }
+};

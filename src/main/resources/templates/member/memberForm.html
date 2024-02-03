@@ -6,272 +6,8 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
 <!-- 사용자 CSS 추가 -->
-<th:block layout:fragment="css">
-    <style>
-        #container{
-            font-size: 14px;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            max-width: 1440px;
-            font-weight: 500;
-        }
-        .form-group{
-            width: 500px;
-            display: flex;
-            align-items: center;
-            margin: 10px 0px;
-        }
-        .form-control{
-            width: 100%;
-            height: 40px;
-            padding: 3px 0px 0px 10px;
-            border: 0px;
-            border-bottom: 1px solid #d1d1d1;
-            margin: 0px 0px 15px 0px;
-            padding: 15px 0px 0px 13px;
-            font-size: 15px;
-        }
-        .fieldError{
-          color: #bd2130;
-         }
-        .join_title{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            margin-bottom: 40px;
-            font-size: 16px;
-            text-align: center;
-            align-items: center;
-            font-weight: 600;
-        }
-        .label{
-            padding-left: 5px;
-            width: 120px;
-        }
-        .btn{
-            min-width: 100px;
-            font-size: 12px;
-            display: inline-block;
-            padding: 10px 12px;
-            border: 1px solid #666;
-            border-radius: 2px;
-            background-color: #000;
-            text-align: center;
-            color: #fff;
-        }
-        .btn_join{
-            background-color: black;
-            color: white;
-            margin-top: 20px;
-            width: 30px;
-        }
-        .confirm, .confirmN{
-            display: none;
-        }
-
-        .btn_validate{
-        justify-content: end;
-        margin: 0px;
-        }
-        .mar{
-            margin-bottom: 0px;
-        }
-        .valiInput{
-            margin-right: 20px;
-        }
-        .fieldError{
-            margin-left: 100px;
-        }
-        ul>li{list-style: none}
-        a{text-decoration: none;}
-        .clearfix::after{content: "";display: block;clear: both;}
-        #joinForm{width: 500px; display: flex; flex-direction: column; margin: 0 auto;}
-        ul.join_box{border: 1px solid #ddd;padding: 10px;background-color: #fff;}
-        .checkBox,.checkBox>ul{position: relative; padding: 0px;}
-        .checkBox>ul>li{float: left;}
-        .checkBox>ul>li:first-child{width: 85%;padding: 15px;font-weight: 600;color: #888;}
-        .checkBox>ul>li:nth-child(2){position: absolute;top: 50%;right: 30px;margin-top: -12px;}
-        .checkBox textarea{width: 96%;height: 90px; margin: 0 2%;background-color: #f7f7f7;color: #888; border: none;}
-        .footBtwrap{margin-top: 15px;}
-        .footBtwrap>li{float: left;width: 50%;height: 60px;}
-        .footBtwrap>li>button{display: block; width: 100%;height: 100%; font-size: 20px;text-align: center;line-height: 60px;}
-        .fpmgBt1{background-color: #fff;color:#888;border-color: #eee;}
-        .fpmgBt2{background-color: lightsalmon;color: #fff; border-color: #eee;}
-    </style>
-</th:block>
-<!-- 사용자 스크립트 추가 -->
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
-
-
-        $(document).off().on("click", "#sendEmail", function(e) {
-        e.preventDefault();
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var email = $("#email").val();
-        var url = "/members/" + email + "/mailConfirm"
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: email,
-            beforeSend : function(xhr){
-            xhr.setRequestHeader(header,token);
-            },
-            dataType : "text",
-            cache : false,
-            async: false,
-            success: function(result) {
-            alert("인증번호가 전송되었습니다.");
-            $(".confirm").css("display","flex");
-
-            },
-            error: function(jqXHR, status, error) {
-            if(jqXHR.status == '401'){
-            }else{
-                alert(jqXHR.responseText);
-            }
-            }
-        });
-        });
-
-        $(document).one("click", "#checkEmail", function(e) {
-        e.preventDefault();
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var number = $("#confirmNumber").val();
-        var url = "/members/" + number + "/confirmNumber"
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: number,
-            beforeSend : function(xhr){
-            xhr.setRequestHeader(header,token);
-            },
-            dataType : "text",
-            cache : false,
-            async: false,
-            success: function(result, status) {
-            alert(result);
-
-            $(".confirm").css("display","none");
-            $("#sendEmail").html("인증 완료");
-            $("#sendEmail").css("background-color","white");
-            $("#sendEmail").css("color","black");
-            $("#sendEmail").css("border","1px solid gray");
-            },
-            error: function(jqXHR, status, error) {
-            if(jqXHR.status == '400'){
-            alert("인증번호가 잘못 입력되었습니다");
-            location.href='/members/new';
-            }else{
-                alert(jqXHR.responseText);
-            }
-            }
-        });
-        });
-window.onload = function () {
-var errorMessage = [[${errorMessage}]];
-if(errorMessage != null){
-alert(errorMessage);
-}
-const checkAll = document.getElementById('chkAll');
-const chks = document.querySelectorAll('.chk');
-const chkBoxLength = chks.length;
-
-checkAll.addEventListener('click', function(event) {
-    if(event.target.checked)  {
-        chks.forEach(function(value){
-        value.checked = true;
-    })
-    }else {
-       chks.forEach(function(value){
-       value.checked = false;
-    })
- }
-  });
-for (chk of chks){
-    chk.addEventListener('click', function() {
-        let count = 0;
-        chks.forEach(function(value){
-            if(value.checked == true){
-                count++;
-            }
-        })
-        if(count !== chkBoxLength){
-            checkAll.checked = false;
-        }else{
-            checkAll.checked = true;
-        }
-      })
-}
-}
-
-   $(document).one("click", "#sendNum", function(e) {
-    var token = $("meta[name='_csrf']").attr("content");
-    var header = $("meta[name='_csrf_header']").attr("content");
-	const to = $('#tel').val();
-	console.log(to);
-
-	$.ajax ({
-		url: '/members/sendSMS',
-		type: 'GET',
-		data: {
-			"to" : to
-		},
-		beforeSend : function(xhr){
-        xhr.setRequestHeader(header,token);
-        },
-		success: function(data) {
-			const checkNum = data;
-			alert("인증번호 전송이 완료 되었습니다.");
-			$(".confirmN").css("display","flex");
-		}
-	});
-});
-
-
-         $(document).one("click", "#checkN", function(e) {
-        e.preventDefault();
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-        var num = $("#userNum").val();
-        var url = "/members/" + num + "/confirmNum"
-
-        $.ajax({
-            url: url,
-            type: 'post',
-            data: num,
-            beforeSend : function(xhr){
-            xhr.setRequestHeader(header,token);
-            },
-            dataType : "text",
-            cache : false,
-            async: false,
-            success: function(result, status) {
-            alert(result);
-
-            $(".confirmN").css("display","none");
-            $("#sendNum").html("인증 완료");
-            $("#sendNum").css("background-color","white");
-            $("#sendNum").css("color","black");
-            $("#sendNum").css("border","1px solid gray");
-            },
-            error: function(jqXHR, status, error) {
-            if(jqXHR.status == '400'){
-            alert("인증번호가 잘못 입력되었습니다");
-            location.href='/members/new';
-            }else{
-                alert(jqXHR.responseText);
-            }
-            }
-        });
-        });
-
-    </script>
-</th:block>
+    <link th:href="@{/css/memberForm.css}" rel="stylesheet">
+    <script src="/js/memberForm.js"></script>
 </head>
 <div layout:fragment="content">
     <div id="container">
@@ -279,8 +15,11 @@ for (chk of chks){
         <input type="hidden" name="admin" th:value="0">
         <span class="join_title">JOIN</span>
         <div class="form-group">
-            <label><input type ="checkbox" name="role" th:value="관리자">관리자</label>
-            <label><input type="checkbox" name="role" th:value="유저">유저</label>
+            <label><input type ="radio" name="role" th:value="관리자">관리자</label>
+            <label><input type="radio" name="role" th:value="유저">유저</label>
+        </div>
+        <div class="form-group error">
+            <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="fieldError">Incorrect date</p>
         </div>
         <div class="form-group">
             <label th:for="name" class="label">NAME</label>
@@ -310,7 +49,14 @@ for (chk of chks){
         </div>
         <div class="form-group">
             <label th:for="password" class="label">PASSWORD</label>
-            <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호 입력">
+            <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="비밀번호 입력">
+        </div>
+        <div class="form-group confirmPasswd mar">
+            <label for="confirmNumber" class="label lnputNum">NUMBER</label>
+            <div class="form-group btn_validate">
+                <input type="password" class="form-control valiInput"  id="passwordCheck">
+                <button class="btn" type="button" id="passwordCheckBtn">비밀번호 확인</button>
+            </div>
         </div>
         <div class="form-group error">
         <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect date</p>
@@ -341,14 +87,18 @@ for (chk of chks){
             </div>
         </div>
         <div id="joinForm">
+
         <ul class="join_box">
+            <div class="form-group error">
+                <p th:if="${#fields.hasErrors('chk')}" th:errors="*{chk}" class="fieldError">Incorrect date</p>
+            </div>
             <li class="checkBox check01">
                 <ul class="clearfix">
                     <li>이용약관, 개인정보 수집 및 이용,
                         위치정보 이용약관(선택), 프로모션 안내
                         메일 수신(선택)에 모두 동의합니다.</li>
                     <li class="checkAllBtn">
-                        <input type="checkbox" name="chkAll" id="chkAll" class="chkAll">
+                        <input type="checkbox" id="chkAll" class="chkAll">
                     </li>
                 </ul>
             </li>
@@ -399,8 +149,9 @@ CRANK 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사
         </ul>
         </div>
         <div style="text-align: center">
-            <button type="submit" class="btn btn_join">JOIN</button>
+            <button type="submit" class="btn btn_join" id="submitBtn">JOIN</button>
         </div>
+        <input type="hidden" th:text="${errorMessage}" id="errorMessage">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     </form>
     </div>

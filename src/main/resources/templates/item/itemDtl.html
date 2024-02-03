@@ -195,9 +195,6 @@
         }
 
 
-
-
-
     </style>
 </th:block>
 
@@ -208,11 +205,12 @@
         <div class="item-main-img">
             <img th:src="${item.itemImgDtoList[0].imgUrl}" class="main-img" th:alt="${item.itemNm}">
             <div class="other-img">
-            <div th:each="itemImg, star : ${item.itemImgDtoList}">
-                <img th:if="${not #strings.isEmpty(itemImg.imgUrl)} and |${star.index}| != 0" th:src="${itemImg.imgUrl}"
-                     class="o-img"
-                     width="800">
-            </div>
+                <div th:each="itemImg, star : ${item.itemImgDtoList}">
+                    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)} and |${star.index}| != 0"
+                         th:src="${itemImg.imgUrl}"
+                         class="o-img"
+                         width="800">
+                </div>
             </div>
 
         </div>
@@ -220,8 +218,8 @@
             <div class="item-status">
             <span th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
                   class="item-status">판매중</span>
-            <span th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
-                  class="item-status">품절</span>
+                <span th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+                      class="item-status">품절</span>
             </div>
             <div class="itemNm" th:text="${item.itemNm}"></div>
             <div class="text-right">
@@ -229,7 +227,7 @@
                     <input type="hidden" th:value="${item.price}" id="price" name="price">
                     <span th:text="${item.price}"></span>원
                 </div>
-                    <input type="number" name="count" id="count" value="1" min="1">
+                <input type="number" name="count" id="count" value="1" min="1">
             </div>
             <div class="order-price">
                 <span class="tt-price-name">주문 금액</span>
@@ -239,7 +237,8 @@
                  class="itemdtl-button">
                 <button type="button" class="cart-button"
                         onclick="addCart()">
-                    장바구니 담기</button>
+                    장바구니 담기
+                </button>
                 <button type="button" class="order-button" onclick="order()">주문하기</button>
             </div>
             <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"

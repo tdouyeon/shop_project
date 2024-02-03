@@ -13,6 +13,7 @@ body{
     z-index: 999;
     position: relative;
 }
+
 .nav_1{
     position: fixed;
     width: 100%;

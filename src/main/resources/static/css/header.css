@@ -7,10 +7,11 @@
     z-index: 999;
     width: 100vw;
 }
+
 .sear{
-        display: flex;
-        border: none;
-        align-items: flex-start;
+    display: flex;
+    border: none;
+    align-items: flex-start;
 }
 
 .navbar__menu{
@@ -25,6 +26,7 @@
     justify-content: flex-end;
     margin-top: 45px;
 }
+
 .navbar__menu >  li > a{
     width: auto;
     text-decoration: none;
@@ -41,15 +43,18 @@
     padding-left: 1px;
     padding-right: 8px;
 }
+
 .navber_icon img{
     height: 25px;
     padding-left: 13px;
     position: fixed;
     margin-left: 30px;
 }
+
 .navbar__menu >  li > a:hover{
     color: #787878;
 }
+
 .navbar__search {
     display: flex;
     padding: 12px 24px;
@@ -59,8 +64,6 @@
     line-height: 18px;횩
     color: #575756;
     background-color: transparent;
-/*         background-image: url(http://mihaeltomic.com/codepen/input-search/ic_search_black_24px.svg); */
-
     background-repeat: no-repeat;
     background-size: 18px 18px;
     background-position: 95% center;
@@ -72,22 +75,23 @@
     margin-right: 20px;
     margin-top: 30px;
 }
-    .navbar__search:hover,
-    .navbar__search:focus {
-        padding: 12px 0;
-        outline: 0;
-        border: 1px solid transparent;
-        border-bottom: 1px solid #575756;
-        border-radius: 0;
-        background-position: 100% center;
-        outline: none;
+
+.navbar__search:hover,
+.navbar__search:focus {
+    padding: 12px 0;
+    outline: 0;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #575756;
+    border-radius: 0;
+    background-position: 100% center;
+    outline: none;
 }
 
+.search{
+    border: none;
+    background-color: unset;
+}
 
-        .search{
-            border: none;
-            background-color: unset;
-        }
 .search_button{
     background-image: url('/img/search.png');
     border: none;
@@ -95,41 +99,40 @@
     height: 20px;
     background-color: unset;
 }
-    .navbar__menu > li > a:hover{
+
+.navbar__menu > li > a:hover{
     color: gray;
-    }
+}
 
 @media screen and (max-width: 768px){
-    .navbar{
-        flex-direction: column;
-        padding: 8px 24px;
-    }
+.navbar{
+    flex-direction: column;
+    padding: 8px 24px;
+}
 
-    .navbar__menu{
-        flex-direction: column;
-        align-items: center;
-        padding-left: 0;
-        width: 100%;
-        font-size: 15px;
+.navbar__menu{
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;
+    width: 100%;
+    font-size: 15px;
+}
 
-    }
-
-
-    .navbar__menu li{
-        width: 100%;
-        text-align: center;
-    }
-    .navber_icon{
-        align-items: center;
-        width: 100%;
-    }
-    .sear{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-    .navber_icon img{
-        padding-left: 0px;
-    }
-    };
+.navbar__menu li{
+    width: 100%;
+    text-align: center;
+}
+.navber_icon{
+    align-items: center;
+    width: 100%;
+}
+.sear{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.navber_icon img{
+    padding-left: 0px;
+}
+};

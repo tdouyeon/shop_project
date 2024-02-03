@@ -236,35 +236,35 @@
     <div>
         <input type="checkbox" id="checkall" class="checkall" onclick="checkAll()"> 전체선택
 
-            <div th:each="cartItem : ${cartItems}" class="item">
-                    <div class="flex_1">
-                    <input type="checkbox" class="checkall" name="cartChkBox" th:value="${cartItem.cartItemId}">
+        <div th:each="cartItem : ${cartItems}" class="item">
+            <div class="flex_1">
+                <input type="checkbox" class="checkall" name="cartChkBox" th:value="${cartItem.cartItemId}">
 
-                    <div class="main_img">
-                        <img th:src="${cartItem.imgUrl}" class="rounded repImg" th:alt="${cartItem.itemNm}">
-                    </div>
-                    </div>
-                    <div class="item_inf">
-                        <span th:text="${cartItem.itemNm}" class="itemNm"></span>
-                        <input type="hidden" th:id="'price_' + ${cartItem.cartItemId}" th:data-price="${cartItem.price}">
-                        <span th:id="'totalPrice_'+${cartItem.cartItemId}" class="number" name="totalPrice"
-                              th:text="${cartItem.price * cartItem.count} + '원'"></span>
-                        </span>
-                        <input type="number" name="count" class="count" th:id="'count_' + ${cartItem.cartItemId}"
-                               th:value="${cartItem.count}" min="1" onchange="changeCount(this)">
-
-                    </div>
-                    <span aria-hidden="true" th:data-id="${cartItem.cartItemId}"
-                          onclick="deleteCartItem(this)">
-                          <img src="/img/cancel.png" alt="shop" class="cancel" width="30px">
-                    </span>
+                <div class="main_img">
+                    <img th:src="${cartItem.imgUrl}" class="rounded repImg" th:alt="${cartItem.itemNm}">
                 </div>
             </div>
-            </tbody>
-        </table>
-        <h2 class="total">
-            총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
-        </h2>
-            <button type="button" class="orders" onclick="orders()">주문하기</button>
+            <div class="item_inf">
+                <span th:text="${cartItem.itemNm}" class="itemNm"></span>
+                <input type="hidden" th:id="'price_' + ${cartItem.cartItemId}" th:data-price="${cartItem.price}">
+                <span th:id="'totalPrice_'+${cartItem.cartItemId}" class="number" name="totalPrice"
+                      th:text="${cartItem.price * cartItem.count} + '원'"></span>
+                </span>
+                <input type="number" name="count" class="count" th:id="'count_' + ${cartItem.cartItemId}"
+                       th:value="${cartItem.count}" min="1" onchange="changeCount(this)">
+
+            </div>
+            <span aria-hidden="true" th:data-id="${cartItem.cartItemId}"
+                  onclick="deleteCartItem(this)">
+                          <img src="/img/cancel.png" alt="shop" class="cancel" width="30px">
+                    </span>
+        </div>
     </div>
+    </tbody>
+    </table>
+    <h2 class="total">
+        총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
+    </h2>
+    <button type="button" class="orders" onclick="orders()">주문하기</button>
+</div>
 </html>

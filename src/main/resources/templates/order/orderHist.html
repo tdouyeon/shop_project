@@ -122,25 +122,26 @@
 <div layout:fragment="content" class="content-mg">
     <h2 class="title_order">구매 이력</h2>
     <div th:each="order : ${orders.getContent()}" class="flex">
-            <h4 class="m-flex" th:text="${order.orderDate} + '주문'"></h4>
-            <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex mb-3">
-                <div class="repImgDiv">
-                    <img th:src="${orderItem.imgUrl}" class = "rounded repImg" th:alt="${orderItem.itemNm}">
+        <h4 class="m-flex" th:text="${order.orderDate} + '주문'"></h4>
+        <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex mb-3">
+            <div class="repImgDiv">
+                <img th:src="${orderItem.imgUrl}" class="rounded repImg" th:alt="${orderItem.itemNm}">
+            </div>
+            <div class="alignfont">
+                <span th:text="${orderItem.itemNm}" class="fs24 font-weight-bold"></span>
+                <div class="fs18 font-weight-light">
+                    <span th:text="${orderItem.orderPrice} +'원'"></span>
+                    <span th:text="${orderItem.count} +'개'"></span>
                 </div>
-                <div class="alignfont">
-                    <span th:text="${orderItem.itemNm}" class="fs24 font-weight-bold"></span>
-                    <div class="fs18 font-weight-light">
-                        <span th:text="${orderItem.orderPrice} +'원'"></span>
-                        <span th:text="${orderItem.count} +'개'"></span>
-                    </div>
-                </div>
-                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
-                    <button type="button" class="outbutton" th:value="${order.orderId}"
-                            onclick="cancelOrder(this.value)">주문취소</button>
-                </th:block>
-                <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
-                    <span class="cancel">(취소 완료)</span></th:block>
-       </div>
+            </div>
+            <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                <button type="button" class="outbutton" th:value="${order.orderId}"
+                        onclick="cancelOrder(this.value)">주문취소
+                </button>
+            </th:block>
+            <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                <span class="cancel">(취소 완료)</span></th:block>
+        </div>
     </div>
     <div class="line"></div>
 

@@ -40,7 +40,7 @@ public class MemberService implements UserDetailsService {
     private String apiSecret;
 
     public Member saveMember(Member member) {
-        validateDuplicateMember(member);
+        //validateDuplicateMember(member);
         return memberRepository.save(member); // 데이터베이스에 저장을 하라는 명령
     }
     public Member saveSnsMember(Member member) {
@@ -52,11 +52,10 @@ public class MemberService implements UserDetailsService {
             return false;
         }
         return true;
-    }
+    };
 
     private void validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
-
         if (findMember != null) {
             throw new IllegalStateException("이미 가입된 회원입니다.");
         }
