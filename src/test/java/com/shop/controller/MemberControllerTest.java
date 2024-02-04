@@ -46,7 +46,7 @@ class MemberControllerTest { // 자 이제 시작이야
         memberFormDto.setAddress("서울시 마포구 합정동");
         memberFormDto.setPassword(password);
         memberFormDto.setTel("010-010");
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
+        Member member = Member.createMember(memberFormDto, passwordEncoder,"관리자");
         return memberService.saveMember(member);
     }
     @Test

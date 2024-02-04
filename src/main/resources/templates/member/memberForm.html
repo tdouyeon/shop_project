@@ -7,16 +7,16 @@
     <meta name="_csrf" th:content="${_csrf.token}">
 <!-- 사용자 CSS 추가 -->
     <link th:href="@{/css/memberForm.css}" rel="stylesheet">
-    <script src="/js/memberForm.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/memberJoin.js"></script>
 </head>
 <div layout:fragment="content">
     <div id="container">
-    <form action="/members/new" role="form" method="post" th:object="${memberFormDto}">
-        <input type="hidden" name="admin" th:value="0">
+    <form action="/members/new" id="memberJoinForm" role="form" method="post" th:object="${memberFormDto}">
         <span class="join_title">JOIN</span>
         <div class="form-group">
-            <label><input type ="radio" name="role" th:value="관리자">관리자</label>
-            <label><input type="radio" name="role" th:value="유저">유저</label>
+            <label><input type ="radio" name="role" th:value="ADMIN">관리자</label>
+            <label><input type="radio" name="role" th:value="USER">유저</label>
         </div>
         <div class="form-group error">
             <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="fieldError">Incorrect date</p>
@@ -29,7 +29,7 @@
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError">Incorrect date</p>
         </div>
 
-        <div class="form-group mar">
+        <div class="form-group">
             <label th:for="email" id="mailTxt" class="label">EMAIL</label>
             <div class="form-group btn_validate">
                 <input type="text" th:field="*{email}" name="email" id="email" class="form-control valiInput" placeholder="이메일을 입력해주세요.">
@@ -43,7 +43,7 @@
         <div class="form-group confirm mar">
             <label for="confirmNumber" class="label">NUMBER</label>
             <div class="form-group btn_validate">
-            <input type="text" class="form-control valiInput"  id="confirmNumber">
+            <input type="text" class="form-control valiInput"  id="confirmNumber" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
             <button class="btn" type="button" id="checkEmail">인증번호 확인</button>
             </div>
         </div>
@@ -61,12 +61,20 @@
         <div class="form-group error">
         <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">Incorrect date</p>
         </div>
-        <div class="form-group">
-            <label th:for="address" class="label">ADDRESS</label>
-            <input type="text" th:field="*{address}" class="form-control" placeholder="주소를 입력해주세요.">
+        <div class="addressForm">
+            <div class="form-group">
+                <label th:for="address" class="label">ADDRESS</label>
+                <div class="form-group" >
+                <input type="text" th:field="*{address}" name="address" class="form-control" id="roadAddress" >
+                <span id="guide" style="color:#999;display:none"></span>
+                </div>
+        <input type="button" onclick="execDaumPostcode()" class="btn" value="우편번호 찾기"><br>
+            </div>
+            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect date</p>
+            <input type="text" th:field="*{address_detail}" name="address_detail" class="form-control" id="detailAddress" placeholder="상세주소를 입력해주세요.">
+            <p th:if="${#fields.hasErrors('address_detail')}" th:errors="*{address_detail}" class="fieldError">Incorrect date</p>
+            <div class="form-group error">
         </div>
-        <div class="form-group error">
-        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="fieldError">Incorrect date</p>
         </div>
 
         <div class="form-group mar">
@@ -77,17 +85,16 @@
             </div>
         </div>
         <div class="form-group error">
-            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="fieldError">Incorrect date</p>
+            <p th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" class="fieldError">Incorrect date</p>
         </div>
         <div class="form-group confirmN mar">
             <label for="confirmNumber" class="label lnputNum">NUMBER</label>
             <div class="form-group btn_validate">
-                <input type="text" class="form-control valiInput"  id="userNum">
+                <input type="text" class="form-control valiInput"  id="userNum" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
                 <button class="btn" type="button" id="checkN">인증번호 확인</button>
             </div>
         </div>
         <div id="joinForm">
-
         <ul class="join_box">
             <div class="form-group error">
                 <p th:if="${#fields.hasErrors('chk')}" th:errors="*{chk}" class="fieldError">Incorrect date</p>
@@ -98,7 +105,7 @@
                         위치정보 이용약관(선택), 프로모션 안내
                         메일 수신(선택)에 모두 동의합니다.</li>
                     <li class="checkAllBtn">
-                        <input type="checkbox" id="chkAll" class="chkAll">
+                        <input type="checkbox" name="chkAll" id="chkAll" class="chkAll">
                     </li>
                 </ul>
             </li>

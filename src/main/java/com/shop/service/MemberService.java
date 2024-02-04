@@ -1,8 +1,11 @@
 package com.shop.service;
 
+import com.shop.dto.ChangePasswdFormDto;
+import com.shop.dto.MemberFindFormDto;
 import com.shop.entity.Member;
 import com.shop.repository.MemberRepository;
 import jakarta.validation.constraints.NotNull;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -15,6 +18,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -34,13 +38,15 @@ public class MemberService implements UserDetailsService {
     private static int number;  // 랜덤 인증 코드
     private static boolean checkValid;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Value("${coolsms.api.key}")
     private String apiKey;
     @Value("${coolsms.api.secret}")
     private String apiSecret;
 
     public Member saveMember(Member member) {
-        //validateDuplicateMember(member);
+        validateDuplicateMember(member);
         return memberRepository.save(member); // 데이터베이스에 저장을 하라는 명령
     }
     public Member saveSnsMember(Member member) {
@@ -54,6 +60,39 @@ public class MemberService implements UserDetailsService {
         return true;
     };
 
+    // throws javassist.NotFoundException: 상위 메소드로 예외 전파
+    public String findEmail(MemberFindFormDto findFormDto) throws javassist.NotFoundException {
+        Member member = memberRepository.findByTel(findFormDto.getTel());
+        if (member != null) {
+            if (!member.getName().equals(findFormDto.getName())) {
+                throw new NotFoundException("입력하신 정보와 일치하는 회원이 없습니다.");
+            }
+
+        } else {
+            throw new NotFoundException("입력하신 정보와 일치하는 회원이 없습니다.");
+        }
+        return member.getEmail();
+    }
+
+    public Member checkUser(MemberFindFormDto findFormDto) throws javassist.NotFoundException {
+        Member member;
+        if(findFormDto.getWay().equals("EMAIL")){
+            member = memberRepository.findByEmail(findFormDto.getEmail());
+        } else {
+            member = memberRepository.findByTel(findFormDto.getTel());
+        }
+        if (member != null) {
+            if (!member.getName().equals(findFormDto.getName())) {
+                throw new NotFoundException("입력하신 정보와 일치하는 회원이 없습니다.");
+            }
+
+        } else {
+            throw new NotFoundException("입력하신 정보와 일치하는 회원이 없습니다.");
+        }
+        return member;
+    };
+
+
     private void validateDuplicateMember(Member member) {
         Member findMember = memberRepository.findByEmail(member.getEmail());
         if (findMember != null) {
@@ -66,6 +105,13 @@ public class MemberService implements UserDetailsService {
             throw new IllegalStateException("전화번호 인증은 필수입니다.");
         }
     }
+    public void changePasswd(ChangePasswdFormDto changePasswdFormDto) {
+        Member member = memberRepository.findByEmail(changePasswdFormDto.getEmail());
+        String hashedPassword = passwordEncoder.encode(changePasswdFormDto.getPassword());
+        member.setPassword(hashedPassword);
+        memberRepository.save(member);
+    }
+
     public String checkEmail(Principal principal) {
         String email="";
         if (principal instanceof UsernamePasswordAuthenticationToken) {
@@ -103,9 +149,9 @@ public class MemberService implements UserDetailsService {
         message.setFrom("01092715401");
         message.setTo(to);
         message.setText("[CRANK] 인증번호 ["+number+"] 입니다.");
-
+        System.out.println("인증번호"+number);
         // 여러 건 메시지 발송일 경우 send many 예제와 동일하게 구성하여 발송할 수 있습니다.
-        this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        // this.messageService.sendOne(new SingleMessageSendingRequest(message));
 
         return number+"";
     }

@@ -86,11 +86,13 @@ public class EmailService {
 
     // 실제 메일 전송
     public String sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+        /*
         // 메일 전송에 필요한 정보 설정
         MimeMessage message = createMail(email);
         // 실제 메일 전송
         javaMailSender.send(message);
-
+         */
+        System.out.println("이메일 인증번호"+number);
         // 인증 코드 반환
         return number+"";
     }

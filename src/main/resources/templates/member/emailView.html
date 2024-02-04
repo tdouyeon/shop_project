@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}">
+        <meta name="_csrf" th:content="${_csrf.token}">
+        <!-- 사용자 CSS 추가 -->
+</head>
+<body>
+<div layout:fragment="content">
+<h2>Email Result</h2>
+<p>Entered Email: <span th:text="${email}"></span></p>
+</div>
+
+</body>
+</html>

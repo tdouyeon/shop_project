@@ -1,11 +1,13 @@
 package com.shop.controller;
 
+import com.shop.dto.ChangePasswdFormDto;
+import com.shop.dto.MemberFindFormDto;
 import com.shop.dto.MemberFormDto;
 import com.shop.entity.Member;
 import com.shop.service.EmailService;
 import com.shop.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,11 +55,7 @@ public class MemberController {
         }
         try {
             Member member;
-            if(memberFormDto.getRole().equals("관리자")) {
-                member = Member.createAdmin(memberFormDto, passwordEncoder);
-            } else {
-                member = Member.createMember(memberFormDto, passwordEncoder);
-            }
+            member = Member.createMember(memberFormDto, passwordEncoder, memberFormDto.getRole());
             String chk = String.join(", ", memberFormDto.getChk());
             member.setChk(chk);
             memberService.saveMember(member);
@@ -91,5 +89,54 @@ public class MemberController {
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg","아이디 또는 비밀번호를 확인해주세요");
         return "/member/memberLoginForm";
+    }
+
+    @GetMapping(value = "/findId")
+    public String findId(Model model) {
+        model.addAttribute("memberFindFormDto", new MemberFindFormDto());
+        return "/member/findIdForm";
+    }
+
+    @PostMapping(value = "/findId")
+    public String findId(@Valid MemberFindFormDto memberFindFormDto, Model model) {
+        try{
+                String email = memberService.findEmail(memberFindFormDto);
+                model.addAttribute("email", email);
+        } catch (NotFoundException e) {
+            model.addAttribute("errorMessage",e.getMessage());
+            return "/member/findIdForm";
+        }
+        return "/member/emailView";
+    }
+
+    @GetMapping(value = "/findPasswd")
+    public String findPasswd(Model model) {
+        model.addAttribute("memberFindFormDto", new MemberFindFormDto());
+        return "/member/findPasswdForm";
+    }
+
+    @PostMapping(value = "/findPasswd")
+    public String findPasswd(@Valid MemberFindFormDto memberFindFormDto, Model model) {
+        try{
+            Member member = memberService.checkUser(memberFindFormDto);
+            ChangePasswdFormDto changePasswdFormDto = new ChangePasswdFormDto();
+            changePasswdFormDto.setEmail(member.getEmail());
+            model.addAttribute("changePasswdFormDto", changePasswdFormDto);
+        } catch (NotFoundException e) {
+            model.addAttribute("errorMessage",e.getMessage());
+            return "/member/findPasswdForm";
+        }
+
+        return "/member/changePasswdForm";
+    }
+    @PostMapping(value = "/changePasswd")
+    @ResponseBody
+    ResponseEntity changePasswd(@Valid ChangePasswdFormDto changePasswdFormDto) {
+        try{
+            memberService.changePasswd(changePasswdFormDto);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("비밀번호 변경 중 에러가 발생 했습니다.", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("비밀번호 변경이 완료 되었습니다.", HttpStatus.OK);
     }
 }

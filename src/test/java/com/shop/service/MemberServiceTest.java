@@ -27,7 +27,7 @@ class MemberServiceTest {
         memberFormDto.setName("홍길동");
         memberFormDto.setAddress("서울시 마포구 합정동");
         memberFormDto.setPassword("1234");
-        return Member.createMember(memberFormDto, passwordEncoder);
+        return Member.createMember(memberFormDto, passwordEncoder,"ADMIN");
     }
 
     @Test
