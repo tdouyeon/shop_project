@@ -3,6 +3,7 @@ package com.shop.entity;
 
 import com.shop.dto.NoticeDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -21,12 +22,17 @@ public class Category {
 
     private String name;
 
-    private List<String> subcategories; // 서브 카테고리
-
-    public static Category createCategory(String name, List<String> subcategories){
+    @Column(name = "parent_category_id")
+    private Long parentCategoryId;
+    public static Category createCategory(String name){
         Category category = new Category();
         category.setName(name);
-        category.setSubcategories(subcategories);
+        return category;
+    }
+    public static Category createCategory(String name, int parent_category_id){
+        Category category = new Category();
+        category.setName(name);
+        category.setParentCategoryId((long)parent_category_id);
         return category;
     }
 }

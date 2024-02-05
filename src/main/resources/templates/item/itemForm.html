@@ -27,7 +27,7 @@
                 <option th:value="SOLD_OUT">품절</option>
             </select>
 
-            <select id="category" name="category" size="1" onchange="updateSubcategories(this)">
+            <select id="category" size="1" onchange="updateSubcategories(this)">
                 <option class="category" th:each="categoryDto : ${categoryDtos}" th:value="${categoryDto.name}" th:text="${categoryDto.name}">
                 </option>
             </select>
@@ -35,9 +35,7 @@
             <!-- 서브카테고리 선택 -->
             <div>
                 <label for="subcategory">서브카테고리:</label>
-                <select id="subcategory" name="subcategory" size="1" th:field="*{category}">
-                    <option th:value="${#strings.toLowerCase(category)}" th:text="${category}">
-                    </option>
+                <select id="subcategory" name="category" size="1" th:field="*{category}">
                 </select>
             </div>
 

@@ -1,5 +1,6 @@
 package com.shop.dto;
 
+import com.shop.entity.Category;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +16,5 @@ public class ItemDto {
     private String sellStatCd;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
-    private CategoryDto category;
+    private Category category;
 }

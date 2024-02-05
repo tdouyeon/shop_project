@@ -12,7 +12,7 @@ import java.util.List;
 public class CategoryDto {
     private Long id;
     private String name;
-    private List<String> subcategories; // 서브 카테고리
+    private Long parent_category_id;
 
     public CategoryDto() {
     }

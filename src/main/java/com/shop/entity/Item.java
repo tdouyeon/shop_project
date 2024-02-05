@@ -31,12 +31,9 @@ public class Item extends BaseEntity{
     @Column(nullable = false)
     private int stockNumber; // 재고 수량
 
-
-    @Column(nullable = false)
-    private String category;
-
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
+
 
 //    private LocalDateTime regTime; // 등록 시간
 //
@@ -49,6 +46,10 @@ public class Item extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "item_id")
     )
     private List<Member> member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();

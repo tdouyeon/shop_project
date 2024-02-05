@@ -4,6 +4,7 @@ import com.shop.dto.CategoryDto;
 import com.shop.dto.ItemFormDto;
 import com.shop.dto.ItemSearchDto;
 import com.shop.entity.Item;
+import com.shop.service.CategoryService;
 import com.shop.service.ItemService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -26,9 +27,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private final CategoryService categoryService;
     @GetMapping(value = "/admin/item/new")
     public String itemForm(Model model){
-        List<CategoryDto> categoryDtos = itemService.getCategory();
+        List<CategoryDto> categoryDtos = categoryService.getCategory();
         model.addAttribute("itemFormDto",new ItemFormDto());
         model.addAttribute("categoryDtos", categoryDtos);
         return "/item/itemForm";
@@ -52,13 +54,6 @@ public class ItemController {
             return "item/itemForm";
         }
         try {
-            String category = itemFormDto.getCategory();
-            // 쉼표 뒷부분만 추출
-            String afterComma = category.substring(category.indexOf(",") + 1);
-
-            // 소문자로 변환
-            String result = afterComma.toLowerCase();
-            itemFormDto.setCategory(result);
             itemService.saveItem(itemFormDto, itemImgFileList, itemDetailFileList);
         }catch (Exception e){
             model.addAttribute("errorMessage",
@@ -116,9 +111,9 @@ public class ItemController {
 
     @PostMapping(value = "/admin/getSubcategories")
     @ResponseBody
-    List<String> getSubcategories(@RequestParam("category") String category) {
-        CategoryDto categoryDto = itemService.findCategory(category);
-        return categoryDto.getSubcategories();
+    List<CategoryDto> getSubcategories(@RequestParam("category") String category) {
+        List<CategoryDto> categoryDtos = categoryService.findCategory(category);
+        return categoryDtos;
     }
 
     @GetMapping(value = "/item/{itemId}")

@@ -1,6 +1,7 @@
 package com.shop.dto;
 
 import com.shop.constant.ItemSellStatus;
+import com.shop.entity.Category;
 import com.shop.entity.Item;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private String category;
+    private Long category;
 //----------------------------------------------------------------------------
     //ItemImg
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //상품 이미지 정보

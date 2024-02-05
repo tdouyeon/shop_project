@@ -2,6 +2,7 @@ package com.shop.controller;
 
 import com.shop.dto.ItemSearchDto;
 import com.shop.dto.MainItemDto;
+import com.shop.service.CategoryService;
 import com.shop.service.ItemService;
 import com.shop.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -17,9 +18,10 @@ import java.util.Optional;
 public class MainController {
     private final ItemService itemService;
     private final MemberService memberService;
+    private final CategoryService categoryService;
     @GetMapping(value = "/")
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
-        itemService.makeCategory();
+        categoryService.makeCategory();
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
         if(itemSearchDto.getSearchQuery() == null)
         {

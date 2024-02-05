@@ -143,14 +143,13 @@ function updateSubcategories(selectElement) {
     });
 }
         function updateSubcategoryOptions(subcategories) {
-            // 기존 옵션 제거
-            $('#subcategory').empty();
+            var subcategorySelect = $('#subcategory');
+            subcategorySelect.empty();
 
-            // 받아온 서브 카테고리로 옵션 업데이트
-            subcategories.forEach(function (subcategory) {
-                $('#subcategory').append($('<option>', {
-                    value: subcategory,
-                    text: subcategory
+            $.each(subcategories, function(index, category) {
+                subcategorySelect.append($('<option>', {
+                    value: category.id,
+                    text: category.name
                 }));
             });
         }
