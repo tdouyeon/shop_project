@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+<link th:href="@{/css/shop.css}" rel="stylesheet">
+<link th:href="@{/css/sidebar.css}" rel="stylesheet">
+</head>
+<body>
+<!-- Swiper -->
+<div layout:fragment="content">
+    <div class="shop_container">
+        <ul class="main__content">
+            <th:block th:each="item, status: ${items.getContent()}">
+                <li class="card">
+                    <a th:href="'/item/' + ${item.id}" class="text-dark">
+                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}">
+                        <div class="card-body">
+                            <h4 class="card-title">[[${item.itemNm}]]</h4>
+                            <h3 class="card-price">[[${item.price}]]won</h3>
+                        </div>
+                    </a>
+                </li>
+            </th:block>
+        </ul>
+        <div th:with="start=${(items.number/maxPage)*maxPage +1},
+end=(${(items.totalPages == 0) ? 1 : (start + (maxPage-1) < items.totalPages ?
+start + (maxPage - 1) : items.totalPages)})">
+            <ul class="pagination">
+                <li th:classappend="${items.number eq 0}?'disabled'">
+                    <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number-1}}"
+                       aria-label='Previous' class="page-link">
+                        <div th:if="${items.getNumber} != 0">
+                            <img src="/img/previous.png" alt="shop" width="20px" height="20px">
+                        </div>
+                    </a>
+                </li>
+                <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
+                    th:classappend="${items.number eq page-1}?'active':''">
+                    <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' +${page -1}}"
+                       th:inline="text" class="page-link">[[${page}]]</a>
+                </li>
+                <li class="disabled" th:classappend="${items.number+1 ge items.totalPages}?'disabled'">
+                    <a th:href="@{'/' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number + 1}}"
+                       aria-label="Next" class="page-link">
+                        <div th:if="${items.getTotalPages} != ${items.getNumber}+1">
+                            <img src="/img/Next.png" alt="shop" width="20px" height="20px">
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

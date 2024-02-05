@@ -1,43 +1,35 @@
 $(document).ready(function () {
+  $("input[name='role'][value='ADMIN']").prop("checked", true);
+  const chks = document.querySelectorAll(".chk");
+  const chkBoxLength = chks.length;
 
-$("input[name='role'][value='ADMIN']").prop('checked', true);
-
-var errorMessage = document.getElementById("errorMessage").value;
-if (errorMessage != null && errorMessage !== "") {
-alert(errorMessage);
-}
-const chks = document.querySelectorAll(".chk");
-const chkBoxLength = chks.length;
-
-$("#chkAll").on("click", function (e) {
-if (e.target.checked) {
-chks.forEach(function (value) {
-  value.checked = true;
-});
-} else {
-chks.forEach(function (value) {
-  value.checked = false;
-});
-}
-});
-for (let chk of chks) {
-chk.addEventListener("click", function () {
-let count = 0;
-chks.forEach(function (value) {
-  if (value.checked) {
-    count++;
+  $("#chkAll").on("click", function (e) {
+    if (e.target.checked) {
+      chks.forEach(function (value) {
+        value.checked = true;
+      });
+    } else {
+      chks.forEach(function (value) {
+        value.checked = false;
+      });
+    }
+  });
+  for (let chk of chks) {
+    chk.addEventListener("click", function () {
+      let count = 0;
+      chks.forEach(function (value) {
+        if (value.checked) {
+          count++;
+        }
+      });
+      if (count !== chkBoxLength) {
+        $("#chkAll").prop("checked", false);
+      } else {
+        $("#chkAll").prop("checked", true);
+      }
+    });
   }
 });
-  if (count !== chkBoxLength) {
-      $("#chkAll").prop("checked", false);
-  } else {
-      $("#chkAll").prop("checked", true);
-  }
-});
-}
-});
-
-
 
 $(document).on("click", "#sendNum", function (e) {
   var token = $("meta[name='_csrf']").attr("content");
@@ -46,29 +38,29 @@ $(document).on("click", "#sendNum", function (e) {
   var telRegex = /^\d{10,11}$/;
 
   if (to === "") {
-  alert("연락처를 입력해주세요.");
+    alert("연락처를 입력해주세요.");
   } else if (!telRegex.test(to)) {
-  alert("하이픈(-) 제외하고 연락처 형식에 맞게 입력해주세요.");
+    alert("하이픈(-) 제외하고 연락처 형식에 맞게 입력해주세요.");
   } else {
-  $.ajax({
-    url: "/members/sendSMS",
-    type: "GET",
-    data: {
-      to: to,
-    },
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader(header, token);
-    },
-    success: function (data) {
-      const checkNum = data;
-      alert("인증번호 전송이 완료 되었습니다.");
-      $(".confirmN").css("display", "flex");
-    },
-  });
+    $.ajax({
+      url: "/members/sendSMS",
+      type: "GET",
+      data: {
+        to: to,
+      },
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(header, token);
+      },
+      success: function (data) {
+        const checkNum = data;
+        alert("인증번호 전송이 완료 되었습니다.");
+        $(".confirmN").css("display", "flex");
+      },
+    });
   }
-  });
+});
 
-  $(document).on("click", "#checkN", function (e) {
+$(document).on("click", "#checkN", function (e) {
   e.preventDefault();
   var token = $("meta[name='_csrf']").attr("content");
   var header = $("meta[name='_csrf_header']").attr("content");
@@ -76,72 +68,71 @@ $(document).on("click", "#sendNum", function (e) {
   var url = "/members/" + num + "/confirmNum";
 
   $.ajax({
-  url: url,
-  type: "post",
-  data: num,
-  beforeSend: function (xhr) {
-  xhr.setRequestHeader(header, token);
-  },
-  dataType: "text",
-  cache: false,
-  async: false,
-  success: function (result, status) {
-  alert(result);
+    url: url,
+    type: "post",
+    data: num,
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader(header, token);
+    },
+    dataType: "text",
+    cache: false,
+    async: false,
+    success: function (result, status) {
+      alert(result);
 
-  $("#tel").prop("readonly", true);
-  $(".confirmN").css("display", "none");
-  $("#sendNum").html("인증 완료");
-  $("#sendNum").css("background-color", "white");
-  $("#sendNum").css("color", "black");
-  $("#sendNum").css("border", "1px solid gray");
-  },
-  error: function (jqXHR, status, error) {
-  if (jqXHR.status == "400") {
-    alert("인증번호가 잘못 입력되었습니다");
-  } else {
-    alert(jqXHR.responseText);
-  }
-  },
+      $("#tel").prop("readonly", true);
+      $(".confirmN").css("display", "none");
+      $("#sendNum").html("인증 완료");
+      $("#sendNum").css("background-color", "white");
+      $("#sendNum").css("color", "black");
+      $("#sendNum").css("border", "1px solid gray");
+    },
+    error: function (jqXHR, status, error) {
+      if (jqXHR.status == "400") {
+        alert("인증번호가 잘못 입력되었습니다");
+      } else {
+        alert(jqXHR.responseText);
+      }
+    },
   });
 });
 
-$(document)
-  .on("click", "#sendEmail", function (e) {
-    e.preventDefault();
+$(document).on("click", "#sendEmail", function (e) {
+  e.preventDefault();
+  var email = $("#email").val();
+  var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  if (email === "") {
+    alert("이메일을 입력해주세요.");
+  } else if (!emailRegex.test(email)) {
+    alert("이메일 형식에 맞게 작성해주세요");
+  } else {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
     var email = $("#email").val();
-    var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (email === "") {
-      alert("이메일을 입력해주세요.");
-    } else if (!emailRegex.test(email)) {
-      alert("이메일 형식에 맞게 작성해주세요");
-    } else {
-      var token = $("meta[name='_csrf']").attr("content");
-      var header = $("meta[name='_csrf_header']").attr("content");
-      var email = $("#email").val();
-      var url = "/members/" + email + "/mailConfirm";
+    var url = "/members/" + email + "/mailConfirm";
 
-      $.ajax({
-        url: url,
-        type: "post",
-        data: email,
-        beforeSend: function (xhr) {
-          xhr.setRequestHeader(header, token);
-        },
-        dataType: "text",
-        cache: false,
-        success: function (result) {
-          alert("인증번호가 전송되었습니다.");
-          $(".confirm").css("display", "flex");
-        },
-        error: function (jqXHR, status, error) {
-          if (jqXHR.status == "401") {
-          } else {
-            alert(jqXHR.responseText);
-          }
-        },
-      });
-    }
-  });
+    $.ajax({
+      url: url,
+      type: "post",
+      data: email,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader(header, token);
+      },
+      dataType: "text",
+      cache: false,
+      success: function (result) {
+        alert("인증번호가 전송되었습니다.");
+        $(".confirm").css("display", "flex");
+      },
+      error: function (jqXHR, status, error) {
+        if (jqXHR.status == "401") {
+        } else {
+          alert(jqXHR.responseText);
+        }
+      },
+    });
+  }
+});
 $(document).on("click", "#checkEmail", function (e) {
   e.preventDefault();
   var emailNum = $("#confirmNumber").val();
@@ -175,7 +166,7 @@ $(document).on("click", "#checkEmail", function (e) {
       error: function (jqXHR, status, error) {
         if (jqXHR.status == "400") {
           alert("인증번호가 일치하지 않습니다.");
-      $("#confirmNumber").val("");
+          $("#confirmNumber").val("");
         } else {
           alert(jqXHR.responseText);
         }
@@ -274,3 +265,11 @@ function execDaumPostcode() {
     },
   }).open();
 }
+// 문서 준비되면 실행되어야하는데 문서 ready 전 실행됨 아직 해결 못함
+document.addEventListener("DOMContentLoaded", function () {
+    var errorMessage = document.getElementById("errorMessage").value;
+    console.log(errorMessage);
+  if (errorMessage != null && errorMessage !== "") {
+  alert(errorMessage);
+  }
+});
