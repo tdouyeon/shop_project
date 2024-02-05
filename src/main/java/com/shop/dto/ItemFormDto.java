@@ -27,7 +27,7 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private String itemCategory;
+    private String category;
 //----------------------------------------------------------------------------
     //ItemImg
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //상품 이미지 정보
@@ -39,7 +39,7 @@ public class ItemFormDto {
     private  List<Long> itemDetailImgIds = new ArrayList<>(); // 상품 상세 이미지 정보
 
 
-//--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
     // ModelMapper
     private static ModelMapper modelMapper = new ModelMapper();
 

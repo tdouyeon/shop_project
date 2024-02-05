@@ -19,6 +19,7 @@ public class MainController {
     private final MemberService memberService;
     @GetMapping(value = "/")
     public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model) {
+        itemService.makeCategory();
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
         if(itemSearchDto.getSearchQuery() == null)
         {

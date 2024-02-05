@@ -1,9 +1,12 @@
 package com.shop.service;
 
 import com.shop.dto.*;
+import com.shop.entity.Category;
 import com.shop.entity.Item;
 import com.shop.entity.ItemDetailImg;
 import com.shop.entity.ItemImg;
+import com.shop.modelmapper.CategoryMapper;
+import com.shop.repository.CategoryRepository;
 import com.shop.repository.ItemDetailImgRepository;
 import com.shop.repository.ItemImgRepository;
 import com.shop.repository.ItemRepository;
@@ -27,10 +30,12 @@ public class ItemService {
     private final ItemImgRepository itemImgRepository;
     private final ItemDetailImgService itemDetailImgService;
     private final ItemDetailImgRepository itemDetailImgRepository;
+    private final CategoryRepository categoryRepository;
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
             throws Exception{
         //상품등록
         Item item = itemFormDto.createItem();
+
         itemRepository.save(item);
         //이미지 등록
         for(int i =0;i<itemImgFileList.size();i++){
@@ -98,6 +103,54 @@ public class ItemService {
             itemDetailImgService.updateItemImg(itemDetailImgIds.get(i), itemDetailImgFileList.get(i));
         }
         return item.getId();
+    }
+
+    public void makeCategory() {
+        List<Category> category = categoryRepository.findAll();
+        if(category.isEmpty() || category.get(0) == null) {
+            List<String> bag = new ArrayList<>();
+            bag.add("CROSSBAG");
+            bag.add("SHOULDERBAG");
+
+            List<String> clothing = new ArrayList<>();
+            clothing.add("TOP");
+            clothing.add("DRESS");
+            clothing.add("BOTTOM");
+            clothing.add("OUTER");
+
+            List<String> accessories = new ArrayList<>();
+            accessories.add("NECKLACE");
+            accessories.add("RING");
+            accessories.add("BRACELET");
+            accessories.add("EARRINGS");
+            accessories.add("KEYTRING");
+            accessories.add("ACC");
+
+            List<String> headwear = new ArrayList<>();
+            headwear.add("HAIRPIN");
+            headwear.add("HAIRBAND");
+
+            categoryRepository.save(Category.createCategory("bag",bag));
+            categoryRepository.save(Category.createCategory("clothing",clothing));
+            categoryRepository.save(Category.createCategory("accessories",accessories));
+            categoryRepository.save(Category.createCategory("headwear",headwear));
+        }
+    }
+
+    public CategoryDto findCategory(String category) {
+        List<CategoryDto> categoryList = getCategory();
+        for ( CategoryDto categoryDto : categoryList) {
+            if(category.equals(categoryDto.getName())) {
+                return categoryDto;
+            }
+        }
+        return categoryList.get(3);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryDto> getCategory () {
+        List<Category> categoryList = categoryRepository.findAll();
+        return CategoryMapper.convertToDtoList(categoryList);
     }
 
     @Transactional(readOnly = true)

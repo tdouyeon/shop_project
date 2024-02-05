@@ -32,6 +32,9 @@ public class Item extends BaseEntity{
     private int stockNumber; // 재고 수량
 
 
+    @Column(nullable = false)
+    private String category;
+
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus; // 상품 판매 상태
 

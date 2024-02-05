@@ -27,51 +27,20 @@
                 <option th:value="SOLD_OUT">품절</option>
             </select>
 
-            <label for="category">카테고리</label>
-            <select id="category" th:field="*{itemCategory}" name="category">
-                <option th:field="*{itemCategory}" th:value="clothing">CLOTHING</option>
-                <option th:field="*{itemCategory}" th:value="accessories">ACCESSORIES</option>
-                <option th:field="*{itemCategory}" th:value="headwear">HEADWEAR</option>
-                <option th:field="*{itemCategory}" th:value="bag">BAG</option>
+            <select id="category" name="category" size="1" onchange="updateSubcategories(this)">
+                <option class="category" th:each="categoryDto : ${categoryDtos}" th:value="${categoryDto.name}" th:text="${categoryDto.name}">
+                </option>
             </select>
 
-            <div class="option-container" id="clothingOptions">
-                <label for="clothingType">Choose a clothing type:</label>
-                <select id="clothingType" name="clothingType">
-                    <option th:field="*{itemCategory}" th:value="top">TOP</option>
-                    <option th:field="*{itemCategory}" th:value="dress">DRESS</option>
-                    <option th:field="*{itemCategory}" th:value="bottom">BOTTOM</option>
-                    <option th:field="*{itemCategory}" th:value="outer">OUTER</option>
+            <!-- 서브카테고리 선택 -->
+            <div>
+                <label for="subcategory">서브카테고리:</label>
+                <select id="subcategory" name="subcategory" size="1" th:field="*{category}">
+                    <option th:value="${#strings.toLowerCase(category)}" th:text="${category}">
+                    </option>
                 </select>
             </div>
 
-            <div class="option-container" id="accessoriesOptions">
-                <label for="accessoryType">Choose an accessory type:</label>
-                <select id="accessoryType" name="accessoryType">
-                    <option th:field="*{itemCategory}" th:value="necklace">NECKLACE</option>
-                    <option th:field="*{itemCategory}" th:value="ring">RING</option>
-                    <option th:field="*{itemCategory}" th:value="bracelet">BRACELET</option>
-                    <option th:field="*{itemCategory}" th:value="earrings">EARRINGS</option>
-                    <option th:field="*{itemCategory}" th:value="keyring">KEYTRING</option>
-                    <option th:field="*{itemCategory}" th:value="acc">ACC</option>
-                </select>
-            </div>
-
-            <div class="option-container" id="headwearOptions">
-                <label for="headwearType">Choose a headwear type:</label>
-                <select id="headwearType" name="headwearType">
-                    <option th:field="*{itemCategory}" th:value="hairpin">HAIRPIN</option>
-                    <option th:field="*{itemCategory}" th:value="hairband">HAIRBAND</option>
-                </select>
-            </div>
-
-            <div class="option-container" id="bagOptions">
-                <label for="bagType">Choose a bag type:</label>
-                <select id="bagType" name="bagType">
-                    <option th:field="*{itemCategory}" th:value="crossbag">CROSSBAG</option>
-                    <option th:field="*{itemCategory}" th:value="shoulderbag">SHOULDERBAG</option>
-                </select>
-            </div>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text">상품명</span>
