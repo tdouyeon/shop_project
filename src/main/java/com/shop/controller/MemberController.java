@@ -68,7 +68,7 @@ public class MemberController {
 
     @GetMapping(value = "/login")
     public String loginMember(){
-        return "/member/memberLoginForm";
+        return "member/memberLoginForm";
     }
 
     @PostMapping("/{email}/mailConfirm")
@@ -88,13 +88,13 @@ public class MemberController {
     @GetMapping(value = "/login/error")
     public String loginError(Model model){
         model.addAttribute("loginErrorMsg","아이디 또는 비밀번호를 확인해주세요");
-        return "/member/memberLoginForm";
+        return "member/memberLoginForm";
     }
 
     @GetMapping(value = "/findId")
     public String findId(Model model) {
         model.addAttribute("memberFindFormDto", new MemberFindFormDto());
-        return "/member/findIdForm";
+        return "member/findIdForm";
     }
 
     @PostMapping(value = "/findId")
@@ -104,15 +104,15 @@ public class MemberController {
                 model.addAttribute("email", email);
         } catch (NotFoundException e) {
             model.addAttribute("errorMessage",e.getMessage());
-            return "/member/findIdForm";
+            return "member/findIdForm";
         }
-        return "/member/emailView";
+        return "member/emailView";
     }
 
     @GetMapping(value = "/findPasswd")
     public String findPasswd(Model model) {
         model.addAttribute("memberFindFormDto", new MemberFindFormDto());
-        return "/member/findPasswdForm";
+        return "member/findPasswdForm";
     }
 
     @PostMapping(value = "/findPasswd")
@@ -124,10 +124,10 @@ public class MemberController {
             model.addAttribute("changePasswdFormDto", changePasswdFormDto);
         } catch (NotFoundException e) {
             model.addAttribute("errorMessage",e.getMessage());
-            return "/member/findPasswdForm";
+            return "member/findPasswdForm";
         }
 
-        return "/member/changePasswdForm";
+        return "member/changePasswdForm";
     }
     @PostMapping(value = "/changePasswd")
     @ResponseBody

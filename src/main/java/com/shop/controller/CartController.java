@@ -52,7 +52,7 @@ public class CartController {
     public String orderHist(Principal principal, Model model){
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal);
         model.addAttribute("cartItems",cartDetailDtoList);
-        return "/cart/cartList";
+        return "cart/cartList";
     }
     @PatchMapping(value = "/cartItem/{cartItemId}")
     public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId,

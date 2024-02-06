@@ -33,7 +33,7 @@ public class ItemController {
         List<CategoryDto> categoryDtos = categoryService.getCategory();
         model.addAttribute("itemFormDto",new ItemFormDto());
         model.addAttribute("categoryDtos", categoryDtos);
-        return "/item/itemForm";
+        return "item/itemForm";
     }
 
     @PostMapping(value = "/admin/item/new")
