@@ -8,6 +8,7 @@ import com.shop.dto.ItemSearchDto;
 import com.shop.dto.MainItemDto;
 import com.shop.dto.QMainItemDto;
 import com.shop.entity.Item;
+import com.shop.entity.QCategory;
 import com.shop.entity.QItem;
 import com.shop.entity.QItemImg;
 import jakarta.persistence.EntityManager;
@@ -24,6 +25,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
     // 생성자
     public ItemRepositoryCustomImpl(EntityManager em){
         this.queryFactory = new JPAQueryFactory(em); // JPAQueryFactory 실질적인 객체가 만들어 집니다.
+    }
+
+    private BooleanExpression searchByCategoryId(Long categoryId) {
+        return categoryId != null ? QItem.item.category.id.eq(categoryId) : null;
     }
     private BooleanExpression searchSellStatusEq(ItemSellStatus searchSellStatus){
         return searchSellStatus == null ?
@@ -58,6 +63,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         QueryResults<Item> results = queryFactory.selectFrom(QItem.item).
+                join(QItem.item.category).fetchJoin().
                 where(regDtsAfter(itemSearchDto.getSearchDateType()),
                         searchSellStatusEq(itemSearchDto.getSearchSellStatus()),
                         searchByLike(itemSearchDto.getSearchBy(),itemSearchDto.getSearchQuery()))
@@ -66,23 +72,31 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
         List<Item> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content,pageable,total);
-
     }
     private BooleanExpression itemNmLike(String searchQuery){
         return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%"+searchQuery+"%");
     }
     @Override
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Long categoryId) {
         QItem item = QItem.item;
         QItemImg itemImg = QItemImg.itemImg;
-        //QMainItemDto @QueryProjection을 하용하면 DTO로 바로 조회 가능
-        QueryResults<MainItemDto> results = queryFactory.select(new QMainItemDto(item.id, item.itemNm,itemImg.imgUrl,item.price))
+
+        // QMainItemDto @QueryProjection을 활용하면 DTO로 바로 조회 가능
+        QueryResults<MainItemDto> results = queryFactory.select(new QMainItemDto(item.id, item.itemNm, itemImg.imgUrl, item.price))
                 // join 내부조인 .repImgYn.eq("Y") 대표이미지만 가져온다.
-                .from(itemImg).join(itemImg.item, item).where(itemImg.repImgYn.eq("Y"))
-                .where(itemNmLike(itemSearchDto.getSearchQuery()))
-                .orderBy(item.id.desc()).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetchResults();
+                .from(itemImg).join(itemImg.item, item)
+                .join(item.category) // 추가: 아이템의 카테고리와 조인
+                .where(itemImg.repImgYn.eq("Y"), categoryEq(categoryId), itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
         List<MainItemDto> content = results.getResults();
         long total = results.getTotal();
-        return new PageImpl<>(content, pageable,total);
+        return new PageImpl<>(content, pageable, total);
+    }
+    private BooleanExpression categoryEq(Long categoryId) {
+        return categoryId != null ? QItem.item.category.id.eq(categoryId) : null;
     }
 }

@@ -54,8 +54,10 @@ public class ItemController {
             return "item/itemForm";
         }
         try {
+            System.out.println("이미지"+itemImgFileList.get(0).getBytes().toString());
             itemService.saveItem(itemFormDto, itemImgFileList, itemDetailFileList);
         }catch (Exception e){
+            e.printStackTrace();
             model.addAttribute("errorMessage",
                     "상품 등록 중 에러가 발생하였습니다.");
             return "item/itemForm";

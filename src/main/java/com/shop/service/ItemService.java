@@ -34,7 +34,7 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
             throws Exception{
-        Optional<Category> categoryOptional = categoryRepository.findById(itemFormDto.getCategory());
+        Optional<Category> categoryOptional = categoryRepository.findById(itemFormDto.getCategory().getId());
 
         Category category = categoryOptional.get();
 
@@ -117,9 +117,12 @@ public class ItemService {
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         return itemRepository.getAdminItemPage(itemSearchDto,pageable);
     }
-
     @Transactional(readOnly = true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
-        return itemRepository.getMainItemPage(itemSearchDto, pageable);
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category){
+        Optional<Category> category1 = categoryRepository.findByName(category);
+        Long categoryId = category1.map(Category::getId).orElse(null);
+        System.out.println("카테고리 아이디가 뭐야?"+categoryId);
+
+        return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId);
     }
 }

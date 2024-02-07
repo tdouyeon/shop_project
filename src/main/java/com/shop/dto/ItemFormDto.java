@@ -6,6 +6,7 @@ import com.shop.entity.Item;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class ItemFormDto {
 
     private ItemSellStatus itemSellStatus;
 
-    private Long category;
+    private Category category;
 //----------------------------------------------------------------------------
     //ItemImg
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //상품 이미지 정보

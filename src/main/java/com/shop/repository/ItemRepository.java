@@ -14,4 +14,7 @@ public interface ItemRepository extends JpaRepository<Item,Long>, QuerydslPredic
     List<Item> findByItemNm(String itemNm);
     List<Item> findByPriceLessThan(Integer price);
     List<Item> findByPriceLessThanOrderByPriceDesc(Integer price);
+
+    @Query("SELECT i FROM Item i JOIN i.category c WHERE c.name = :categoryName")
+    List<Item> findByCategoryName(@Param("categoryName") String categoryName);
 }
