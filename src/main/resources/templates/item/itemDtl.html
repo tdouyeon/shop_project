@@ -134,12 +134,6 @@
             width: 58px;
             text-align: center;
         }
-        .other-img{
-
-        }
-        .item-ifo{
-
-        }
         .itemNm{
             margin: 15px 0px;
         }
@@ -167,31 +161,31 @@
         }
         .itemdtl-button{
             display: flex;
-            margin-top: 40%;
+            margin-top: 10%;
             justify-content: space-between;
         }
-        .cart-button, .order-button{
-            width: 160px;
-            height: 40px;
-            font-size: 18px;
-            font-weight: 700px;
-            line-height: 15px;
+        .btn{
+            min-width: 120px;
+            font-size: 12px;
+            display: inline-block;
+            padding: 10px 12px;
+            border: 1px solid #666;
+            border-radius: 2px;
+            background-color: #000;
             text-align: center;
-            border-radius: 20px;
-            box-sizing: border-box;
-            transition: all 0.3s;
-            margin-bottom: 40px;
-
-            margin: 20px 0px;
+            color: #fff;
+            margin-bottom: 50px;
+                font-weight: 600;
         }
         .order-button{
-            background-color: rgb(0,32,83);
-            color: rgb(255, 255, 255);
+            background-color: black;
+            color: white;
         }
         .cart-button{
             background-color: rgb(255, 255, 255);
             color: rgb(0,32,83);
             border-color: #aaaa;
+            margin-right: 30px;
         }
 
 
@@ -235,11 +229,11 @@
             </div>
             <div th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
                  class="itemdtl-button">
-                <button type="button" class="cart-button"
+                <button type="button" class="btn cart-button"
                         onclick="addCart()">
                     장바구니 담기
                 </button>
-                <button type="button" class="order-button" onclick="order()">주문하기</button>
+                <button type="button" class="btn order-button" onclick="order()">주문하기</button>
             </div>
             <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
                  class="text-right">

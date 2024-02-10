@@ -5,7 +5,9 @@ import com.shop.dto.CartItemDto;
 import com.shop.dto.CartOrderDto;
 import com.shop.service.CartService;
 import jakarta.validation.Valid;
+import kotlinx.serialization.Serializable;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,15 +23,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import org.slf4j.Logger;
 
 @Controller
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
+
 
     @PostMapping(value = "/cart")
-    public @ResponseBody
-    ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto,
+    public ResponseEntity<String> order(@RequestBody @Valid CartItemDto cartItemDto,
                          BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -42,10 +46,12 @@ public class CartController {
         Long cartItemId;
         try {
             cartItemId = cartService.addCart(cartItemDto, principal);
+            System.out.println("카트아이디가 뭐야?"+cartItemId);
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
+            logger.error("An error occurred: {}", e.getMessage(), e);
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
     }
 
     @GetMapping(value = "/cart")
@@ -55,7 +61,7 @@ public class CartController {
         return "cart/cartList";
     }
     @PatchMapping(value = "/cartItem/{cartItemId}")
-    public @ResponseBody ResponseEntity updateCartItem(@PathVariable("cartItemId") Long cartItemId,
+    public ResponseEntity<String> updateCartItem(@PathVariable("cartItemId") Long cartItemId,
                                                        int count, Principal principal) {
         System.out.println(cartItemId);
         if (count <= 0) {
@@ -65,21 +71,21 @@ public class CartController {
         }
 
         cartService.updateCartItemCount(cartItemId, count);
-        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
     @DeleteMapping(value = "/cartItem/{cartItemId}")
-    public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId,
+    public ResponseEntity<String> deleteCartItem(@PathVariable("cartItemId") Long cartItemId,
                                                        Principal principal){
         if (!cartService.validateCartItem(cartItemId, principal)) {
             return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         cartService.deleteCartItem(cartItemId);
-        return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
     // cartList.html -> CartController -> CartService -> OrderService
     // -> CartService -> CartController -> carList.html
     @PostMapping(value = "/cart/orders")
-    public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto,
+    public ResponseEntity<String> orderCartItem(@RequestBody CartOrderDto cartOrderDto,
                                                       Principal principal){
         System.out.println(cartOrderDto.getCartItemId());
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
@@ -99,6 +105,6 @@ public class CartController {
         catch (Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Long>(orderId,HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

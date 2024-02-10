@@ -37,13 +37,11 @@ public class CartService {
                 .orElseThrow(EntityExistsException::new);
             String email = memberService.checkEmail(principal);
             Member member = memberRepository.findByEmail(email);
-
-                Cart cart = cartRepository.findByMemberId(member.getId());
+               Cart cart = cartRepository.findByMemberId(member.getId());
                 if (cart == null) {
                     cart = Cart.createCart(member);
                     cartRepository.save(cart);
                 }
-
                 CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
                 if (savedCartItem != null) {
                     savedCartItem.addCount(cartItemDto.getCount());

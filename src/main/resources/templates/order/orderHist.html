@@ -44,6 +44,29 @@
                 }
             });
          }
+            function makeReview(orderId) {
+        // 전송할 데이터를 JSON 형식으로 준비
+        var data = {
+            orderId: orderId
+            // 다른 필요한 데이터가 있다면 추가
+        };
+
+        // AJAX 요청
+        $.ajax({
+            type: 'POST',
+            url: '/submit_review',  // 컨트롤러가 처리할 엔드포인트 URL로 변경
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                // 성공적으로 처리된 경우
+                console.log(response);
+            },
+            error: function(error) {
+                // 오류 발생 시 처리
+                console.error(error.statusText);
+            }
+        });
+    }
     </script>
 </th:block>
 <th:block layout:fragment="css">
@@ -141,7 +164,9 @@
             </th:block>
             <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
                 <span class="cancel">(취소 완료)</span></th:block>
+
         </div>
+
     </div>
     <div class="line"></div>
 

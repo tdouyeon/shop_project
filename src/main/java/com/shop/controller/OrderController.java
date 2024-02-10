@@ -4,6 +4,7 @@ import com.shop.dto.OrderDto;
 import com.shop.dto.OrderHistDto;
 import com.shop.service.OrderService;
 import jakarta.validation.Valid;
+import kotlinx.serialization.Serializable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +27,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping(value = "/order")
-    public @ResponseBody
-    ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
+    public ResponseEntity<String> order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
                          Principal principal){
         // String a = "abc" + "def"
         // StringBuilder a;
@@ -50,7 +50,7 @@ public class OrderController {
         }catch (Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = {"/orders", "/orders/{page}"})
@@ -66,11 +66,11 @@ public class OrderController {
     }
 
     @PostMapping("/order/{orderId}/cancel")
-    public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId, Principal principal){
+    public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId, Principal principal){
         if(!orderService.validateOrder(orderId, principal)){
             return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         orderService.cancelOrder(orderId);
-        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+        return ResponseEntity.noContent().build();
     }
 }

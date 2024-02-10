@@ -32,6 +32,7 @@ public class Order extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+
 //    private LocalDateTime regTime;
 //
 //    private LocalDateTime updateTime;

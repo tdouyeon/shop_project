@@ -10,7 +10,7 @@
 
             <li><a href="/shop">SHOP</a></li>
             <li><a href="/notice/notice">NOTICE</a></li>
-            <li sec:authorize="isAuthenticated()" class="hover-container">
+            <li li sec:authorize="hasAnyAuthority('ROLE_ADMIN')" class="hover-container">
                 <a href="/mypage/" class="hover-text" >ADMIN</a>
                 <ul class="sub-elements">
                     <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+.rating {
+    display: inline-block;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-image: url('image/star.svg');
+    background-size: cover;
+    display: inline-block;
+}
+
+.rating input:checked + label {
+    background-image: url('image/fillStar.svg');
+}
+
+.rating label.filled {
+    background-image: url('image/fillStar.svg');
+}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const ratingInputs = document.querySelectorAll('.rating input');
+    const ratingLabels = document.querySelectorAll('.rating label');
+
+    ratingLabels.forEach((label, index) => {
+        label.addEventListener('click', function() {
+            // 클릭한 별의 인덱스
+            const clickedIndex = index;
+
+            // 클릭한 별까지 채우기
+            for (let i = 0; i <= clickedIndex; i++) {
+                ratingInputs[i].checked = true;
+                ratingLabels[i].classList.add('filled');
+            }
+
+            // 클릭하지 않은 별 비우기
+            for (let i = clickedIndex + 1; i < ratingInputs.length; i++) {
+                ratingInputs[i].checked = false;
+                ratingLabels[i].classList.remove('filled');
+            }
+        });
+    });
+});
+
+        function previewImages(input) {
+            var preview = document.getElementById('preview');
+            while (preview.firstChild) {
+                preview.removeChild(preview.firstChild);
+            }
+
+            if (input.files && input.files.length > 0) {
+                for (var i = 0; i < input.files.length; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var image = document.createElement('img');
+                        image.src = e.target.result;
+                        preview.appendChild(image);
+                    };
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<h2>상품 리뷰 등록</h2>
+
+<form action="/submit_review" method="post">
+    <label for="star1"></label><input type="radio" id="star1" name="rating" value="1">
+    <label for="star2"></label><input type="radio" id="star2" name="rating" value="2">
+    <label for="star3"></label><input type="radio" id="star3" name="rating" value="3">
+    <label for="star4"></label><input type="radio" id="star4" name="rating" value="4">
+    <label for="star5"></label><input type="radio" id="star5" name="rating" value="5">
+
+    <label for="product_id">상품 ID:</label>
+    <input type="text" id="product_id" name="product_id" required>
+
+    <label for="user_id">사용자 ID:</label>
+    <input type="text" id="user_id" name="user_id" required>
+
+    <label for="comment">리뷰 내용:</label>
+    <textarea id="comment" name="comment" rows="4" required></textarea>
+
+    <label for="image">이미지 업로드:</label>
+    <input type="file" id="image" name="image[]" accept="image/*" multiple onchange="previewImages(this)">
+
+    <div id="preview"></div>
+
+
+    <button type="submit">리뷰 등록</button>
+</form>
+
+<script src="script.js"></script>
+</body>
+</html>
