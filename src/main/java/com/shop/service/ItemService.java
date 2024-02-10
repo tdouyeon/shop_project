@@ -120,9 +120,19 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category){
         Optional<Category> category1 = categoryRepository.findByName(category);
-        Long categoryId = category1.map(Category::getId).orElse(null);
-        System.out.println("카테고리 아이디가 뭐야?"+categoryId);
+        if(category.isEmpty()) {
+            System.out.println("들어오나요?");
+            return itemRepository.getAllItems(itemSearchDto, pageable);
+        }
+        else if (category1.get().getParentCategoryId() != null) {
+            Long categoryId = category1.map(Category::getId).orElse(null);
+            System.out.println("카테고리 아이디가 뭐야?"+categoryId);
+            return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId);
 
-        return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId);
+        }
+        else {
+            List<Category> categorys = categoryRepository.findByParentCategoryId(category1.get().getId());
+            return itemRepository.getMainItemPageCategorys(itemSearchDto, pageable, categorys);
+        }
     }
 }

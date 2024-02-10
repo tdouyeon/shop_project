@@ -11,6 +11,7 @@
           margin: 0;
           padding: 0;
         }
+        .sidebar{ display: flex;}
         .category_shop > a {
             display: fixed;
             list-style: none;
@@ -23,8 +24,8 @@
             backface-visibility: hidden;
             -moz-osx-font-smoothing: grayscale;
             overflow: hidden;
-            -webkit-transition-duration: 0.5s;
-            transition-duration: 0.5s;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
             -webkit-transition-property: color,background-color;
             transition-property: color,background-color;
             }
@@ -95,6 +96,7 @@
                         .category_m{
                     list-style: none;
                     position: fixed;
+                    padding: 0px 80px;
                 }
                 .category_m > li {
                     margin-bottom: 5px;
@@ -115,8 +117,25 @@
                     color: #555555;
                 }
                 .category_ch > a{
-                    color: gray;
+                    color: silver;
                     margin-left: 5px;
+                        transition: color 0.3s, font-weight 0.3s;
+
+                }
+                .category_ch{
+                       display: none;
+                       max-height: 0;
+                       overflow: hidden;
+                       transition: all 0.3s ease-out;
+                }
+                .category_ch.show {
+                    display: block;
+                    max-height: 200px; /* 적절한 최대 높이 설정 */
+                    font-weight: 400;
+                }
+                .category_ch:hover > a {
+                    color: black;
+                       transition: all 0.5s ease-out;
                 }
                  .category_shop {
                             list-style-type: none;
@@ -127,8 +146,9 @@
                             text-decoration: none;
                             color: black;
                             display: block;
-                            padding: 10px;
+                            padding: 15px 0px 3px 0px;
                             cursor: pointer;
+                            font-weight: 500;
                         }
 
                         .category_shop li {
@@ -137,4 +157,19 @@
 
                         .category_shop li.sub {
                             padding-left: 20px;
+                        }
+
+
+                        @media (max-width: 750px) {
+                          .category_m {
+                            display: unset !important;
+                            position: unset;
+                            text-align: center;
+                          }
+                          .sidebar{
+                              justify-content: center;
+                          }
+                          .main__content{
+                              width: 300px;
+                          }
                         }

@@ -37,7 +37,9 @@ public class CategoryService {
             }
             for(int i =0; i< clothing_cy.length ; i++) {
                 categoryRepository.save(Category.createCategory(clothing_cy[i], 2));
-                categoryRepository.save(Category.createCategory(accessories_cy[i],3));
+            }
+            for(int i =0; i< accessories_cy.length; i++) {
+                categoryRepository.save(Category.createCategory(accessories_cy[i], 3));
             }
         }
     }

@@ -20,4 +20,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     // parentCategoryId가 null이 아닌 경우만 조회
     List<Category> findByParentCategoryIdIsNotNull();
 
+    List<Category> findByParentCategoryId(Long parentCategoryId);
 }

@@ -45,9 +45,9 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-top: 40px;
-    margin-left: 80px;
     flex-wrap: wrap;
+    margin-top: 15%;
+    margin-left: 8%;
 }
 
 .card{
@@ -58,17 +58,6 @@ body {
     flex-direction: column;
     text-align: center;
     align-items: center;
-}
-
-.navbar__menu li{ text-decoration: none; padding: 8px 12px; }
-
-.navber_icon{
-    display: flex;
-    padding: 0;
-    text-decoration: none;
-    font-weight: bold;
-    padding-left: 1px;
-    padding-right: 8px;
 }
 
 .pagination{

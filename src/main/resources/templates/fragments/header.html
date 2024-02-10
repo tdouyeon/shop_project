@@ -7,29 +7,43 @@
             <img src="/img/logo.png" alt="shop" height="30px">
         </a>
         <ul class="navbar__menu">
-            <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                <a href="/admin/item/new">상품 등록</a>
-            </li>
-            <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                <a href="/admin/items">상품 관리</a>
-            </li>
+
             <li><a href="/shop">SHOP</a></li>
-            <li sec:authorize="isAuthenticated()"><a href="/cart">Cart</a></li>
-            <li sec:authorize="isAuthenticated()"><a href="/orders">구매이력</a></li>
-            <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                <a href="/notice/make">NOTICEWRITE</a>
-            </li>
             <li><a href="/notice/notice">NOTICE</a></li>
+            <li sec:authorize="isAuthenticated()" class="hover-container">
+                <a href="/mypage/" class="hover-text" >ADMIN</a>
+                <ul class="sub-elements">
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a href="/admin/item/new">상품등록</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a href="/admin/items">상품관리</a>
+                    </li>
+                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+                        <a href="/notice/make">공지등록</a>
+                    </li>
+                    <!-- 추가적인 하위 요소들을 여기에 추가할 수 있습니다. -->
+                </ul>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="hover-container">
+                <a href="/mypage/" class="hover-text" >MY PAGE</a>
+                <ul class="sub-elements">
+                    <li sec:authorize="isAuthenticated()"><a href="/cart">장바구니</a></li>
+                    <li sec:authorize="isAuthenticated()"><a href="/orders">구매이력</a></li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/members/logout">로그아웃</a>
+                    </li>
+                    <!-- 추가적인 하위 요소들을 여기에 추가할 수 있습니다. -->
+                </ul>
+            </li>
             <li sec:authorize="isAnonymous()">
                 <a href="/members/login">LOGIN</a></li>
-            <li sec:authorize="isAuthenticated()">
-                <a href="/members/logout">LOGOUT</a></li>
         </ul>
         <div class="sear">
             <form class="navbar__search" th:action="@{/}" method="get">
                 <input class="search" name="searchQuery" type="search"
                        aria-label="Search">
-                <button class="search_button" type="submit"></button>
+                <button class="search_button" type="submit" onclick="searchInput()"></button>
             </form>
         </div>
     </nav>

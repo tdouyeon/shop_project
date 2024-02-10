@@ -7,25 +7,24 @@
 <body>
 <div th:fragment="sidebar" class="sidebar">
     <ul class="category_m">
-        <li class="category_shop" id="bag"><a href="#" onclick="loadCategories('BAG')">BAG</a></li>
+        <li class="category_shop" id="bag"><a href="#" onclick="loadCategories('BAG'); toggleSubCategories('bag_ch'); ">BAG</a></li>
         <li class="category_ch bag_ch"><a href="#" onclick="loadCategories('CROSSBAG')">CROSSBAG</a></li>
         <li class="category_ch bag_ch"><a href="#" onclick="loadCategories('SHOULDERBAG')">SHOULDERBAG</a></li>
 
-        <li class="category_shop" id="clothing"><a href="#" onclick="loadCategories('CLOTHING')">CLOTHING</a></li>
-        <li class="category_ch clothing_ch"><a href="#" onclick="loadCategories('TOP')">TOP</a></li>
+        <li class="category_shop" id="clothing"><a href="#" onclick="loadCategories('CLOTHING'); toggleSubCategories('clothing_ch');" >CLOTHING</a></li>
+        <li class="category_ch clothing_ch"><a href="#" onclick="loadCategories('TOP');">TOP</a></li>
         <li class="category_ch clothing_ch"><a href="#" onclick="loadCategories('DRESS')">DRESS</a></li>
         <li class="category_ch clothing_ch"><a href="#" onclick="loadCategories('BOTTOM')">BOTTOM</a></li>
         <li class="category_ch clothing_ch"><a href="#" onclick="loadCategories('OUTER')">OUTER</a></li>
 
-        <li class="category_shop" id="accessories"><a href="#" onclick="loadCategories('ACCESSORIES')">ACCESSORIES</a></li>
-        <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('NECKLACE')">NECKLACE</a></li>
+        <li class="category_shop" id="accessories"><a href="#" onclick="loadCategories('ACCESSORIES'); toggleSubCategories('acc_ch');">ACCESSORIES</a></li>
+        <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('NECKLACE');">NECKLACE</a></li>
         <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('RING')">RING</a></li>
         <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('BRACELET')">BRACELET</a></li>
         <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('EARRINGS')">EARRINGS</a></li>
         <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('KEYTRING')">KEYTRING</a></li>
         <li class="category_ch acc_ch"><a href="#" onclick="loadCategories('ACC')">ACC</a></li>
-
-        <li class="category_shop" id="headwear"><a href="#" onclick="loadCategories('HEADWEAR')">HEADWEAR</a></li>
+        <li class="category_shop" id="headwear"><a href="#" onclick="loadCategories('HEADWEAR'); toggleSubCategories('head_ch');">HEADWEAR</a></li>
         <li class="category_ch head_ch"><a href="#" onclick="loadCategories('HAIRPIN')">HAIRPIN</a></li>
         <li class="category_ch head_ch"><a href="#" onclick="loadCategories('HAIRBAND')">HAIRBAND</a></li>
     </ul>

@@ -1,11 +1,10 @@
 
 .navbar{
     display: flex;
-    align-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     z-index: 999;
     width: 100vw;
+    z-index: 999;
 }
 
 .sear{
@@ -30,10 +29,14 @@
 .navbar__menu >  li > a{
     width: auto;
     text-decoration: none;
-    padding: 8px 12px;
+    padding: 0px 12px;
     color: black;
     transition:  0.2s ease-in;
 }
+
+.navbar__menu li{ text-decoration: none; padding: 8px 12px; }
+
+
 
 .navber_icon{
     display: flex;
@@ -61,28 +64,26 @@
     background-color: transparent;
     transition: transform 250ms ease-in-out;
     font-size: 14px;
-    line-height: 18px;횩
+    line-height: 18px;
     color: #575756;
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: 18px 18px;
     background-position: 95% center;
-    border-radius: 50px;
-    border: 1px solid #575756;
+    border: none;
     transition: all 250ms ease-in-out;
     backface-visibility: hidden;
     transform-style: preserve-3d;
     margin-right: 20px;
     margin-top: 30px;
+    height: 20px;
 }
 
 .navbar__search:hover,
 .navbar__search:focus {
     padding: 12px 0;
     outline: 0;
-    border: 1px solid transparent;
     border-bottom: 1px solid #575756;
-    border-radius: 0;
     background-position: 100% center;
     outline: none;
 }
@@ -90,6 +91,36 @@
 .search{
     border: none;
     background-color: unset;
+}
+
+/* 검색 입력란이 오른쪽에서 서서히 나타나는 애니메이션 */
+@keyframes slideIn {
+    from {
+        width: 0;
+        opacity: 0;
+        padding: 0;
+    }
+    to {
+        width: 150px; /* 최종 크기 */
+        opacity: 1;
+        padding: 8px; /* 적절한 내용으로 조절 */
+    }
+}
+
+/* 초기 상태 설정 */
+.navbar__search .search {
+    width: 0;
+    opacity: 0;
+    padding: 8px; /* 적절한 내용으로 조절 */
+    overflow: hidden;
+    transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+}
+
+/* 검색 입력란이 호버 시 확장되는 스타일 */
+.navbar__search:hover .search {
+    width: 150px;
+    opacity: 1;
+    padding: 8px; /* 적절한 내용으로 조절 */
 }
 
 .search_button{
@@ -104,16 +135,56 @@
     color: gray;
 }
 
+.hover-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.sub-elements {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: visibility 0.5s, opacity 0.5s ease-in-out;
+    list-style: none;
+    font-weight: 400;
+}
+
+.hover-container:hover .sub-elements {
+    visibility: visible;
+    opacity: 1;
+        color: gray;
+}
+
+.sub-elements li a {
+    color: #333; /* 각 항목의 기본 텍스트 색상 */
+    transition: color 0.3s ease-in-out; /* 각 항목의 부드러운 텍스트 색상 전환 효과 */
+}
+
+.sub-elements li a:hover {
+    font-weight: 600;
+    border-bottom: 1px solid black;
+}
+
+.hover-text {
+    display: block;
+}
+
 @media screen and (max-width: 768px){
 .navbar{
     flex-direction: column;
-    padding: 8px 24px;
+    padding: 8px 0px;
 }
 
 .navbar__menu{
     flex-direction: column;
     align-items: center;
-    padding-left: 0;
+    padding-left: 0px;
     width: 100%;
     font-size: 15px;
 }
@@ -124,7 +195,6 @@
 }
 .navber_icon{
     align-items: center;
-    width: 100%;
 }
 .sear{
     display: flex;
@@ -134,5 +204,12 @@
 }
 .navber_icon img{
     padding-left: 0px;
+    position: unset;
+    margin-left: 0px;
+    margin-top: 30px;
+}
+.navbar__search {
+    margin-top: 0px;
 }
 };
+
