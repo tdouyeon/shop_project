@@ -1,6 +1,7 @@
 package com.shop.entity;
 
 import com.shop.constant.OrderStatus;
+import com.shop.constant.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

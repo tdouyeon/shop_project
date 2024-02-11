@@ -1,17 +1,13 @@
 package com.shop.service;
 
+import com.shop.constant.ReviewStatus;
 import com.shop.dto.*;
-import com.shop.entity.Category;
-import com.shop.entity.Item;
-import com.shop.entity.ItemDetailImg;
-import com.shop.entity.ItemImg;
+import com.shop.entity.*;
 import com.shop.modelmapper.CategoryMapper;
-import com.shop.repository.CategoryRepository;
-import com.shop.repository.ItemDetailImgRepository;
-import com.shop.repository.ItemImgRepository;
-import com.shop.repository.ItemRepository;
+import com.shop.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.internal.bytebuddy.NamingStrategy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,7 @@ public class ItemService {
     private final ItemDetailImgService itemDetailImgService;
     private final ItemDetailImgRepository itemDetailImgRepository;
     private final CategoryRepository categoryRepository;
+    private final OrderItemRepository orderItemRepository;
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
             throws Exception{
         Optional<Category> categoryOptional = categoryRepository.findById(itemFormDto.getCategory().getId());
@@ -63,6 +60,20 @@ public class ItemService {
         return item.getId();
     }
 
+    public Long getItemFormDto(Long orderItemId) {
+    Optional<OrderItem> orderItems = orderItemRepository.findById(orderItemId);
+    return orderItems.get().getItem().getId();
+    }
+
+    public void changeReviewStatus(Long orderItemId) {
+        Optional<OrderItem> optionalOrderItem = orderItemRepository.findById(orderItemId);
+
+        if (optionalOrderItem.isPresent()) {
+            OrderItem orderItem = optionalOrderItem.get();
+            orderItem.setReviewStatus(ReviewStatus.WRITE);
+            orderItemRepository.save(orderItem);
+        }
+    }
     @Transactional(readOnly = true)
     public ItemFormDto getItemDtl(Long itemId){
         //Entity
@@ -111,6 +122,11 @@ public class ItemService {
         return item.getId();
     }
 
+    public Item giveItem(Long itemId) {
+        Optional<Item> itemList = itemRepository.findById(itemId);
+        return itemList.get();
+    }
+
 
 
     @Transactional(readOnly = true)
@@ -121,7 +137,6 @@ public class ItemService {
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category){
         Optional<Category> category1 = categoryRepository.findByName(category);
         if(category.isEmpty()) {
-            System.out.println("들어오나요?");
             return itemRepository.getAllItems(itemSearchDto, pageable);
         }
         else if (category1.get().getParentCategoryId() != null) {

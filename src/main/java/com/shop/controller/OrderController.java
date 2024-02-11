@@ -1,7 +1,14 @@
 package com.shop.controller;
 
+import com.shop.dto.ItemFormDto;
 import com.shop.dto.OrderDto;
 import com.shop.dto.OrderHistDto;
+import com.shop.dto.ReviewFormDto;
+import com.shop.entity.Item;
+import com.shop.entity.Member;
+import com.shop.entity.Review;
+import com.shop.service.ItemService;
+import com.shop.service.MemberService;
 import com.shop.service.OrderService;
 import jakarta.validation.Valid;
 import kotlinx.serialization.Serializable;
@@ -25,6 +32,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final ItemService itemService;
 
     @PostMapping(value = "/order")
     public ResponseEntity<String> order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
@@ -72,5 +80,10 @@ public class OrderController {
         }
         orderService.cancelOrder(orderId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/order/{orderItemId}/review")
+    public ResponseEntity<Long> reviewOrder(@PathVariable("orderItemId") Long orderItemId){
+        return new ResponseEntity<Long>(orderItemId, HttpStatus.OK) ;
     }
 }

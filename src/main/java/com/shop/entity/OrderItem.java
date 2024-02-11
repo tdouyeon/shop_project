@@ -1,5 +1,6 @@
 package com.shop.entity;
 
+import com.shop.constant.ReviewStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,8 @@ public class OrderItem extends BaseEntity{
 
     private int count;
 
+    private ReviewStatus reviewStatus;
+
 //    private LocalDateTime regTime;
 //
 //    private  LocalDateTime updateTime;
@@ -37,6 +40,7 @@ public class OrderItem extends BaseEntity{
         orderItem.setItem(item);
         orderItem.setCount(count);
         orderItem.setOrderPrice(item.getPrice());
+        orderItem.setReviewStatus(ReviewStatus.NONE);
         item.removeStock(count); //
         return orderItem;
     }

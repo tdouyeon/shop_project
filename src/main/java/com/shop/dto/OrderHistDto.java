@@ -1,6 +1,7 @@
 package com.shop.dto;
 
 import com.shop.constant.OrderStatus;
+import com.shop.constant.ReviewStatus;
 import com.shop.entity.Order;
 import lombok.Getter;
 import lombok.Setter;

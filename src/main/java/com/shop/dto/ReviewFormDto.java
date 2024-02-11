@@ -1,15 +1,17 @@
 package com.shop.dto;
 
 
+import com.shop.entity.Item;
+import com.shop.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class reviewFormDto {
+public class ReviewFormDto {
     private Long id;
-    private Long user_id;
-    private Long product_id;
+    private Member member;
+    private Item item;
     private int rating;
     private String comment;
 }

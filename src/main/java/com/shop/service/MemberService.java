@@ -137,6 +137,10 @@ public class MemberService implements UserDetailsService {
         return email;
     }
 
+    public Member giveMember(String email){
+        return memberRepository.findByEmail(email);
+    }
+
     private static void createNumber() {
         number = (int)(Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
     }

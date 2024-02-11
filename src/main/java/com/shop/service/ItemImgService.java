@@ -40,13 +40,11 @@ public class ItemImgService {
             System.out.println(imgName);
             imgUrl = "/images/item/"+imgName;
         }
-        System.out.println("1111");
         //상품 이미지 정보 저장
         // oriImgName : 상품 이미지 파일의 원래 이름
         // imgName : 실제 로컬에 저장된 상품 이미지 파일의 이름
         // imgUrl :  로컬에 저장된 상품 이미지 파일을 불러오는 경로
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
-        System.out.println("(((((");
         itemImgRepository.save(itemImg);
     }
 

@@ -1,0 +1,124 @@
+        .content-mg{
+        display: flex;
+    flex-direction: column;
+    align-items: center;
+        }
+        .review_form{
+            display: flex;
+    flex-direction: column;
+    width: 450px;
+        }
+        #preview{
+            display: flex;
+        }
+#preview > img{
+    width: 150px;
+}
+
+.rating {
+    display: inline-block;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    background-image: url('/static/img/star.svg');
+    background-size: cover;
+    display: inline-block;
+}
+
+.rating input:checked + label {
+    background-image: url('/static/img/fillStar.svg');
+}
+
+.rating label.filled {
+    background-image: url('/static/img/fillStar.svg');
+}
+.custom-file-input {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .custom-file-input input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+  }
+
+  .custom-file-label {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+        width: 100px;
+        text-align: center;
+  }
+  #image{
+    display: none;
+  }
+
+  .custom-file-label::after {
+    content: "이미지 등록";
+  }
+
+  .custom-file-input input:lang(en) ~ .custom-file-label::after {
+    content: "Browse";
+  }
+
+  .custom-file-input input:focus ~ .custom-file-label,
+  .custom-file-input input.has-value ~ .custom-file-label {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+        .custom-textarea {
+    width: 100%; /* 전체 폭으로 확장되도록 설정 */
+    padding: 10px; /* 내부 여백 조절 */
+    box-sizing: border-box; /* 내부 여백 및 테두리를 포함한 전체 크기를 설정 */
+    border: 1px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+    border-radius: 5px; /* 필요에 따라 조절 */
+    font-size: 14px; /* 폰트 크기 설정 */
+    resize: none; /* 사용자가 크기를 조절하지 못하도록 설정 */
+}
+
+.custom-textarea:focus {
+    outline: none; /* 포커스 효과 제거 */
+}
+        .img_preview{
+            display: flex;
+        }
+.btn{
+    min-width: 90px;
+    font-size: 12px;
+    display: inline-block;
+    padding: 10px 12px;
+    border: 1px solid #666;
+    border-radius: 2px;
+    background-color: #000;
+    text-align: center;
+    background-color: black;
+    color: white;
+    margin-top: 20px;
+    width: 30px;
+}
+.button{
+    display: flex;
+    justify-content: center;
+}

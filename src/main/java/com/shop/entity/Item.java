@@ -47,7 +47,7 @@ public class Item extends BaseEntity{
     )
     private List<Member> member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
