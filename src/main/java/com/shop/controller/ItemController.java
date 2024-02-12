@@ -1,11 +1,10 @@
 package com.shop.controller;
 
-import com.shop.dto.CategoryDto;
-import com.shop.dto.ItemFormDto;
-import com.shop.dto.ItemSearchDto;
+import com.shop.dto.*;
 import com.shop.entity.Item;
 import com.shop.service.CategoryService;
 import com.shop.service.ItemService;
+import com.shop.service.ReviewService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +27,7 @@ import java.util.Optional;
 public class ItemController {
     private final ItemService itemService;
     private final CategoryService categoryService;
+    private final ReviewService reviewService;
     @GetMapping(value = "/admin/item/new")
     public String itemForm(Model model){
         List<CategoryDto> categoryDtos = categoryService.getCategory();
@@ -121,7 +121,16 @@ public class ItemController {
     @GetMapping(value = "/item/{itemId}")
     public String itemDtl(Model model, @PathVariable("itemId")Long itemId){
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+        List<ReviewFormDto> reviewFormDtos = new ArrayList<>();
+        List<ReviewImgDto> reviewImgDtos = new ArrayList<>();
+        if(reviewService.existReviewCheck(itemId)){
+            reviewFormDtos = reviewService.giveReview(itemId);
+            reviewImgDtos = reviewService.giveReviewImg(itemId);
+        }
+        model.addAttribute("reviews",reviewFormDtos);
+        model.addAttribute("reviewImgDtos",reviewImgDtos);
         model.addAttribute("item",itemFormDto);
+
         return "item/itemDtl";
     }
 }

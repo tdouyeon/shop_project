@@ -22,7 +22,8 @@
     <label for="star4"></label><input type="radio" id="star4" th:field="*{rating}" th:value="4">
     <label for="star5"></label><input type="radio" id="star5" th:field="*{rating}" th:value="5">
     </div>
-
+    <label for="title">제목</label>
+    <textarea id="title" name="title" th:field="*{title}" rows="4" required class="custom-textarea"></textarea>
     <label for="comment">내용</label>
     <textarea id="comment" name="comment" th:field="*{comment}" rows="4" required class="custom-textarea"></textarea>
 

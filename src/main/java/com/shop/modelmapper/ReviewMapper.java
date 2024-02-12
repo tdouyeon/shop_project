@@ -3,10 +3,12 @@ package com.shop.modelmapper;
 import com.shop.dto.ReviewFormDto;
 import com.shop.entity.Review;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ReviewMapper {
     private static final ModelMapper modelMapper = new ModelMapper();
 

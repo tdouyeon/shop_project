@@ -13,5 +13,6 @@ public class ReviewFormDto {
     private Member member;
     private Item item;
     private int rating;
+    private String title;
     private String comment;
 }

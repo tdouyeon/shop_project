@@ -3,18 +3,79 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 <head>
+    <meta charset="utf-8" />
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
 </head>
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
         $(document).ready(function(){
+  // 리뷰 탭 클릭 시 스크롤 이동
+
+$(".item_dtl_header div:nth-child(1)").on("click", function () {
+  var detailSectionTop = $(".text-center").offset().top;
+  $("html, body").animate({ scrollTop: detailSectionTop }, 500);
+});
+  $(".item_dtl_header div:nth-child(2)").on("click", function () {
+      var reviewSectionTop = $(".review_title_c").offset().top;
+      $("html, body").animate({ scrollTop: reviewSectionTop }, 500);
+  });
+
+  // 스크롤 이벤트 처리 (리뷰 섹션이 화면 상단에 닿으면 상세설명 탭으로 변경)
+  var header = $(".item_dtl_header");
+  var headerOffset = header.offset().top;
+
+  $(window).scroll(function () {
+      if ($(window).scrollTop() >= headerOffset) {
+          header.css({
+              "position": "fixed",
+              "top": "0",
+              "width": "725",
+              "background-color": "#fff",
+              "z-index": "1000"
+          });
+      } else {
+          header.css({
+              "position": "relative",
+              "top": "auto",
+              "background-color": "initial",
+              "z-index": "auto"
+          });
+      }
+  });
            calculateTotalPrice();
 
            $("#count").change(function(){
                calculateTotalPrice();
            });
+               var header = $(".item_dtl_header");
+    var headerOffset = header.offset().top;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() >= headerOffset) {
+            header.css({
+                "position": "fixed",
+                "top": "0",
+                "width": "725",
+                "background-color": "#fff",
+                "z-index": "1000"
+            });
+        } else {
+            header.css({
+                "position": "relative",
+                "top": "auto",
+                "background-color": "initial",
+                "z-index": "auto"
+            });
+        }
+    });
         });
 
         function calculateTotalPrice(){
@@ -100,92 +161,195 @@
             });
          }
 
+   document.addEventListener("DOMContentLoaded", function () {
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 3,
+      centeredSlides: true,
+      spaceBetween: 30,
+      pagination: {
+        el: ".swiper-pagination",
+        type: "fraction",
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+            });
     </script>
 </th:block>
 <!-- 사용자 CSS 추가 -->
 <th:block layout:fragment="css">
     <style>
-        #container{
-            width: 725px;
-            margin: 0 auto;
-            }
-            .container{
-            display: flex;
-            flex-direction: row;
-            }
-            .other-img > div > img{
-            width: 150px;
-            height: 150px;
+        html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.swiper {
+  width: 100%;
+  height: 300px;
+  margin: 20px auto;
+}
+
+
+    #container{
+        width: 725px;
+        margin: 0 auto;
         }
-        .other-img{
-            display: flex;
+        .container{
+        display: flex;
+        flex-direction: row;
         }
-        .item-main-img{
-            display: flex;
-            flex-direction: column;
+        .other-img > div > img{
+        width: 150px;
+        height: 150px;
+    }
+    .other-img{
+        display: flex;
+    }
+    .item-main-img{
+        display: flex;
+        flex-direction: column;
+    }
+    .main-img{
+        width: 90%;
+    }
+    .item-status{
+        border-radius: 5px;
+        padding: 3px 5px;
+        background-color: lightgray;
+        width: 58px;
+        text-align: center;
+    }
+    .itemNm{
+        margin: 15px 0px;
+    }
+    .item-price{
+        font-size: 14px;
+    }
+    #price{
+        font-weight: bolder;
+    }
+    #count{
+        padding: 5px 10px;
+        border: 1px solid #aaaa;
+        border-radius: 5px;
+        margin-right: 3px;
+        width: 20px;
+        margin-top: 20px;
+    }
+    .order-price{
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+    }
+    .tt-price-name{
+        line-height: 60px;
+    }
+    .itemdtl-button{
+        display: flex;
+        margin-top: 10%;
+        justify-content: space-between;
+    }
+    .btn{
+        min-width: 120px;
+        font-size: 12px;
+        display: inline-block;
+        padding: 10px 12px;
+        border: 1px solid #666;
+        border-radius: 2px;
+        background-color: #000;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 50px;
+            font-weight: 600;
+    }
+    .order-button{
+        background-color: black;
+        color: white;
+    }
+    .cart-button{
+        background-color: rgb(255, 255, 255);
+        color: rgb(0,32,83);
+        border-color: #aaaa;
+        margin-right: 30px;
+    }
+    .star {
+width: 20px;
+height: 20px;
+display: inline-block;
+background-image: url('/img/star.svg');
+background-size: cover;
+}
+
+.star.filled {
+background-image: url('/img/fillStar.svg');
+}
+        .swiper-horizontal {
+    touch-action: pan-y;
+    background-color: #f9f9f9;
+}
+        .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
+            color: lightgray;
         }
-        .main-img{
-            width: 90%;
+        .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled{
+                    color: lightgray;
         }
-        .item-status{
-            border-radius: 5px;
-            padding: 3px 5px;
-            background-color: lightgray;
-            width: 58px;
-            text-align: center;
+        .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after{
+                            color: lightgray;
         }
-        .itemNm{
-            margin: 15px 0px;
+
+        .item_dtl_header{
+        display: flex;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    font-size: 16px;
         }
-        .item-price{
-            font-size: x-large;
+
+    .item_dtl_header div {
+        flex: 1; /* 각각의 자식 요소에 1:1 비율을 부여 */
+        border: 1px solid #ccc; /* 테두리를 추가하거나 원하는 스타일을 적용할 수 있습니다. */
+        text-align: center; /* 텍스트를 가운데 정렬하거나 필요에 따라 스타일을 조절합니다. */
+        padding: 10px; /* 여백을 조절할 수 있습니다. */
+    }
+        .review_title_c{
+        display: flex;
+    justify-content: center;
+margin-top: 100px;
+    margin-bottom: 40px;
         }
-        #price{
-            font-weight: bolder;
-        }
-        #count{
-            padding: 5px 10px;
-            border: 1px solid #aaaa;
-            border-radius: 5px;
-            margin-right: 3px;
-            width: 20px;
-            margin-top: 20px;
-        }
-        .order-price{
-            display: flex;
-            justify-content: space-between;
-            text-align: center;
-        }
-        .tt-price-name{
-            line-height: 60px;
-        }
-        .itemdtl-button{
-            display: flex;
-            margin-top: 10%;
-            justify-content: space-between;
-        }
-        .btn{
-            min-width: 120px;
-            font-size: 12px;
-            display: inline-block;
-            padding: 10px 12px;
-            border: 1px solid #666;
-            border-radius: 2px;
-            background-color: #000;
-            text-align: center;
-            color: #fff;
-            margin-bottom: 50px;
-                font-weight: 600;
-        }
-        .order-button{
-            background-color: black;
-            color: white;
-        }
-        .cart-button{
-            background-color: rgb(255, 255, 255);
-            color: rgb(0,32,83);
-            border-color: #aaaa;
-            margin-right: 30px;
+        .review_title{
+    font-size: 20px;
+    font-weight: 500;
         }
 
 
@@ -202,11 +366,9 @@
                 <div th:each="itemImg, star : ${item.itemImgDtoList}">
                     <img th:if="${not #strings.isEmpty(itemImg.imgUrl)} and |${star.index}| != 0"
                          th:src="${itemImg.imgUrl}"
-                         class="o-img"
-                         width="800">
+                         class="o-img">
                 </div>
             </div>
-
         </div>
         <div class="item-ifo">
             <div class="item-status">
@@ -241,10 +403,39 @@
             </div>
         </div>
     </div>
+    <div class="item_dtl_header">
+        <div class="">상세설명</div>
+        <div class="">리뷰</div>
+    </div>
     <div th:each="itemDetailImg : ${item.itemDetailImgDtoList}" class="text-center">
         <img th:if="${not #strings.isEmpty(itemDetailImg.imgUrl)}" th:src="${itemDetailImg.imgUrl}"
              class="rounded mgb-15"
-             width="800">
+             width="725">
+    </div>
+    <!-- ReviewImgDto 출력 -->
+    <div class="review_title_c">
+    <div class="review_title">REVIEW</div>
+    </div>
+    <div th:if="${not #lists.isEmpty(reviews)}">
+        <div #swiperRef="" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div th:each="reviewFormDto, idx : ${reviews}" class="reviewDto_form swiper-slide">
+                    <!-- 이미지가 존재하는 경우에만 이미지를 렌더링 -->
+                        <div th:if="${not #lists.isEmpty(reviewImgDtos) and idx.index lt #lists.size(reviewImgDtos)}">
+                            <img th:src="${reviewImgDtos[idx.index].imgUrl}" class="o-img" width="725">
+                        </div>
+                        <div th:each="star : ${#numbers.sequence(1, 5)}" class="star" th:classappend="${star le reviewFormDto.rating} ? 'filled' : ''"></div>
+                        <p th:text="${reviewFormDto.title}"></p>
+                        <p th:text="${reviewFormDto.comment}"></p>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(reviews)}">
+        <p class="noReview">리뷰가 존재하지 않습니다.</p>
     </div>
 </div>
 </html>

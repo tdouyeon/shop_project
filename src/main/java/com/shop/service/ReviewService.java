@@ -1,15 +1,20 @@
 package com.shop.service;
 
 import com.shop.dto.ReviewFormDto;
+import com.shop.dto.ReviewImgDto;
 import com.shop.entity.*;
+import com.shop.modelmapper.ReviewImgMapper;
 import com.shop.modelmapper.ReviewMapper;
+import com.shop.repository.ReviewImgRepository;
 import com.shop.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +25,7 @@ public class ReviewService {
     private final ItemService itemService;
     private final ReviewImgService reviewImgService;
     private final ReviewRepository reviewRepository;
+    private final ReviewImgRepository reviewImgRepository;
 
     public void saveReview(ReviewFormDto reviewFormDto, Long orderItemId, List<MultipartFile> reviewImgFileList, Principal principal)
             throws Exception{
@@ -38,5 +44,22 @@ public class ReviewService {
             reviewImgService.saveReview(reviewImg,reviewImgFileList);
         }
         itemService.changeReviewStatus(orderItemId);
+    }
+    public List<ReviewFormDto> giveReview(Long itemId) {
+        List<Review> reviewList = reviewRepository.findByItemId(itemId);
+        return ReviewMapper.convertToDtoList(reviewList);
+    }
+    public boolean existReviewCheck(Long itemId) {
+        List<Review> reviewList = reviewRepository.findByItemId(itemId);
+        return reviewList != null && !reviewList.isEmpty();
+    }
+    public List<ReviewImgDto> giveReviewImg(Long itemId) {
+        List<Review> reviewList = reviewRepository.findByItemId(itemId);
+        List<ReviewImg> reviewImgList = new ArrayList<>();
+        for(Review review : reviewList) {
+            List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
+            reviewImgList.add(reviewImgs.get(0));
+        }
+        return ReviewImgMapper.convertToDtoList(reviewImgList);
     }
 }

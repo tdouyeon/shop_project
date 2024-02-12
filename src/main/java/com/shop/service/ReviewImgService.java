@@ -41,4 +41,7 @@ public class ReviewImgService {
             }
         }
         }
+    public List<ReviewImg> giveReviewImg(Long reviewId) {
+        return reviewImgRepository.findByReviewId(reviewId);
+    }
     }
