@@ -2,6 +2,7 @@ package com.shop.repository;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.constant.ItemSellStatus;
 import com.shop.dto.ItemSearchDto;
@@ -75,6 +76,96 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
         return StringUtils.isEmpty(searchQuery) ? null : QItem.item.itemNm.like("%"+searchQuery+"%");
     }
     @Override
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Long categoryId, Long memberId) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+        QLike like = QLike.like; // 추가: Like 엔티티
+
+        QueryResults<MainItemDto> results = queryFactory
+                .select(new QMainItemDto(item.id, item.itemNm, itemImg.imgUrl, item.price,
+                                JPAExpressions.select(like.id)
+                                        .from(like)
+                                        .where(like.item.id.eq(item.id).and(like.member.id.eq(memberId))).exists()
+                        )
+                )
+                .from(itemImg).join(itemImg.item, item)
+                .join(item.category)
+                .where(itemImg.repImgYn.eq("Y"), categoryEq(categoryId), itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<MainItemDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
+    }
+    @Override
+    public Page<MainItemDto> getMainItemPageCategorys(ItemSearchDto itemSearchDto, Pageable pageable, List<Category> categoryList, Long memberId) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+        QLike like = QLike.like; // 추가: Like 엔티티
+
+        QueryResults<MainItemDto> results = queryFactory
+                .select(new QMainItemDto(item.id, item.itemNm, itemImg.imgUrl, item.price,
+                                JPAExpressions.select(like.id)
+                                        .from(like)
+                                        .where(like.item.id.eq(item.id).and(like.member.id.eq(memberId))).exists()
+                        )
+                )
+                .from(itemImg).join(itemImg.item, item)
+                .join(item.category)
+                .where(itemImg.repImgYn.eq("Y"), categoryIn(categoryList), itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<MainItemDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
+    }
+    private BooleanExpression categoryEq(Long categoryId) {
+        return categoryId != null ? QItem.item.category.id.eq(categoryId) : null;
+    }
+    private BooleanExpression categoryIn(List<Category> categories) {
+        if (!categories.isEmpty()) {
+            // 스트림과 람다식을 사용해서 리스트의 카테고리 id만 추출해 List<Long>으로 만듦
+            // categories.stream() : list -> stream 으로 변환
+            // Category::getId: 람다식 표현을 사용한 메소드 참조, Category 클래스의 getId 메소드를 참조하여 각 요소에 대해 해당 메소드를 호출함
+            List<Long> categoryIds = categories.stream().map(Category::getId).collect(Collectors.toList());
+            // 쿼리 생성
+            // QCategory.category.id.in(categoryIds):  id는 QCategory 클래스에서 정의된 카테고리 엔터티의 ID를 나타냅니다.
+            // .in(categoryIds)는 주어진 리스트(categoryIds)에 속하는 ID를 가진 엔터티를 선택하는 조건을 생성합니다. 예를 들어, ID가 리스트에 포함된 값 중 하나와 일치하는 경우 해당 엔터티를 선택
+            return QCategory.category.id.in(categoryIds).or(QCategory.category.parentCategoryId.in(categoryIds));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Page<MainItemDto> getAllItems(ItemSearchDto itemSearchDto, Pageable pageable, Long memberId) {
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+        QLike like = QLike.like;
+
+        QueryResults<MainItemDto> results = queryFactory
+                .select(new QMainItemDto(item.id, item.itemNm, itemImg.imgUrl, item.price, JPAExpressions.select(like.id)
+                        .from(like)
+                        .where(like.item.id.eq(item.id).and(like.member.id.eq(memberId))).exists()))
+                .from(itemImg).join(itemImg.item, item)
+                .join(item.category)
+                .where(itemImg.repImgYn.eq("Y"), itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<MainItemDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
+    }
+    @Override
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Long categoryId) {
         QItem item = QItem.item;
         QItemImg itemImg = QItemImg.itemImg;
@@ -114,25 +205,6 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom{
         List<MainItemDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
-    }
-    private BooleanExpression categoryEq(Long categoryId) {
-        return categoryId != null ? QItem.item.category.id.eq(categoryId) : null;
-    }
-    private BooleanExpression categoryIn(List<Category> categories) {
-        System.out.println("카테고리봅시다"+categories.get(0).getName());
-        System.out.println("카테고리봅시다"+categories.get(1).getName());
-        if (!categories.isEmpty()) {
-            // 스트림과 람다식을 사용해서 리스트의 카테고리 id만 추출해 List<Long>으로 만듦
-            // categories.stream() : list -> stream 으로 변환
-            // Category::getId: 람다식 표현을 사용한 메소드 참조, Category 클래스의 getId 메소드를 참조하여 각 요소에 대해 해당 메소드를 호출함
-            List<Long> categoryIds = categories.stream().map(Category::getId).collect(Collectors.toList());
-            // 쿼리 생성
-            // QCategory.category.id.in(categoryIds):  id는 QCategory 클래스에서 정의된 카테고리 엔터티의 ID를 나타냅니다.
-            // .in(categoryIds)는 주어진 리스트(categoryIds)에 속하는 ID를 가진 엔터티를 선택하는 조건을 생성합니다. 예를 들어, ID가 리스트에 포함된 값 중 하나와 일치하는 경우 해당 엔터티를 선택
-            return QCategory.category.id.in(categoryIds).or(QCategory.category.parentCategoryId.in(categoryIds));
-        } else {
-            return null;
-        }
     }
 
     @Override

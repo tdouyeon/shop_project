@@ -7,13 +7,47 @@
    });
  });
 
- function toggleHeartIcon(heartIcon) {
-   if (heartIcon.src.includes('empty_heart.svg')) {
-     heartIcon.src = '/img/fill_heart.svg'; /* 누르면 채워진 하트로 변경 */
-   } else {
-     heartIcon.src = '/img/empty_heart.svg'; /* 다시 누르면 빈 하트로 변경 */
-   }
- }
+function toggleHeartIcon(heartIcon) {
+    var itemId = heartIcon.getAttribute('data-heart-id');
+    var dataLiked = heartIcon.getAttribute('data-liked'); // 현재의 liked 상태 가져오기
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+      console.log(itemId);
+      console.log(dataLiked);
+
+            // AJAX 호출
+            $.ajax({
+                type: 'POST',
+                url: '/shop/liked',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({ itemId: itemId, liked: dataLiked }), // data-liked 속성을 서버로 전송
+                      beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                      },
+                success: function (response) {
+                    // 이미지 업데이트 등 추가 동작
+                    if (response.liked) {
+                        $(heartIcon).attr('src', '/img/fill_heart.svg');
+                    } else {
+                        $(heartIcon).attr('src', '/img/empty_heart.svg');
+                    }
+                                var newDataLiked = response.liked ? 'true' : 'false';
+                                heartIcon.setAttribute('data-liked', newDataLiked);
+                },
+                error: function (xhr, status, error) {
+                   if (xhr.status === 403) {
+                                            // 권한이 없는 경우의 동작
+                                            console.error('권한이 없습니다.');
+                                            alert("로그인 후 이용해주세요.");
+                                            // 로그인 페이지로 리다이렉트 또는 모달을 띄워 로그인을 유도하는 등의 동작 수행
+                                            location.href = '/members/login'; // 로그인 페이지로 이동
+                                        } else {
+                                                            console.error('Request failed. Status: ' + status + ', Error: ' + error);
+
+                                        }
+                }
+        });
+      }
 
  function loadCategories(categoryName) {
   console.log(categoryName);
@@ -92,6 +126,8 @@ function toggleSubCategories(categoryName) {
         }
     });
 }
+
+
 
 $(document).ready(function() {
     $('.category_ch a').on('click', function() {

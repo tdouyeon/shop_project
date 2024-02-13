@@ -46,7 +46,6 @@ public class CartController {
         Long cartItemId;
         try {
             cartItemId = cartService.addCart(cartItemDto, principal);
-            System.out.println("카트아이디가 뭐야?"+cartItemId);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
             logger.error("An error occurred: {}", e.getMessage(), e);

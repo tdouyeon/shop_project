@@ -1,5 +1,6 @@
 package com.shop.service;
 
+import com.shop.constant.Role;
 import com.shop.dto.ChangePasswdFormDto;
 import com.shop.dto.MemberFindFormDto;
 import com.shop.entity.Member;
@@ -44,6 +45,19 @@ public class MemberService implements UserDetailsService {
     private String apiKey;
     @Value("${coolsms.api.secret}")
     private String apiSecret;
+
+    public void makeMember(){
+        if(memberRepository.findByEmail("xhzhdy1212@naver.com") == null) {
+            Member member = new Member();
+            member.setName("테스트용");
+            member.setEmail("xhzhdy1212@naver.com");
+            member.setPassword(passwordEncoder.encode("qwer1234"));
+            member.setAddress("주소입니다");
+            member.setChk("2");
+            member.setRole(Role.ADMIN);
+            memberRepository.save(member);
+        }
+    }
 
     public Member saveMember(Member member) {
         validateDuplicateMember(member);

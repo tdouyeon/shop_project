@@ -51,6 +51,7 @@ public class Item extends BaseEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
+
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();

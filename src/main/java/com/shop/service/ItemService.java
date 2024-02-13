@@ -11,10 +11,13 @@ import org.modelmapper.internal.bytebuddy.NamingStrategy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +33,7 @@ public class ItemService {
     private final ItemDetailImgRepository itemDetailImgRepository;
     private final CategoryRepository categoryRepository;
     private final OrderItemRepository orderItemRepository;
+    private final MemberService memberService;
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
             throws Exception{
         Optional<Category> categoryOptional = categoryRepository.findById(itemFormDto.getCategory().getId());
@@ -135,14 +139,32 @@ public class ItemService {
         return itemRepository.getAdminItemPage(itemSearchDto,pageable);
     }
     @Transactional(readOnly = true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category, Principal principal){
+        Optional<Category> category1 = categoryRepository.findByName(category);
+        Member member = memberService.giveMember(memberService.checkEmail(principal));
+        Long memberId = member.getId();
+        if(category.isEmpty()) {
+            return itemRepository.getAllItems(itemSearchDto, pageable, memberId);
+        }
+        else if (category1.get().getParentCategoryId() != null) {
+            Long categoryId = category1.map(Category::getId).orElse(null);
+            return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId, memberId);
+
+        }
+        else {
+            List<Category> categorys = categoryRepository.findByParentCategoryId(category1.get().getId());
+            return itemRepository.getMainItemPageCategorys(itemSearchDto, pageable, categorys, memberId);
+        }
+    }
+    @Transactional(readOnly = true)
     public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category){
+
         Optional<Category> category1 = categoryRepository.findByName(category);
         if(category.isEmpty()) {
             return itemRepository.getAllItems(itemSearchDto, pageable);
         }
         else if (category1.get().getParentCategoryId() != null) {
             Long categoryId = category1.map(Category::getId).orElse(null);
-            System.out.println("카테고리 아이디가 뭐야?"+categoryId);
             return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId);
 
         }
