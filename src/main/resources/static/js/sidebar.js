@@ -1,4 +1,21 @@
-function loadCategories(categoryName) {
+ document.addEventListener('DOMContentLoaded', function() {
+   let heartIcons = document.querySelectorAll('.icon');
+   heartIcons.forEach(function(heartIcon) {
+     heartIcon.addEventListener('click', function() {
+       toggleHeartIcon(heartIcon);
+     });
+   });
+ });
+
+ function toggleHeartIcon(heartIcon) {
+   if (heartIcon.src.includes('empty_heart.svg')) {
+     heartIcon.src = '/img/fill_heart.svg'; /* 누르면 채워진 하트로 변경 */
+   } else {
+     heartIcon.src = '/img/empty_heart.svg'; /* 다시 누르면 빈 하트로 변경 */
+   }
+ }
+
+ function loadCategories(categoryName) {
   console.log(categoryName);
   // AJAX request to send categoryName to the server
   var token = $("meta[name='_csrf']").attr("content");

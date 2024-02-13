@@ -1,6 +1,7 @@
 package com.shop.controller;
 
 import com.shop.dto.CategoryDto;
+import com.shop.dto.ItemAverageRatingDto;
 import com.shop.dto.ItemSearchDto;
 import com.shop.dto.MainItemDto;
 import com.shop.entity.Item;
@@ -53,7 +54,6 @@ public class MainController {
         }
         Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable, "");
 
-        System.out.println("아이템"+items.getContent().size());
         model.addAttribute("items", items);
         model.addAttribute("itemSearchDto",itemSearchDto);
         model.addAttribute("maxPage",8);

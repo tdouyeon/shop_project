@@ -158,6 +158,24 @@
                         .category_shop li.sub {
                             padding-left: 20px;
                         }
+                        .image-container {
+                            position: relative;
+                            width: 100%; /* 추가: 이미지 컨테이너가 100% 너비를 가지도록 함 */
+                        }
+
+                       .image-container {
+                           position: relative;
+                           width: 100%;
+                       }
+
+                       .card .icon {
+                           position: absolute;
+                           right: 10px;
+                           bottom: 10px;
+                           width: 24px;
+                           height: 24px;
+                               z-index: 1; /* 카드 위에 위치하도록 설정 */
+                       }
 
 
                         @media (max-width: 750px) {

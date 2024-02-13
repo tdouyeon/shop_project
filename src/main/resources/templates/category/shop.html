@@ -10,10 +10,14 @@
 <div layout:fragment="content">
     <div class="shop_container">
         <ul class="main__content">
-            <th:block th:each="item, status: ${items.getContent()}">
-                <li class="card">
+            <th:block th:each="item, iterStat : ${items.getContent()}" th:status="status">
+                <li class="card" th:id="'card' + ${iterStat.index + 1}">
+                    <div class="image-container">
                     <a th:href="'/item/' + ${item.id}" class="text-dark">
-                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}">
+                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" data-item-id="${item.id}">
+                    </a>
+                        <img class="icon" src="/img/empty_heart.svg" data-heart-id="${item.id}">
+                    </div>
                         <div class="card-body">
                             <h4 class="card-title">[[${item.itemNm}]]</h4>
                             <h3 class="card-price">[[${item.price}]]won</h3>
