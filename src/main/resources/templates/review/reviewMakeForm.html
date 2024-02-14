@@ -15,7 +15,7 @@
     <img th:src="${itemFormDto.itemImgDtoList[0].imgUrl}" class="img">
     <input type="hidden" name="orderItemId" th:value="${orderItemId}">
     <div class="itemNm" th:value="${itemFormDto.itemNm}" th:text="${itemFormDto.itemNm}"></div>
-    <div class="star">
+    <div class="rating">
     <label for="star1"></label><input type="radio" id="star1" th:field="*{rating}" th:value="1">
     <label for="star2"></label><input type="radio" id="star2" th:field="*{rating}" th:value="2">
     <label for="star3"></label><input type="radio" id="star3" th:field="*{rating}" th:value="3">

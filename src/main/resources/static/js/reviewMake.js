@@ -1,27 +1,30 @@
-        document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const ratingInputs = document.querySelectorAll('.rating input');
     const ratingLabels = document.querySelectorAll('.rating label');
 
+    function updateRating(clickedIndex) {
+        // 클릭한 별까지 채우기
+        console.log(clickedIndex);
+        for (let i = 0; i <= clickedIndex; i++) {
+            ratingInputs[i].checked = true;
+            ratingLabels[i].classList.add('filled');
+        }
+
+        // 클릭하지 않은 별 비우기
+        for (let i = clickedIndex + 1; i < ratingInputs.length; i++)
+       {    console.log(ratingInputs.length);
+            ratingInputs[i].checked = false;
+            ratingLabels[i].classList.remove('filled');
+        }
+    }
+
     ratingLabels.forEach((label, index) => {
-        label.addEventListener('click', function() {
-            // 클릭한 별의 인덱스
+        label.addEventListener('click', function () {
             const clickedIndex = index;
-
-            // 클릭한 별까지 채우기
-            for (let i = 0; i <= clickedIndex; i++) {
-                ratingInputs[i].checked = true;
-                ratingLabels[i].classList.add('filled');
-            }
-
-            // 클릭하지 않은 별 비우기
-            for (let i = clickedIndex + 1; i < ratingInputs.length; i++) {
-                ratingInputs[i].checked = false;
-                ratingLabels[i].classList.remove('filled');
-            }
+            updateRating(clickedIndex);
         });
     });
 });
-
         function previewImages(input) {
             var preview = document.getElementById('preview');
             while (preview.firstChild) {
