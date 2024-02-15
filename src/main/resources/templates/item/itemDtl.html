@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="/js/itemDtl.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 
 </head>
 <!-- 사용자 CSS 추가 -->
@@ -56,7 +58,7 @@
                         onclick="addCart()">
                     장바구니 담기
                 </button>
-                <button type="button" class="btn order-button" onclick="order()">주문하기</button>
+                <button type="button" class="btn order-button" onclick="requestPay()">주문하기</button>
             </div>
             <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
                  class="text-right">

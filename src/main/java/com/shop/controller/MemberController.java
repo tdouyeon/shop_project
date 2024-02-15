@@ -9,6 +9,7 @@ import com.shop.service.MemberService;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 
 @RequestMapping("/members")
 @Controller
@@ -130,13 +132,17 @@ public class MemberController {
         return "member/changePasswdForm";
     }
     @PostMapping(value = "/changePasswd")
-    @ResponseBody
-    ResponseEntity changePasswd(@Valid ChangePasswdFormDto changePasswdFormDto) {
+    ResponseEntity<String> changePasswd(@Valid ChangePasswdFormDto changePasswdFormDto) {
         try{
             memberService.changePasswd(changePasswdFormDto);
         } catch (Exception e) {
             return new ResponseEntity<String>("비밀번호 변경 중 에러가 발생 했습니다.", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>("비밀번호 변경이 완료 되었습니다.", HttpStatus.OK);
+    }
+    @GetMapping(value = "inf")
+    @ResponseBody
+    public Member giveMemberinf(Principal principal) {
+        return memberService.giveMember(memberService.checkEmail(principal));
     }
 }

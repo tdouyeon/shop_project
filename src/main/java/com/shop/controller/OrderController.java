@@ -11,9 +11,15 @@ import com.shop.service.CartService;
 import com.shop.service.ItemService;
 import com.shop.service.MemberService;
 import com.shop.service.OrderService;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import kotlinx.serialization.Serializable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +31,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +42,12 @@ public class OrderController {
     private final OrderService orderService;
     private final ItemService itemService;
     private final CartService cartService;
+    private IamportClient iamportClient;
+
+    @Value("${iamport.key}")
+    private String restApiKey;
+    @Value("${iamport.secret}")
+    private String restApiSecret;
 
     @PostMapping(value = "/order")
     public ResponseEntity<String> order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
@@ -99,5 +112,16 @@ public class OrderController {
 
         return ResponseEntity.noContent().build();
 
+    }
+
+    @PostConstruct
+    public void init() {
+        this.iamportClient = new IamportClient(restApiKey, restApiSecret);
+    }
+
+    @PostMapping("/order/{imp_uid}")
+    @ResponseBody
+    public IamportResponse<Payment> paymentByImpUid(@PathVariable("imp_uid") String imp_uid) throws IamportResponseException, IOException {
+        return iamportClient.paymentByImpUid(imp_uid);
     }
 }

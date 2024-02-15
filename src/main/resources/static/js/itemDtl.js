@@ -67,43 +67,90 @@ $(".item_dtl_header div:nth-child(1)").on("click", function () {
            $("#totalPrice").html(totalPrice + '원');
         }
 
-        function order(){
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+function requestPay() {
 
-            var url = "/order";
-            var paramData = {
-                itemId : $("#itemId").val(),
-                count : $("#count").val()
-            }
+  var token = $("meta[name='_csrf']").attr("content");
+  var header = $("meta[name='_csrf_header']").attr("content");
 
-            var param = JSON.stringify(paramData);
-
+      $.ajax({
+         url: "/members/inf",
+         type: 'GET',
+         beforeSend: function(xhr) {
+         xhr.setRequestHeader(header, token);
+         },
+         success: function(member) {
+         var itemNm = $('#itemNm').text();
+         // 테스트 용이라 실제로 값을 집어넣진 못함
+         var amount = $('#count').val();
+        var IMP = window.IMP;
+      IMP.init("imp15341074");
+          IMP.request_pay(
+                {
+                            pg: "kakaopay",
+                            pay_method: "card",
+                            merchant_uid : 'merchant_' + new Date().getTime(),
+                            name: "테스트 상점",
+                            amount: 1004,
+                        buyer_email: member.email,
+                        buyer_name: member.name,
+                        buyer_tel: member.tel,
+                        buyer_addr: member.address,
+                        },
+            function (rsp) {
+            console.log(rsp);
             $.ajax({
-                url : url,
-                type : "POST",
-                contentType : "application/json",
-                data : param,
-                beforeSend : function(xhr){
-                    /*데이터 전송하기 전에 헤더이 csrf 값을 설정*/
-                    xhr.setRequestHeader(header, token);
-                },
-                dataType : "json",
-                cache : false,
-                success : function(result, status){
-                    alert("주문이 완료 되었습니다.");
-                    location.href='/';
-                },
-                error : function(jqXHR, status, error){
-                    if(jqXHR.status == '401'){
-                        alert('로그인 후 이용해주세요.');
-                        location.href='/members/login';
-                    }else{
-                        alert(jqXHR.responseText);
-                    }
+                type: 'POST',
+                url: '/order/' + rsp.imp_uid,
+                                beforeSend : function(xhr){
+                                    /*데이터 전송하기 전에 헤더이 csrf 값을 설정*/
+                                    xhr.setRequestHeader(header, token);
+                                },
+            }).done(function(data) {
+                if(rsp.paid_amount === data.response.amount){
+                    alert("결제 성공");
+                                var url = "/order";
+                                var paramData = {
+                                    itemId : $("#itemId").val(),
+                                    count : $("#count").val()
+                                }
+
+                                var param = JSON.stringify(paramData);
+
+                                $.ajax({
+                                    url : url,
+                                    type : "POST",
+                                    contentType : "application/json",
+                                    data : param,
+                                    beforeSend : function(xhr){
+                                        /*데이터 전송하기 전에 헤더이 csrf 값을 설정*/
+                                        xhr.setRequestHeader(header, token);
+                                    },
+                                    dataType : "json",
+                                    cache : false,
+                                    success : function(result, status){
+                                        alert("주문이 완료 되었습니다.");
+                                        location.href='/';
+                                    },
+                                    error : function(jqXHR, status, error){
+                                        if(jqXHR.status == '401'){
+                                            alert('로그인 후 이용해주세요.');
+                                            location.href='/members/login';
+                                        }else{
+                                            alert(jqXHR.responseText);
+                                        }
+                                    }
+                                });
+                } else {
+                    alert("결제 실패");
                 }
             });
-         }
+        });
+      }, error: function(result, status) {
+            alert("결제 중 에러가 발생했습니다.")
+      }
+    }
+      )};
+
 
         function addCart(){
             var token = $("meta[name='_csrf']").attr("content");
