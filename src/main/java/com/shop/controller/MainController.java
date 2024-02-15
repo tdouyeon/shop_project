@@ -29,25 +29,9 @@ public class MainController {
     private final CategoryService categoryService;
     private final LikeService likeService;
     @GetMapping(value = "/")
-    public String main(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal) {
+    public String main() {
         categoryService.makeCategory();
         memberService.makeMember();
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
-        if(itemSearchDto.getSearchQuery() == null)
-        {
-            itemSearchDto.setSearchQuery("");
-        }
-        if(principal != null) {
-            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable,"", principal);
-            model.addAttribute("items", items);
-        }
-        else {
-            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable,"");
-            model.addAttribute("items", items);
-        }
-        model.addAttribute("itemSearchDto",itemSearchDto);
-        model.addAttribute("maxPage",8);
-
         return "main";
     }
 
