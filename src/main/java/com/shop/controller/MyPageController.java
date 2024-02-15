@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/mypage")
@@ -28,9 +29,15 @@ public class MyPageController {
     private final OrderService orderService;
 
     @GetMapping(value = "/mypage")
-    public String ah(Model model){
-        model.addAttribute("noticeDto",new NoticeDto());
-        return "notice/noticeForm";
+    public String mypage(Principal principal, Model model){
+        // 해당 member의 주문건 4개 뽑음
+        List<OrderHistDto> orderHistDtoList = orderService.getOrderList(principal);
+        List<ReviewFormDto> reviewFormDtos = reviewService.giveMemberReview(principal);
+        List<ReviewImgDto> reviewImgDtos = reviewService.giveReviewImg(principal);
+        model.addAttribute("orders", orderHistDtoList);
+        model.addAttribute("reviews",reviewFormDtos);
+        model.addAttribute("reviewImgDtos",reviewImgDtos);
+        return "mypage/mypageForm";
     }
 
 

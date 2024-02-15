@@ -31,6 +31,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final OrderService orderService;
     private final MemberService memberService;
+    private final OrderItemService orderItemService;
 
     public Long addCart(CartItemDto cartItemDto, Principal principal) {
         Item item = itemRepository.findById(cartItemDto.getItemId())
@@ -109,5 +110,14 @@ public class CartService {
                 cartItemRepository.delete(cartItem);
             }
             return orderId;
+    }
+    public void reAddCart(Long orderId, Principal principal) {
+        List<OrderItem> orderItems = orderItemService.getReOrderItems(orderId);
+        for (OrderItem orderItem : orderItems) {
+            CartItemDto cartItemDto = new CartItemDto();
+            cartItemDto.setItemId(orderItem.getItem().getId());
+            cartItemDto.setCount(orderItem.getCount());
+            addCart(cartItemDto, principal);
+        }
     }
 }

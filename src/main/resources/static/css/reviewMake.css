@@ -25,8 +25,8 @@
 
 .rating label {
     cursor: pointer;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     background-image: url('/img/star.svg');
     background-size: cover;
     display: inline-block;
@@ -63,16 +63,18 @@
     color: #555;
     background-color: #fff;
     border: 1px solid #ccc;
-    border-radius: 4px;
         width: 100px;
         text-align: center;
   }
   #image{
     display: none;
   }
+  .img_register{
+
+  }
 
   .custom-file-label::after {
-    content: "이미지 등록";
+    content: "사진 첨부하기";
   }
 
   .custom-file-input input:lang(en) ~ .custom-file-label::after {
@@ -81,17 +83,20 @@
 
   .custom-file-input input:focus ~ .custom-file-label,
   .custom-file-input input.has-value ~ .custom-file-label {
-    border-color: #007bff;
+    border-color: #323232;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
         .custom-textarea {
-    width: 100%; /* 전체 폭으로 확장되도록 설정 */
+    width: 80%; /* 전체 폭으로 확장되도록 설정 */
     padding: 10px; /* 내부 여백 조절 */
     box-sizing: border-box; /* 내부 여백 및 테두리를 포함한 전체 크기를 설정 */
     border: 1px solid #ccc; /* 테두리 스타일 및 색상 설정 */
     border-radius: 5px; /* 필요에 따라 조절 */
     font-size: 14px; /* 폰트 크기 설정 */
     resize: none; /* 사용자가 크기를 조절하지 못하도록 설정 */
+}
+.review_title{
+    height: 30px;
 }
 
 .custom-textarea:focus {
@@ -117,4 +122,17 @@
 .button{
     display: flex;
     justify-content: center;
+}
+.text{
+    font-size: 16px;
+    margin-right: 20px;
+}
+.itemNm{
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.title_form, .comment_form{
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
 }

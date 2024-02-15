@@ -7,6 +7,7 @@ import com.shop.dto.ReviewFormDto;
 import com.shop.entity.Item;
 import com.shop.entity.Member;
 import com.shop.entity.Review;
+import com.shop.service.CartService;
 import com.shop.service.ItemService;
 import com.shop.service.MemberService;
 import com.shop.service.OrderService;
@@ -33,6 +34,7 @@ import java.util.Optional;
 public class OrderController {
     private final OrderService orderService;
     private final ItemService itemService;
+    private final CartService cartService;
 
     @PostMapping(value = "/order")
     public ResponseEntity<String> order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
@@ -85,5 +87,17 @@ public class OrderController {
     @PostMapping("/order/{orderItemId}/review")
     public ResponseEntity<Long> reviewOrder(@PathVariable("orderItemId") Long orderItemId){
         return new ResponseEntity<Long>(orderItemId, HttpStatus.OK) ;
+    }
+    @PostMapping("/order/{orderId}/reOrder")
+    // AJAX 형태!!!!
+    public ResponseEntity<String> reOrder(@PathVariable("orderId")
+                                                Long orderId, Principal principal){
+        if (!orderService.validateOrder(orderId, principal)){
+            return new ResponseEntity<String>("재주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
+        }
+        cartService.reAddCart(orderId,principal);
+
+        return ResponseEntity.noContent().build();
+
     }
 }

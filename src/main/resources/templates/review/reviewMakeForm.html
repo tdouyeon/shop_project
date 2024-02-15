@@ -8,13 +8,14 @@
     <script src="/js/reviewMake.js"></script>
 
 </head>
+
 <body>
 <div layout:fragment="content" class="content-mg">
 <h2>상품 리뷰 등록</h2>
 <form action="/mypage/submit_review" method="post" class="review_form" th:object="${reviewFormDto}" enctype="multipart/form-data">
     <img th:src="${itemFormDto.itemImgDtoList[0].imgUrl}" class="img">
     <input type="hidden" name="orderItemId" th:value="${orderItemId}">
-    <div class="itemNm" th:value="${itemFormDto.itemNm}" th:text="${itemFormDto.itemNm}"></div>
+    <div class="itemNm itemNm" th:value="${itemFormDto.itemNm}" th:text="${itemFormDto.itemNm}"></div>
     <div class="rating">
     <label for="star1"></label><input type="radio" id="star1" th:field="*{rating}" th:value="1">
     <label for="star2"></label><input type="radio" id="star2" th:field="*{rating}" th:value="2">
@@ -22,16 +23,24 @@
     <label for="star4"></label><input type="radio" id="star4" th:field="*{rating}" th:value="4">
     <label for="star5"></label><input type="radio" id="star5" th:field="*{rating}" th:value="5">
     </div>
-    <label for="title">제목</label>
-    <textarea id="title" name="title" th:field="*{title}" rows="4" required class="custom-textarea"></textarea>
-    <label for="comment">내용</label>
+    <div class="title_form">
+    <label for="title" class="text">제목</label>
+    <textarea id="title" name="title" th:field="*{title}" rows="4" required class="custom-textarea review_title"></textarea>
+    </div>
+    <div class="comment_form">
+    <label for="comment" class="text">내용</label>
     <textarea id="comment" name="comment" th:field="*{comment}" rows="4" required class="custom-textarea"></textarea>
+    </div>
 
+
+    <div class="img_register">
+    <label class="custom-file-label" for="image"></label>
+    </div>
     <div class="img_preview">
-    <div id="preview"></div>
+        <div id="preview"></div>
     </div>
     <input type="file" id="image" name="image" accept="image/*" multiple onchange="previewImages(this)" class="custom-file-input">
-    <label class="custom-file-label" for="image"></label>
+
     <div class="button">
     <button type="submit" class="btn">리뷰 등록</button>
     </div>

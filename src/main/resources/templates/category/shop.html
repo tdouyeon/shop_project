@@ -18,6 +18,7 @@
                     </a>
                         <img th:if="${item.liked}" class="icon" src="/img/fill_heart.svg" th:attr="data-heart-id=${item.id}" data-liked="true">
                         <img th:unless="${item.liked}" class="icon" src="/img/empty_heart.svg" th:attr="data-heart-id=${item.id}" data-liked="false">
+
                     </div>
                         <div class="card-body">
                             <h4 class="card-title">[[${item.itemNm}]]</h4>

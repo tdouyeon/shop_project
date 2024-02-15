@@ -75,6 +75,31 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
+    public List<OrderHistDto> getOrderList(Principal principal) {
+        String email = memberService.checkEmail(principal);
+        List<Order> orders = orderRepository.findOrdersByEmail(email);
+        List<OrderHistDto> orderHistDtos = new ArrayList<>();
+        // Order -> OrderHistDto
+        // OrderItem -> OrderItemDto
+        for (Order order : orders) {
+            OrderHistDto orderHistDto = new OrderHistDto(order);
+            List<OrderItem> orderItems = order.getOrderItems();
+            for (OrderItem orderItem : orderItems) {
+                ItemImg itemImg = itemImgRepository.findByItemIdAndRepImgYn(orderItem.getItem().getId(),
+                        "Y");
+                OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
+                orderHistDto.addOrderItemDto(orderItemDto);
+            }
+
+            orderHistDtos.add(orderHistDto);
+            if(orderHistDtos.size() == 4) {
+                break;
+            }
+        }
+        return orderHistDtos;
+    }
+
+    @Transactional(readOnly = true)
     public boolean validateOrder(Long orderId, Principal principal) {
             String email = memberService.checkEmail(principal);
             Member curMember = memberRepository.findByEmail(email);

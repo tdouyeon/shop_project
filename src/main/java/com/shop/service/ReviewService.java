@@ -49,12 +49,31 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
         return ReviewMapper.convertToDtoList(reviewList);
     }
+
+    public List<ReviewFormDto> giveMemberReview(Principal principal) {
+        String email = memberService.checkEmail(principal);
+        Member member = memberService.giveMember(email);
+        List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
+        return ReviewMapper.convertToDtoList(reviewList);
+    }
     public boolean existReviewCheck(Long itemId) {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
         return reviewList != null && !reviewList.isEmpty();
     }
+
     public List<ReviewImgDto> giveReviewImg(Long itemId) {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
+        List<ReviewImg> reviewImgList = new ArrayList<>();
+        for(Review review : reviewList) {
+            List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
+            reviewImgList.add(reviewImgs.get(0));
+        }
+        return ReviewImgMapper.convertToDtoList(reviewImgList);
+    }
+    public List<ReviewImgDto> giveReviewImg(Principal principal) {
+        String email = memberService.checkEmail(principal);
+        Member member = memberService.giveMember(email);
+        List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
         List<ReviewImg> reviewImgList = new ArrayList<>();
         for(Review review : reviewList) {
             List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
