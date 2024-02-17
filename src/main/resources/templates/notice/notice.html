@@ -60,6 +60,10 @@ line-height: 160%;
 margin-left: 30px;
 margin-right: 30px;
 }
+        .no{
+            margin: 10vw;
+            text-align: center;
+        }
     </style>
     <th:block layout:fragment="script">
         <script th:inline="javascript">
@@ -88,13 +92,19 @@ margin-right: 30px;
 <div layout:fragment="content">
     <div id="container">
 <h2>자주 찾는 도움말</h2>
-    <div id="notice" th:each="notice, status : ${notices.getContent()}">
-        <div class="notice_id" th:text="${notice.id}"></div>
-        <button type="button" class="notice_title" th:text="${notice.title}" onclick="collapse(this);">제목 1</button>
-<div class="notice_content">
-    <p class="content2">[[${notice.content}]]</p>
-</div>
-</div>
+        <!-- Check if notices list is not empty before rendering -->
+        <div th:if="${notices.getContent().size() > 0}" id="notice" th:each="notice, status : ${notices.getContent()}">
+            <div class="notice_id" th:text="${notice.id}"></div>
+            <button type="button" class="notice_title" th:text="${notice.title}" onclick="collapse(this);">제목 1</button>
+            <div class="notice_content">
+                <p class="content2">[[${notice.content}]]</p>
+            </div>
+        </div>
+
+        <!-- Add a message if the notices list is empty -->
+        <div th:if="${notices.getContent().size() == 0}">
+            <p class="no">공지사항이 존재하지 않습니다.</p>
+        </div>
 </div>
 </div>
 </body>

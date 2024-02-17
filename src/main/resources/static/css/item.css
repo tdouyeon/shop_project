@@ -1,5 +1,5 @@
         #container{
-            width: 500px;
+            width: 600px;
             margin: 0 auto;
         }
         .container{
@@ -43,6 +43,7 @@
             height: 150px;
 
         }
+
         input[type="file"] {
             width: 150px;
             height: 150px;
@@ -92,11 +93,9 @@
         }
 
         .child-img{
-            width: 150px;
-            height: 150px;
-            position: absolute;
-
-
+    position: absolute;
+                width: 150px;
+                height: 150px;
         }
         .image_container > img, image_container2 > img {
             width: 150px;
@@ -105,24 +104,23 @@
             position: absolute;
         }
         .main_btn{
-            display: flex;
-            justify-content: flex-end;
-            flex-direction: row;
-            margin: 20px 0px;
+display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 50px;
         }
         .save-btn, .modify-btn{
-            width: 100px;
-            height: 40px;
-            font-size: 18px;
-            line-height: 15px;
-            text-align: center;
-            border-radius: 30px;
-            box-sizing: border-box;
-            transition: all 0.3s;
-            background-color: rgb(0,32,83);
-            color: rgb(255, 255, 255);
-            margin: 20px 0px;
-            line-height: 34px;
+        min-width: 120px;
+        font-size: 12px;
+        display: inline-block;
+        padding: 10px 12px;
+        border: 1px solid #666;
+        border-radius: 2px;
+        background-color: #000;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 50px;
+            font-weight: 600;
         }
         #card-img-top{
             display: flex;

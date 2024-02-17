@@ -54,9 +54,6 @@ public class NoticeController {
     public String noticeView(@PathVariable("page") Optional<Integer> page, Model model){
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
         Page<Notice> notices = noticeService.getNotice(pageable);
-        System.out.println("확인 아이디"+notices.getContent().get(0).getId());
-        System.out.println("확인 제목:"+notices.getContent().get(0).getTitle());
-        System.out.println("확인 내용:"+notices.getContent().get(0).getContent());
         model.addAttribute("notices", notices);
         model.addAttribute("maxPage",8);
         return "notice/notice";

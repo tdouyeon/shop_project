@@ -62,7 +62,7 @@
             </div>
             <p th:if="${#fields.hasErrors('stockNumber')}" th:errors="*{stockNumber}" class="fieldError">Incorrect
                 data</p>
-            <h3>메인 이미지 업로드</h3>
+            <h3>메인 이미지 등록</h3>
             <div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}" class="imglist">
                 <div class="row" th:each="num: ${#numbers.sequence(1,3)}">
                     <div class="imgimg">
@@ -92,14 +92,14 @@
                     <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}"/>
                 </div>
             </div>
-            <h3>상세 이미지 업로드</h3>
+            <h3>상세 이미지 등록</h3>
             <div th:if="${#lists.isEmpty(itemFormDto.itemDetailImgDtoList)}" class="imglist">
                 <div class="row" th:each="num: ${#numbers.sequence(1,1)}">
                     <div class="imgimg">
                         <label class="image input-group-text"><img src="/img/imgUpload.png" alt="shop" width="150px"
                                                                    height="150px"/></label>
                         <div class="image_detail_container">
-                            <input type="file" class="product_detail_image" name="itemDetailImgFile"
+                            <input id="parentImageLabel" type="file" class="product_detail_image" name="itemDetailImgFile"
                                    onchange="setDetailImage(event);"/>
                         </div>
                     </div>

@@ -96,7 +96,7 @@
                         .category_m{
                     list-style: none;
                     position: fixed;
-                    padding: 0px 80px;
+                    padding: 1vw 6vw;
                 }
                 .category_m > li {
                     margin-bottom: 5px;

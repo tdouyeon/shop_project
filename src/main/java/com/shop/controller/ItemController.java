@@ -67,14 +67,16 @@ public class ItemController {
 
     @GetMapping(value = "/admin/item/{itemId}")
     public String itemDtl(@PathVariable("itemId")Long itemId, Model model){
+        List<CategoryDto> categoryDtos = categoryService.getCategory();
+
         try {
             ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
             model.addAttribute("itemFormDto", itemFormDto);
         }catch (EntityNotFoundException e){
             model.addAttribute("errorMessage","존재하지 않는 상품입니다.");
-            model.addAttribute("itemFormDto",new ItemFormDto());
            // return "item/itemForm";
         }
+        model.addAttribute("categoryDtos", categoryDtos);
 
         return "item/itemForm";
     }

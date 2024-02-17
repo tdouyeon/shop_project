@@ -6,6 +6,8 @@
 }
 .main{ width: 400px; }
 
+.find{ border-bottom : 1px solid gray }
+
 input, button{
     width: 100%;
     display: flex;
