@@ -1,92 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+      layout:decorate="~{layouts/adminLayout}">
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
-    <style>
-        .content{
-    margin: 0 auto;
-display: flex;
-justify-content: center;
-}
-#container{
-font-size: 15px;
-font-family: 'Pretendard', sans-serif;
-display: flex;
-flex-direction: column;
-justify-content: center;
-width: 60%;
-}
-.notice_title {
-background-color: #777;
-color: white;
-cursor: pointer;
-padding: 18px;
-width: 100%;
-border: none;
-text-align: left;
-outline: none;
-font-size: 15px;
-border: 0.5px solid black;
-}
-.active,
-.notice_title:hover {
-background-color: #555;
-}
-.notice_content {
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.2s ease-out;
-background-color: #f1f1f1;
-}
-.notice_title:after{
-content: '\002B';
-color: white;
-font-weight: bold;
-float: right;
-margin-left: 5px;
-}
-.active:after {
-notice_content: "\2212";
-}
-.notice_id{
-display: none;
-}
-.content2{
-line-height: 160%;
-margin-left: 30px;
-margin-right: 30px;
-}
-        .no{
-            margin: 10vw;
-            text-align: center;
-        }
-    </style>
-    <th:block layout:fragment="script">
-        <script th:inline="javascript">
-        function collapse(element) {
-            var before = document.getElementsByClassName("active")[0]               // 기존에 활성화된 버튼
-            if (before && document.getElementsByClassName("active")[0] != element) {  // 자신 이외에 이미 활성화된 버튼이 있으면
-                before.nextElementSibling.style.maxHeight = null;   // 기존에 펼쳐진 내용 접고
-                before.classList.remove("active");                  // 버튼 비활성화
-            }
-            element.classList.toggle("active");
-            // 활성화 여부 toggle 클래스가 존재하는지 확인하고 클래스를 제거. 해당하는 클래스가 없으면 클래스를 요소에 추가
-            // 버튼이 활성화되면 class="notice_title" -> class="notice_title active" 클래스 추가됨
-
-            // nextElementSibling: 다음 Element를 반환해주는 method
-            var notice_content = element.nextElementSibling;
-            if (notice_content.style.maxHeight != 0) {         // 버튼 다음 요소가 펼쳐져 있으면
-                notice_content.style.maxHeight = null;         // 접기
-            } else {
-                notice_content.style.maxHeight = notice_content.scrollHeight + "px";  // 접혀있는 경우 펼치기
-            }
-        }
-    </script>
-    </th:block>
+    <link th:href="@{/css/notice.css}" rel="stylesheet">
+    <script src="/js/notice.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -95,7 +16,7 @@ margin-right: 30px;
         <!-- Check if notices list is not empty before rendering -->
         <div th:if="${notices.getContent().size() > 0}" id="notice" th:each="notice, status : ${notices.getContent()}">
             <div class="notice_id" th:text="${notice.id}"></div>
-            <button type="button" class="notice_title" th:text="${notice.title}" onclick="collapse(this);">제목 1</button>
+            <button type="button" class="notice_title" th:text="${notice.title}" onclick="collapse(this);">제목</button>
             <div class="notice_content">
                 <p class="content2">[[${notice.content}]]</p>
             </div>

@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Table(name = "notice")
 @Getter
 @Setter
-public class Notice {
+public class Notice extends BaseEntity{
     @Id
     @Column(name = "notice_id")
     @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
@@ -24,7 +24,7 @@ public class Notice {
 
     private static ModelMapper modelMapper = new ModelMapper();
 
-    public static Notice updateNotice(NoticeDto noticeDto){
+    public static Notice updateNotice(NoticeDto noticeDto) {
         return modelMapper.map(noticeDto, Notice.class);
     }
 }

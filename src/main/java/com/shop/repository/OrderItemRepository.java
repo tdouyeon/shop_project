@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> findByOrderId(@Param("orderId") Long orderId);
 }

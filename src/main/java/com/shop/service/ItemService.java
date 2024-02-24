@@ -34,8 +34,9 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final OrderItemRepository orderItemRepository;
     private final MemberService memberService;
+
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
-            throws Exception{
+            throws Exception {
         Optional<Category> categoryOptional = categoryRepository.findById(itemFormDto.getCategory().getId());
 
         Category category = categoryOptional.get();
@@ -46,16 +47,16 @@ public class ItemService {
 
         itemRepository.save(item);
         //이미지 등록
-        for(int i =0;i<itemImgFileList.size();i++){
+        for (int i = 0; i < itemImgFileList.size(); i++) {
             ItemImg itemImg = new ItemImg();
             itemImg.setItem(item);
-            if(i==0)
+            if (i == 0)
                 itemImg.setRepImgYn("Y");
             else
                 itemImg.setRepImgYn("N");
-            itemImgService.saveItemImg(itemImg,itemImgFileList.get(i));
+            itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
         }
-        for(int i = 0; i < itemDetailImgFileList.size();i++){
+        for (int i = 0; i < itemDetailImgFileList.size(); i++) {
             ItemDetailImg itemDetailImg = new ItemDetailImg();
             itemDetailImg.setItem(item);
 
@@ -65,9 +66,14 @@ public class ItemService {
         return item.getId();
     }
 
+    public int giveItemCount(Principal principal) {
+        String email = memberService.checkEmail(principal);
+        return itemRepository.countByCreatedBy(email).intValue();
+    }
+
     public Long getItemFormDto(Long orderItemId) {
-    Optional<OrderItem> orderItems = orderItemRepository.findById(orderItemId);
-    return orderItems.get().getItem().getId();
+        Optional<OrderItem> orderItems = orderItemRepository.findById(orderItemId);
+        return orderItems.get().getItem().getId();
     }
 
     public void changeReviewStatus(Long orderItemId) {
@@ -79,8 +85,9 @@ public class ItemService {
             orderItemRepository.save(orderItem);
         }
     }
+
     @Transactional(readOnly = true)
-    public ItemFormDto getItemDtl(Long itemId){
+    public ItemFormDto getItemDtl(Long itemId) {
         //Entity
         List<ItemImg> itemImgList = itemImgRepository.findByItemIdOrderByIdAsc(itemId);
         //DB에서 데이터를 가지고 옵니다.
@@ -89,13 +96,13 @@ public class ItemService {
         List<ItemImgDto> itemImgDtoList = new ArrayList<>();
         List<ItemDetailImgDto> itemDetailImgDtoList = new ArrayList<>();
 
-        for(ItemImg itemimg : itemImgList){
+        for (ItemImg itemimg : itemImgList) {
             // Entity -> DTO
             ItemImgDto itemImgDto = ItemImgDto.of(itemimg);
             itemImgDtoList.add(itemImgDto);
         }
 
-        for(ItemDetailImg itemDetailImg : itemDetailImgList){
+        for (ItemDetailImg itemDetailImg : itemDetailImgList) {
             ItemDetailImgDto itemDetailImgDto = ItemDetailImgDto.of(itemDetailImg);
             itemDetailImgDtoList.add(itemDetailImgDto);
         }
@@ -109,7 +116,7 @@ public class ItemService {
     }
 
     public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList, List<MultipartFile> itemDetailImgFileList)
-            throws Exception{
+            throws Exception {
         //상품 변경
         Item item = itemRepository.findById(itemFormDto.getId()).
                 orElseThrow(EntityNotFoundException::new);
@@ -118,10 +125,10 @@ public class ItemService {
         List<Long> itemImgIds = itemFormDto.getItemImgIds();
         List<Long> itemDetailImgIds = itemFormDto.getItemDetailImgIds();
 
-        for(int i =0; i<itemImgFileList.size();i++){
+        for (int i = 0; i < itemImgFileList.size(); i++) {
             itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
         }
-        for(int i=0; i<itemDetailImgFileList.size();i++){
+        for (int i = 0; i < itemDetailImgFileList.size(); i++) {
             itemDetailImgService.updateItemImg(itemDetailImgIds.get(i), itemDetailImgFileList.get(i));
         }
         return item.getId();
@@ -133,42 +140,39 @@ public class ItemService {
     }
 
 
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String email) {
+        return itemRepository.getAdminItemPage(itemSearchDto, pageable, email);
+    }
 
     @Transactional(readOnly = true)
-    public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
-        return itemRepository.getAdminItemPage(itemSearchDto,pageable);
-    }
-    @Transactional(readOnly = true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category, Principal principal){
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category, Principal principal) {
         Optional<Category> category1 = categoryRepository.findByName(category);
         Member member = memberService.giveMember(memberService.checkEmail(principal));
         Long memberId = member.getId();
-        if(category.isEmpty()) {
+        if (category.isEmpty()) {
             return itemRepository.getAllItems(itemSearchDto, pageable, memberId);
-        }
-        else if (category1.get().getParentCategoryId() != null) {
+        } else if (category1.get().getParentCategoryId() != null) {
             Long categoryId = category1.map(Category::getId).orElse(null);
             return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId, memberId);
 
-        }
-        else {
+        } else {
             List<Category> categorys = categoryRepository.findByParentCategoryId(category1.get().getId());
             return itemRepository.getMainItemPageCategorys(itemSearchDto, pageable, categorys, memberId);
         }
     }
+
     @Transactional(readOnly = true)
-    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category){
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String category) {
 
         Optional<Category> category1 = categoryRepository.findByName(category);
-        if(category.isEmpty()) {
+        if (category.isEmpty()) {
             return itemRepository.getAllItems(itemSearchDto, pageable);
-        }
-        else if (category1.get().getParentCategoryId() != null) {
+        } else if (category1.get().getParentCategoryId() != null) {
             Long categoryId = category1.map(Category::getId).orElse(null);
             return itemRepository.getMainItemPage(itemSearchDto, pageable, categoryId);
 
-        }
-        else {
+        } else {
             List<Category> categorys = categoryRepository.findByParentCategoryId(category1.get().getId());
             return itemRepository.getMainItemPageCategorys(itemSearchDto, pageable, categorys);
         }

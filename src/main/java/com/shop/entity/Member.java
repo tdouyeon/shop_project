@@ -45,7 +45,7 @@ public class Member extends BaseEntity{
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
 
-        if(role.equals("ADMIN")) {
+        if(role.equals("admin")) {
             member.setRole(Role.ADMIN);
         } else {
             member.setRole(Role.USER);

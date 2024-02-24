@@ -18,12 +18,13 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final MemberService memberService;
     private final ItemService itemService;
+
     public boolean checkLiked(Long itemId, boolean liked, Principal principal) {
         Member member = memberService.giveMember(memberService.checkEmail(principal));
         Long memberId = member.getId();
-        if(liked){
+        if (liked) {
             Optional<Like> findLike = likeRepository.findByMemberIdAndItemId(memberId, itemId);
-            if(findLike.isPresent()) {
+            if (findLike.isPresent()) {
                 likeRepository.deleteByMemberIdAndItemId(memberId, itemId);
             }
             return false;

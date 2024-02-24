@@ -13,10 +13,14 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<Item,Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
+public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom {
     // select * from item where item_nm = ?;
     //String itemNm이 변수의 값이 치환 되서 실행
     List<Item> findByItemNm(String itemNm);
+
     List<Item> findByPriceLessThan(Integer price);
+
     List<Item> findByPriceLessThanOrderByPriceDesc(Integer price);
+
+    Long countByCreatedBy(String createdBy);
 }

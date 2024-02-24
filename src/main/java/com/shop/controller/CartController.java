@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
 import org.slf4j.Logger;
 
 @Controller
@@ -34,7 +35,7 @@ public class CartController {
 
     @PostMapping(value = "/cart")
     public ResponseEntity<String> order(@RequestBody @Valid CartItemDto cartItemDto,
-                         BindingResult bindingResult, Principal principal) {
+                                        BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -54,14 +55,15 @@ public class CartController {
     }
 
     @GetMapping(value = "/cart")
-    public String orderHist(Principal principal, Model model){
+    public String orderHist(Principal principal, Model model) {
         List<CartDetailDto> cartDetailDtoList = cartService.getCartList(principal);
-        model.addAttribute("cartItems",cartDetailDtoList);
+        model.addAttribute("cartItems", cartDetailDtoList);
         return "cart/cartList";
     }
+
     @PatchMapping(value = "/cartItem/{cartItemId}")
     public ResponseEntity<String> updateCartItem(@PathVariable("cartItemId") Long cartItemId,
-                                                       int count, Principal principal) {
+                                                 int count, Principal principal) {
         System.out.println(cartItemId);
         if (count <= 0) {
             return new ResponseEntity<String>("최소 1개이상 담아주세요.", HttpStatus.BAD_REQUEST);
@@ -72,36 +74,37 @@ public class CartController {
         cartService.updateCartItemCount(cartItemId, count);
         return ResponseEntity.noContent().build();
     }
+
     @DeleteMapping(value = "/cartItem/{cartItemId}")
     public ResponseEntity<String> deleteCartItem(@PathVariable("cartItemId") Long cartItemId,
-                                                       Principal principal){
+                                                 Principal principal) {
         if (!cartService.validateCartItem(cartItemId, principal)) {
             return new ResponseEntity<String>("수정권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         cartService.deleteCartItem(cartItemId);
         return ResponseEntity.noContent().build();
     }
+
     // cartList.html -> CartController -> CartService -> OrderService
     // -> CartService -> CartController -> carList.html
     @PostMapping(value = "/cart/orders")
     public ResponseEntity<String> orderCartItem(@RequestBody CartOrderDto cartOrderDto,
-                                                      Principal principal){
+                                                Principal principal) {
         System.out.println(cartOrderDto.getCartItemId());
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
 
-        if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){
-            return new ResponseEntity<String>("주문할 상품을 선택해주세요.",HttpStatus.FORBIDDEN);
+        if (cartOrderDtoList == null || cartOrderDtoList.size() == 0) {
+            return new ResponseEntity<String>("주문할 상품을 선택해주세요.", HttpStatus.FORBIDDEN);
         }
-        for(CartOrderDto cartOrder : cartOrderDtoList){
-            if(!cartService.validateCartItem(cartOrder.getCartItemId(), principal)){
-                return new ResponseEntity<String>("주문 권한이 없습니다.",HttpStatus.FORBIDDEN);
+        for (CartOrderDto cartOrder : cartOrderDtoList) {
+            if (!cartService.validateCartItem(cartOrder.getCartItemId(), principal)) {
+                return new ResponseEntity<String>("주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
         }
         Long orderId;
         try {
             orderId = cartService.orderCartItem(cartOrderDtoList, principal);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.noContent().build();

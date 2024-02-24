@@ -11,7 +11,7 @@ import lombok.Setter;
 public class ReviewImg {
     @Id
     @Column(name = "review_img_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     private Long id;
     private String imgName;
     private String oriImgName;
@@ -20,7 +20,8 @@ public class ReviewImg {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
-    public void updateReviewImg(String oriImgName, String imgName, String imgUrl){
+
+    public void updateReviewImg(String oriImgName, String imgName, String imgUrl) {
         this.oriImgName = oriImgName;
         this.imgName = imgName;
         this.imgUrl = imgUrl;

@@ -1,102 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
-<!-- 사용자 스크립트 추가 -->
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
-        $(document).ready(function(){
-            $("searchBtn").on("click",function(e){
-                e.preventDefault(); //검색버튼 클릭시 form 태그 전송을 막습니다.
-                page(0);
-            });
-        });
+      layout:decorate="~{layouts/adminLayout}">
 
-        function page(page){
-            var searchDateType = $("#searchDateType").val();
-            var searchSellStatus = $("#searchSellStatus").val();
-            var searchBy = $("#searchBy").val();
-            var searchQuery = $("#searchQuery").val();
-
-            location.href="/admin/items/" + page + "?searchDateType=" + searchDateType
-            + "&searchSellStatus=" + searchSellStatus + "&searchBy=" + searchBy
-            + "&searchQuery=" + searchQuery;
-        }
-    </script>
-</th:block>
-
-<!-- 사용자 CSS 추가 -->
-<th:block layout:fragment="css">
-    <style>
-        select{
-            margin-right : 10px;
-            -webkit-appearance : none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-        #container{
-            width: 800px;
-            margin: 0 auto;
-        }
-        .Mng_form{
-            display: flex;
-            flex-direction: column;
-        }
-        .align-items-center{
-            display: flex;
-            justify-content: flex-end;
-        }
-        table{
-            margin-top: 20px;
-        }
-        table, td{
-            border-top: 1px solid rgb(238,238,238);
-            border-bottom: 1px solid rgb(238,238,238);
-            border-collapse: collapse;
-            padding: 12px;
-            text-align: center;
-        }
-        .arrow{
-            margin-top: 7px;
-        }
-        .sel1{
-            width: auto;
-            padding: 5px 15px;
-            border: 1px solid #aaaa;
-            border-radius: 5px;
-            margin-right: 3px;
-        }
-        .search_box{
-        padding: 5px 15px;
-        border: 1px solid #aaaa;
-        border-radius: 5px;
-        }
-        .btn_search{
-        padding: 5px 15px;
-        border: 1px solid #aaaa;
-        border-radius: 5px;
-        background-color: rgb(0,32,83);
-        color: rgb(255, 255, 255);
-        }
-        .pagination{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-        .pagination li{
-            display: flex;
-            width: 30px;
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
-        }
-        .disabled{
-            padding: 15px 10px 10px 10px;
-        }
-
-    </style>
-</th:block>
+<head>
+    <link th:href="@{/css/itemMng.css}" rel="stylesheet">
+</head>
 
 <div layout:fragment="content">
     <div id="container">

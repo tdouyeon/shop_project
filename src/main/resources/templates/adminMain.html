@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/adminLayout}">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <style th:fragment="css">
+        .content{
+            width: 800px;
+    margin: 0 auto;
+        }
+        .count{
+            display: flex;
+            justify-content: space-around;
+        }
+        .count > a {
+    margin: 5vw 0vw;
+    border: 1px solid black;
+    padding: 7vw 10vw;
+    font-size: 30px;
+    font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="count">
+        <a href="/admin/items" th:text="${itemCount != null ? itemCount : 0}" class="itemCount"></a>
+        <a href="/notice/Mng" th:text="${noticeCount != null ? noticeCount : 0}" class="noticeCount"></a>
+    </div>
+</div>
+</body>
+</html>

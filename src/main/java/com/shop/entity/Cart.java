@@ -15,7 +15,7 @@ import java.util.Optional;
 public class Cart {
     @Id
     @Column(name = "cart_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY) // 1:1 맵핑
@@ -24,7 +24,7 @@ public class Cart {
     private Member member;
 
 
-    public static Cart createCart(Member member){
+    public static Cart createCart(Member member) {
         Cart cart = new Cart();
         cart.setMember(member);
         return cart;

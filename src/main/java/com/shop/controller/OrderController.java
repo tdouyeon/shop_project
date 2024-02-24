@@ -40,7 +40,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final ItemService itemService;
     private final CartService cartService;
     private IamportClient iamportClient;
 
@@ -51,15 +50,15 @@ public class OrderController {
 
     @PostMapping(value = "/order")
     public ResponseEntity<String> order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
-                         Principal principal){
+                                        Principal principal) {
         // String a = "abc" + "def"
         // StringBuilder a;
         // a.append("abc");
         // a.append("def");
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-            for(FieldError fieldError : fieldErrors){
+            for (FieldError fieldError : fieldErrors) {
                 sb.append(fieldError.getDefaultMessage());
             }
             return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
@@ -69,28 +68,28 @@ public class OrderController {
         Long orderId;
         try {
 
-            orderId = orderService.order(orderDto,principal);
-        }catch (Exception e){
+            orderId = orderService.order(orderDto, principal);
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = {"/orders", "/orders/{page}"})
-    public String orderHist(@PathVariable("page") Optional<Integer> page, Principal principal, Model model){
+    public String orderHist(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 5);
 
         Page<OrderHistDto> orderHistDtoList = orderService.getOrderList(principal, pageable);
 
         model.addAttribute("orders", orderHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("maxPage",5);
+        model.addAttribute("maxPage", 5);
         return "order/orderHist";
     }
 
     @PostMapping("/order/{orderId}/cancel")
-    public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId, Principal principal){
-        if(!orderService.validateOrder(orderId, principal)){
+    public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId, Principal principal) {
+        if (!orderService.validateOrder(orderId, principal)) {
             return new ResponseEntity<String>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
         orderService.cancelOrder(orderId);
@@ -98,17 +97,18 @@ public class OrderController {
     }
 
     @PostMapping("/order/{orderItemId}/review")
-    public ResponseEntity<Long> reviewOrder(@PathVariable("orderItemId") Long orderItemId){
-        return new ResponseEntity<Long>(orderItemId, HttpStatus.OK) ;
+    public ResponseEntity<Long> reviewOrder(@PathVariable("orderItemId") Long orderItemId) {
+        return new ResponseEntity<Long>(orderItemId, HttpStatus.OK);
     }
+
     @PostMapping("/order/{orderId}/reOrder")
     // AJAX 형태!!!!
     public ResponseEntity<String> reOrder(@PathVariable("orderId")
-                                                Long orderId, Principal principal){
-        if (!orderService.validateOrder(orderId, principal)){
+                                          Long orderId, Principal principal) {
+        if (!orderService.validateOrder(orderId, principal)) {
             return new ResponseEntity<String>("재주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
-        cartService.reAddCart(orderId,principal);
+        cartService.reAddCart(orderId, principal);
 
         return ResponseEntity.noContent().build();
 

@@ -20,7 +20,7 @@ public class NoticeDto {
     private static ModelMapper modelMapper = new ModelMapper();
 
 
-    public Notice createNotice(){
+    public Notice createNotice() {
         return modelMapper.map(this, Notice.class);
     }
 }

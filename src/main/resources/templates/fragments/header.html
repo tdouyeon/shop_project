@@ -10,21 +10,6 @@
 
             <li><a href="/shop">SHOP</a></li>
             <li><a href="/notice/notice">NOTICE</a></li>
-            <li li sec:authorize="hasAnyAuthority('ROLE_ADMIN')" class="hover-container">
-                <a href="/mypage/" class="hover-text" >ADMIN</a>
-                <ul class="sub-elements">
-                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                        <a href="/admin/item/new">상품등록</a>
-                    </li>
-                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                        <a href="/admin/items">상품관리</a>
-                    </li>
-                    <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-                        <a href="/notice/make">공지등록</a>
-                    </li>
-                    <!-- 추가적인 하위 요소들을 여기에 추가할 수 있습니다. -->
-                </ul>
-            </li>
             <li sec:authorize="isAuthenticated()" class="hover-container">
                 <a href="/mypage/mypage" class="hover-text" >MY PAGE</a>
                 <ul class="sub-elements">
@@ -37,7 +22,7 @@
                 </ul>
             </li>
             <li sec:authorize="isAnonymous()">
-                <a href="/members/login">LOGIN</a></li>
+                <a href="/members/login/user">LOGIN</a></li>
         </ul>
         <div class="sear">
             <form class="navbar__search" th:action="@{/shop}" method="get">
@@ -48,19 +33,4 @@
         </div>
     </nav>
 </header>
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
-        function scrollHeader(){
-        const header = document.getElementById('navbar')
-        // When the scroll is greater than 100 viewport height, add the scroll-header class to the header tag
-        if(this.scrollY >= 100){
-        header.classList.add('scroll-header');
-        } else {
-        header.classList.remove('scroll-header')
-        }
-        }
-        window.addEventListener('scroll', scrollHeader)
-    </script>
-</th:block>
-
 </html>

@@ -32,9 +32,6 @@ public class MemberFormDto {
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String tel;
 
-    @NotNull(message = "역할 지정은 필수 입니다.")
-    private String role;
-
     @NotNull(message = "필수 이용약관에 동의해주세요.")
-    private String [] chk;
+    private String[] chk;
 }

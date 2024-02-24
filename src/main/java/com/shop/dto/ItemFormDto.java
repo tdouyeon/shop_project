@@ -30,7 +30,7 @@ public class ItemFormDto {
     private ItemSellStatus itemSellStatus;
 
     private Category category;
-//----------------------------------------------------------------------------
+    //----------------------------------------------------------------------------
     //ItemImg
     private List<ItemImgDto> itemImgDtoList = new ArrayList<>(); //상품 이미지 정보
 
@@ -38,18 +38,19 @@ public class ItemFormDto {
 
     private List<Long> itemImgIds = new ArrayList<>(); //상품 이미지 아이디
 
-    private  List<Long> itemDetailImgIds = new ArrayList<>(); // 상품 상세 이미지 정보
+    private List<Long> itemDetailImgIds = new ArrayList<>(); // 상품 상세 이미지 정보
 
 
     //--------------------------------------------------------------------------------------
     // ModelMapper
     private static ModelMapper modelMapper = new ModelMapper();
 
-    public Item createItem(){
+    public Item createItem() {
         // ItemFormDto -> Item 연결
         return modelMapper.map(this, Item.class);
     }
-    public static ItemFormDto of(Item item){
+
+    public static ItemFormDto of(Item item) {
         // Item -> ItemFormDto 연결
         return modelMapper.map(item, ItemFormDto.class);
     }

@@ -10,13 +10,16 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ItemRepositoryCustom {
-    Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable);
+    Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String email);
+
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Long category_id, Long memberId);
+
     Page<MainItemDto> getMainItemPageCategorys(ItemSearchDto itemSearchDto, Pageable pageable, List<Category> categoryList, Long memberId);
 
     Page<MainItemDto> getAllItems(ItemSearchDto itemSearchDto, Pageable pageable, Long memberId);
 
     Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable, Long category_id);
+
     Page<MainItemDto> getMainItemPageCategorys(ItemSearchDto itemSearchDto, Pageable pageable, List<Category> categoryList);
 
     Page<MainItemDto> getAllItems(ItemSearchDto itemSearchDto, Pageable pageable);

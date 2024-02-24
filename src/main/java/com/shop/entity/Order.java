@@ -14,9 +14,9 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @Setter
-public class Order extends BaseEntity{
+public class Order extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     @Column(name = "order_id")
     private Long id;
 
@@ -25,7 +25,7 @@ public class Order extends BaseEntity{
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL
-                ,orphanRemoval = true, fetch = FetchType.LAZY)
+            , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
@@ -40,40 +40,43 @@ public class Order extends BaseEntity{
 
     //주문서 주문아이템 리스트에 주문 아이템 추가
     //주문 아이템에 주문서 추가
-    public void addOrderItem(OrderItem orderItem){
+    public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
+
     // 주문서 생성
     // 현재 로그인된 멤버 주문서에 추가
     // 주문아이템 리스트를 반복문을 통해서 주문서에 추가
     // 상태는 주문으로 세팅
     // 주문 시간은 현재시간으로 세팅
     // 주문서 리턴
-    public static Order createOrder(Member member, List<OrderItem> orderItemList){
+    public static Order createOrder(Member member, List<OrderItem> orderItemList) {
         Order order = new Order();
         order.setMember(member);
-        for(OrderItem orderItem : orderItemList){
+        for (OrderItem orderItem : orderItemList) {
             order.addOrderItem(orderItem);
         }
         order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
+
     // 주문서에 있는 주문 아이템 리스트를 반복
     // 주문 아이템마다 총 가격을 tatalPrice에 추가
     // 결론 비싸다 -> 개발자 되야 한다. 괜찮다.(실력주의)
-    public int getTotalPrice(){
+    public int getTotalPrice() {
         int totalPrice = 0;
-        for(OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getTotalPrice();
         }
         return totalPrice;
     }
-    public void cancelOrder(){
+
+    public void cancelOrder() {
         this.orderStatus = OrderStatus.CANCEL;
 
-        for(OrderItem orderItem : orderItems){
+        for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }
     }

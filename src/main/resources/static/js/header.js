@@ -16,3 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300); // 0.3초(300ms) 후에 추가
     });
 });
+        function scrollHeader(){
+        const header = document.getElementById('navbar')
+        // When the scroll is greater than 100 viewport height, add the scroll-header class to the header tag
+        if(this.scrollY >= 100){
+        header.classList.add('scroll-header');
+        } else {
+        header.classList.remove('scroll-header')
+        }
+        }
+        window.addEventListener('scroll', scrollHeader)

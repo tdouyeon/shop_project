@@ -24,7 +24,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private MemberService memberService;
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException{
+    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(oAuth2UserRequest);
 
@@ -37,7 +37,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 , oAuth2User.getAttributes());
 
 
-        if(memberService.findMember(attributes.getEmail())){
+        if (memberService.findMember(attributes.getEmail())) {
             Member member = new Member();
             member.setEmail(attributes.getEmail());
             member.setName(attributes.getName());

@@ -28,8 +28,8 @@ public class ReviewService {
     private final ReviewImgRepository reviewImgRepository;
 
     public void saveReview(ReviewFormDto reviewFormDto, Long orderItemId, List<MultipartFile> reviewImgFileList, Principal principal)
-            throws Exception{
-        Review review =  ReviewMapper.convertToEntity(reviewFormDto);
+            throws Exception {
+        Review review = ReviewMapper.convertToEntity(reviewFormDto);
         Member member = memberService.giveMember(memberService.checkEmail(principal));
         Long itemId = itemService.getItemFormDto(orderItemId);
         Item item = itemService.giveItem(itemId);
@@ -38,13 +38,14 @@ public class ReviewService {
         reviewRepository.save(review);
 
         //이미지 등록
-        for(int i =0;i<reviewImgFileList.size();i++){
+        for (int i = 0; i < reviewImgFileList.size(); i++) {
             ReviewImg reviewImg = new ReviewImg();
             reviewImg.setReview(review);
-            reviewImgService.saveReview(reviewImg,reviewImgFileList);
+            reviewImgService.saveReview(reviewImg, reviewImgFileList);
         }
         itemService.changeReviewStatus(orderItemId);
     }
+
     public List<ReviewFormDto> giveReview(Long itemId) {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
         return ReviewMapper.convertToDtoList(reviewList);
@@ -56,6 +57,7 @@ public class ReviewService {
         List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
         return ReviewMapper.convertToDtoList(reviewList);
     }
+
     public boolean existReviewCheck(Long itemId) {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
         return reviewList != null && !reviewList.isEmpty();
@@ -64,20 +66,23 @@ public class ReviewService {
     public List<ReviewImgDto> giveReviewImg(Long itemId) {
         List<Review> reviewList = reviewRepository.findByItemId(itemId);
         List<ReviewImg> reviewImgList = new ArrayList<>();
-        for(Review review : reviewList) {
+        for (Review review : reviewList) {
             List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
             reviewImgList.add(reviewImgs.get(0));
         }
         return ReviewImgMapper.convertToDtoList(reviewImgList);
     }
+
     public List<ReviewImgDto> giveReviewImg(Principal principal) {
         String email = memberService.checkEmail(principal);
         Member member = memberService.giveMember(email);
         List<Review> reviewList = reviewRepository.findByMemberId(member.getId());
         List<ReviewImg> reviewImgList = new ArrayList<>();
-        for(Review review : reviewList) {
+        for (Review review : reviewList) {
             List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
-            reviewImgList.add(reviewImgs.get(0));
+            if(!reviewImgs.isEmpty()){
+                reviewImgList.add(reviewImgs.get(0));
+            }
         }
         return ReviewImgMapper.convertToDtoList(reviewImgList);
     }

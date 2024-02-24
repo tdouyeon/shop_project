@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class CategoryMapper{
+public class CategoryMapper {
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static CategoryDto convertToDto(Category category) {

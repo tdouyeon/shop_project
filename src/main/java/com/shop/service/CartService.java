@@ -36,57 +36,59 @@ public class CartService {
     public Long addCart(CartItemDto cartItemDto, Principal principal) {
         Item item = itemRepository.findById(cartItemDto.getItemId())
                 .orElseThrow(EntityExistsException::new);
-            String email = memberService.checkEmail(principal);
-            Member member = memberRepository.findByEmail(email);
-               Cart cart = cartRepository.findByMemberId(member.getId());
-                if (cart == null) {
-                    cart = Cart.createCart(member);
-                    cartRepository.save(cart);
-                }
-                CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
-                if (savedCartItem != null) {
-                    savedCartItem.addCount(cartItemDto.getCount());
-                    return savedCartItem.getId();
-                } else {
-                    CartItem cartItem = CartItem.createCartItem(cart, item, cartItemDto.getCount());
-                    cartItemRepository.save(cartItem);
-                    return cartItem.getId();
-                }
+        String email = memberService.checkEmail(principal);
+        Member member = memberRepository.findByEmail(email);
+        Cart cart = cartRepository.findByMemberId(member.getId());
+        if (cart == null) {
+            cart = Cart.createCart(member);
+            cartRepository.save(cart);
+        }
+        CartItem savedCartItem = cartItemRepository.findByCartIdAndItemId(cart.getId(), item.getId());
+        if (savedCartItem != null) {
+            savedCartItem.addCount(cartItemDto.getCount());
+            return savedCartItem.getId();
+        } else {
+            CartItem cartItem = CartItem.createCartItem(cart, item, cartItemDto.getCount());
+            cartItemRepository.save(cartItem);
+            return cartItem.getId();
+        }
     }
 
     @Transactional(readOnly = true)
-    public List<CartDetailDto> getCartList(Principal principal){
+    public List<CartDetailDto> getCartList(Principal principal) {
         List<CartDetailDto> cartDetailDtoList = new ArrayList<>();
-            String email = memberService.checkEmail(principal);
-            Member member = memberRepository.findByEmail(email);
-            Cart cart = cartRepository.findByMemberId(member.getId());
-            if(cart == null){
-                return cartDetailDtoList;
-            }
-            cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
+        String email = memberService.checkEmail(principal);
+        Member member = memberRepository.findByEmail(email);
+        Cart cart = cartRepository.findByMemberId(member.getId());
+        if (cart == null) {
             return cartDetailDtoList;
         }
-    @Transactional(readOnly = true)
-    public boolean validateCartItem(Long cartItemId, Principal principal){
-            String email = memberService.checkEmail(principal);
-            Member curMember = memberRepository.findByEmail(email);
-            CartItem cartItem = cartItemRepository.findById(cartItemId)
-                    .orElseThrow(EntityExistsException::new);
-            Member savedMember = cartItem.getCart().getMember();
+        cartDetailDtoList = cartItemRepository.findCartDetailDtoList(cart.getId());
+        return cartDetailDtoList;
+    }
 
-            if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
-                return false;
-            }
-            return true;
+    @Transactional(readOnly = true)
+    public boolean validateCartItem(Long cartItemId, Principal principal) {
+        String email = memberService.checkEmail(principal);
+        Member curMember = memberRepository.findByEmail(email);
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(EntityExistsException::new);
+        Member savedMember = cartItem.getCart().getMember();
+
+        if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+            return false;
+        }
+        return true;
 
     }
-    public void updateCartItemCount(Long cartItemId, int count){
+
+    public void updateCartItemCount(Long cartItemId, int count) {
         CartItem cartItem = cartItemRepository.findById(cartItemId)
                 .orElseThrow(EntityExistsException::new);
         cartItem.updateCount(count);
     }
 
-    public void deleteCartItem(Long cartItemId){
+    public void deleteCartItem(Long cartItemId) {
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(EntityExistsException::new);
         cartItemRepository.delete(cartItem);
     }
@@ -101,16 +103,17 @@ public class CartService {
             orderDto.setCount(cartItem.getCount());
             orderDtoList.add(orderDto);
         }
-            String email = memberService.checkEmail(principal);
-            Long orderId = orderService.orders(orderDtoList, email);
+        String email = memberService.checkEmail(principal);
+        Long orderId = orderService.orders(orderDtoList, email);
 
-            for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-                CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
-                        .orElseThrow(EntityExistsException::new);
-                cartItemRepository.delete(cartItem);
-            }
-            return orderId;
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityExistsException::new);
+            cartItemRepository.delete(cartItem);
+        }
+        return orderId;
     }
+
     public void reAddCart(Long orderId, Principal principal) {
         List<OrderItem> orderItems = orderItemService.getReOrderItems(orderId);
         for (OrderItem orderItem : orderItems) {

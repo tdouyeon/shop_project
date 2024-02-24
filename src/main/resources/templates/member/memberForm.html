@@ -12,15 +12,8 @@
 </head>
 <div layout:fragment="content">
     <div id="container">
-    <form action="/members/new" id="memberJoinForm" role="form" method="post" th:object="${memberFormDto}">
+    <form action="/members/new/user" id="memberJoinForm" role="form" method="post" th:object="${memberFormDto}">
         <span class="join_title">JOIN</span>
-        <div class="form-group">
-            <label><input type ="radio" name="role" th:value="ADMIN">관리자</label>
-            <label><input type="radio" name="role" th:value="USER">유저</label>
-        </div>
-        <div class="form-group error">
-            <p th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="fieldError">Incorrect date</p>
-        </div>
         <div class="form-group">
             <label th:for="name" class="label">NAME</label>
             <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력해주세요.">

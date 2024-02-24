@@ -2,10 +2,7 @@ package com.shop.controller;
 
 import com.shop.dto.*;
 import com.shop.entity.Item;
-import com.shop.service.CategoryService;
-import com.shop.service.ItemService;
-import com.shop.service.LikeService;
-import com.shop.service.MemberService;
+import com.shop.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -28,6 +26,8 @@ public class MainController {
     private final MemberService memberService;
     private final CategoryService categoryService;
     private final LikeService likeService;
+    private final NoticeService noticeService;
+
     @GetMapping(value = "/")
     public String main() {
         categoryService.makeCategory();
@@ -36,25 +36,24 @@ public class MainController {
     }
 
     @GetMapping(value = "/shop")
-    public String shopMain(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal ) {
+    public String shopMain(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal) {
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
-        if(itemSearchDto.getSearchQuery() == null)
-        {
+        if (itemSearchDto.getSearchQuery() == null) {
             itemSearchDto.setSearchQuery("");
         }
-        if(principal != null) {
-            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable,"", principal);
+        if (principal != null) {
+            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable, "", principal);
             model.addAttribute("items", items);
-        }
-        else {
-            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable,"");
+        } else {
+            Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable, "");
             model.addAttribute("items", items);
         }
 
-        model.addAttribute("itemSearchDto",itemSearchDto);
-        model.addAttribute("maxPage",8);
+        model.addAttribute("itemSearchDto", itemSearchDto);
+        model.addAttribute("maxPage", 8);
         return "category/shop";
     }
+
     @GetMapping(value = "/shop/{categoryName}")
     @ResponseBody
     public ResponseEntity<Page<MainItemDto>> shopMain(ItemSearchDto itemSearchDto,
@@ -70,18 +69,17 @@ public class MainController {
         Page<MainItemDto> items;
         if (categoryName != null) {
             String lowerCaseCategoryName = categoryName.toLowerCase();
-            items = itemService.getMainItemPage(itemSearchDto, pageable, lowerCaseCategoryName,principal);
+            items = itemService.getMainItemPage(itemSearchDto, pageable, lowerCaseCategoryName, principal);
         } else {
             items = itemService.getMainItemPage(itemSearchDto, pageable, "", principal);
         }
-        System.out.println("사이즈보자"+items.getContent().size());
-
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
+
     @PostMapping(value = "/shop/liked")
     public ResponseEntity<Map<String, Object>> checkLiked(@RequestBody Map<String, Object> request, Principal principal) {
 
-        if(principal == null) {
+        if (principal == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         try {
@@ -100,5 +98,17 @@ public class MainController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping(value = "/adminMain")
+    public String adminMain (Principal principal, Model model) {
+        if(!memberService.checkAdmin(principal)) {
+            return "member/memberAdminForm";
+        }
+        int itemCount = itemService.giveItemCount(principal);
+        int noticeCount = noticeService.countNotice(principal);
+        model.addAttribute("itemCount", itemCount);
+        model.addAttribute("noticeCount",noticeCount);
+        return "adminMain";
+
     }
 }

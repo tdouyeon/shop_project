@@ -26,19 +26,20 @@ public class ItemImgService {
 
     private final ItemImgRepository itemImgRepository;
     private final FileService fileService;
-    public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception{
+
+    public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws Exception {
 
         String oriImgName = itemImgFile.getOriginalFilename(); // 오리지날 이미지 경로
         String imgName = "";
-        String imgUrl ="";
+        String imgUrl = "";
         System.out.println(oriImgName);
         //파일 업로드
-        if(!StringUtils.isEmpty(oriImgName)){ // oriImgName 문자열로 비어 있지 않으면 실행
+        if (!StringUtils.isEmpty(oriImgName)) { // oriImgName 문자열로 비어 있지 않으면 실행
             System.out.println("******");
             imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes());
             System.out.println(imgName);
-            imgUrl = "/images/item/"+imgName;
+            imgUrl = "/images/item/" + imgName;
         }
         //상품 이미지 정보 저장
         // oriImgName : 상품 이미지 파일의 원래 이름
@@ -48,18 +49,18 @@ public class ItemImgService {
         itemImgRepository.save(itemImg);
     }
 
-    public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception{
-        if(!itemImgFile.isEmpty()){ // 상품의 이미지를 수정한 경우 상품 이미지 업데이트
+    public void updateItemImg(Long itemImgId, MultipartFile itemImgFile) throws Exception {
+        if (!itemImgFile.isEmpty()) { // 상품의 이미지를 수정한 경우 상품 이미지 업데이트
             ItemImg savedItemImg = itemImgRepository.findById(itemImgId).
                     orElseThrow(EntityNotFoundException::new); // 기존 엔티티 조회
             // 기존에 등록된 상품 이미지 파일이 있는경우 파일 삭제
-            if(!StringUtils.isEmpty(savedItemImg.getImgName())){
-                fileService.deleteFile(itemImgLocation+"/"+savedItemImg.getImgName());
+            if (!StringUtils.isEmpty(savedItemImg.getImgName())) {
+                fileService.deleteFile(itemImgLocation + "/" + savedItemImg.getImgName());
             }
             String oriImgName = itemImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(itemImgLocation, oriImgName,
                     itemImgFile.getBytes()); // 파일 업로드
-            String imgUrl = "/images/item/"+imgName;
+            String imgUrl = "/images/item/" + imgName;
             //변경된 상품 이미지 정보를 세팅
             //상품 등록을 하는 경우에는 ItemImgRepository.save()로직을 호출 하지만
             //호출을 하지 않았습니다.

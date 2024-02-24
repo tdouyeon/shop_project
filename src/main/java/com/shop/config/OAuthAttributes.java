@@ -36,7 +36,7 @@ public class OAuthAttributes {
         if (registrationId.equals("kakao")) {
             return ofKakao(userNameAttributeName, attributes);
         } else if (registrationId.equals("naver")) {
-            return ofNaver(userNameAttributeName,attributes);
+            return ofNaver(userNameAttributeName, attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
     }

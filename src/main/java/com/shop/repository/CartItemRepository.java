@@ -17,7 +17,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     // 조건3 ItemImg 대표이미지
     // 정렬 기준 CartItem 등록시간 내림차순
     @Query("select new com.shop.dto.CartDetailDto(ci.id, i.itemNm, i.price, ci.count, im.imgUrl) " +
-            "from CartItem ci, ItemImg im "+
+            "from CartItem ci, ItemImg im " +
             "join ci.item i " +
             "where ci.cart.id = :cartId " +
             "and im.item.id = ci.item.id " +

@@ -10,7 +10,9 @@
 <div layout:fragment="content">
     <div id="container">
         <form action="/members/login" role="form" method="post" class="main">
-            <span class="login_title">LOGIN</span>
+            <input type="hidden" name="userType" th:value="${userType}">
+            <span class="login_title" th:if="${userType == 'admin'}">COMPANY LOGIN</span>
+            <span class="login_title" th:unless="${userType == 'admin'}">LOGIN</span>
             <div class="mainForm emailForm">
                 <input type="email" name="email" class="form email" required>
                 <label>ID</label>
@@ -31,10 +33,8 @@
         </span>
                 <div class="lo_jo">
                     <button class="btn btn_login">LOGIN</button>
-                    <button type="button" class="btn btn_join" onclick="location.href='/members/new'">JOIN</button>
+                    <button type="button" class="btn btn_join" onclick="location.href='/members/new/${userType}'">JOIN</button>
                 </div>
-
-
                 <div class="sns">
                     <a href="/oauth2/authorization/google">
                         <img src="/img/google.png" alt="shop" class="google">

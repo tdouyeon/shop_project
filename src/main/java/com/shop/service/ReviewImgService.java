@@ -28,20 +28,21 @@ public class ReviewImgService {
                 String originalFilename = image.getOriginalFilename();
                 System.out.println("파일 이름: " + originalFilename);
                 String imgName = "";
-                String imgUrl ="";
-                if(!StringUtils.isEmpty(originalFilename)){ // oriImgName 문자열로 비어 있지 않으면 실행
+                String imgUrl = "";
+                if (!StringUtils.isEmpty(originalFilename)) { // oriImgName 문자열로 비어 있지 않으면 실행
                     System.out.println("******");
                     imgName = fileService.uploadFile(reviewImgLocation, originalFilename,
                             image.getBytes());
                     System.out.println(imgName);
-                    imgUrl = "/images/review/"+imgName;
+                    imgUrl = "/images/review/" + imgName;
                 }
                 reviewImg.updateReviewImg(originalFilename, imgName, imgUrl);
                 reviewImgRepository.save(reviewImg);
             }
         }
-        }
+    }
+
     public List<ReviewImg> giveReviewImg(Long reviewId) {
         return reviewImgRepository.findByReviewId(reviewId);
     }
-    }
+}

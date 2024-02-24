@@ -12,20 +12,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name="item")
+@Table(name = "item")
 @Getter
 @Setter
 @ToString
-public class Item extends BaseEntity{
+public class Item extends BaseEntity {
     @Id //기본키
-    @Column(name="item_id")
+    @Column(name = "item_id")
     @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     private Long id; // 상품코드
 
     @Column(nullable = false, length = 50)
     private String itemNm; // 상품명
 
-    @Column(name="price", nullable = false)
+    @Column(name = "price", nullable = false)
     private int price; // 가격
 
     @Column(nullable = false)
@@ -52,22 +52,22 @@ public class Item extends BaseEntity{
     private Category category;
 
 
-    public void updateItem(ItemFormDto itemFormDto){
+    public void updateItem(ItemFormDto itemFormDto) {
         this.itemNm = itemFormDto.getItemNm();
         this.price = itemFormDto.getPrice();
         this.stockNumber = itemFormDto.getStockNumber();
         this.itemSellStatus = itemFormDto.getItemSellStatus();
     }
 
-    public void removeStock(int stockNumber){
+    public void removeStock(int stockNumber) {
         int restStock = this.stockNumber - stockNumber; // 10,  5 / 10, 20
-        if(restStock<0){
-            throw new OutOfStockException("상품의 재고가 부족합니다.(현재 재고 수량: "+this.stockNumber+")");
+        if (restStock < 0) {
+            throw new OutOfStockException("상품의 재고가 부족합니다.(현재 재고 수량: " + this.stockNumber + ")");
         }
         this.stockNumber = restStock; // 5
     }
 
-    public void addStock(int stockNumber){
+    public void addStock(int stockNumber) {
         this.stockNumber += stockNumber;
     }
 

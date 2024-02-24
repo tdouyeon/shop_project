@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "likes")
-public class Like extends BaseEntity{
+public class Like extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,7 +21,7 @@ public class Like extends BaseEntity{
     @JoinColumn(name = "item_id")
     private Item item;
 
-    public static Like createLike( Member member, Item item) {
+    public static Like createLike(Member member, Item item) {
         Like like = new Like();
         like.setMember(member);
         like.setItem(item);

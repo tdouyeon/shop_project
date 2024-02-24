@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class OrderItem extends BaseEntity{
+public class OrderItem extends BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO) // 자동을 1씩 증가
     @Column(name = "order_item_id")
     private Long id;
 
@@ -35,7 +35,7 @@ public class OrderItem extends BaseEntity{
 //    private  LocalDateTime updateTime;
 
     //item(상품) -> OrderItem(주문 상품)
-    public static OrderItem createOrderItem(Item item, int count){
+    public static OrderItem createOrderItem(Item item, int count) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setCount(count);
@@ -45,11 +45,11 @@ public class OrderItem extends BaseEntity{
         return orderItem;
     }
 
-    public int getTotalPrice(){
-        return orderPrice*count;
+    public int getTotalPrice() {
+        return orderPrice * count;
     }
 
-    public void cancel(){
+    public void cancel() {
         this.getItem().addStock(count);
     }
 }

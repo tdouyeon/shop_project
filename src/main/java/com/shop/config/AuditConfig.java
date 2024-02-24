@@ -11,6 +11,6 @@ public class AuditConfig {
     @Bean
     public AuditorAware<String> auditorProvider(){
 
-        return new AuditorAwareImpl(); // Bean 객체에 등록 AuditorAware<String>(자료형)
+        return new AuditorAwareImpl();
     }
 }

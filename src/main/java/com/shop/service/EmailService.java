@@ -13,18 +13,18 @@ import java.io.UnsupportedEncodingException;
 public class EmailService {
 
     private final JavaMailSender javaMailSender;  // 의존성 주입을 통해 필요한 객체를 가져옴
-    private static final String senderEmail= "xhzhdy1212@gmail.com";
+    private static final String senderEmail = "xhzhdy1212@gmail.com";
     private static int number;  // 랜덤 인증 코드
 
     private static boolean checkValid;
 
     // 랜덤 인증 코드 생성
     public static void createNumber() {
-        number = (int)(Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
+        number = (int) (Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
     }
 
     // 메일 양식 작성
-    public MimeMessage createMail(String mail){
+    public MimeMessage createMail(String mail) {
         createNumber();  // 인증 코드 생성
         MimeMessage message = javaMailSender.createMimeMessage();
 
@@ -57,12 +57,12 @@ public class EmailService {
                             "                                <tr>\n" +
                             "                                    <td>\n" +
                             "                                        <span style=\"font-size: 14px;\">\n" +
-                            "                                            다음 인증코드를 입력하고 인증을 완료하세요."+
+                            "                                            다음 인증코드를 입력하고 인증을 완료하세요." +
                             "                                        </span>\n" +
                             "                                    </td>\n" +
 
                             "                                        <span style=\"font-size: 20px; font-weight: 800px;\">\n" +
-                                                                        number +
+                            number +
                             "                                         </span>\n" +
                             "                                         <br>" +
                             "                                </tr>\n<tr><td style=\"height: 30px;\"></td></tr>" +
@@ -76,7 +76,7 @@ public class EmailService {
                             "    </table>",
                     "<p></p>"
             );
-            message.setText(body,"UTF-8", "html");
+            message.setText(body, "UTF-8", "html");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,22 +92,22 @@ public class EmailService {
         // 실제 메일 전송
         javaMailSender.send(message);
          */
-        System.out.println("이메일 인증번호"+number);
+        System.out.println("이메일 인증번호" + number);
         // 인증 코드 반환
-        return number+"";
+        return number + "";
     }
 
-    public boolean checkNumber(String num){
+    public boolean checkNumber(String num) {
         int checkNumber = Integer.parseInt(num);
-        if(checkNumber==number){
+        if (checkNumber == number) {
             checkValid = true;
             return true;
         }
-            return false;
+        return false;
     }
 
     public boolean validCheck() {
-        if(checkValid){
+        if (checkValid) {
             checkValid = false;
             return true;
         }
