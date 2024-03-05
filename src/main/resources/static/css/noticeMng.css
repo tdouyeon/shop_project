@@ -1,46 +1,32 @@
-        .content{
-        width: 600px;
-            margin: 0 auto;
-        }
-        #container{
-        display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        table{
-            margin-top: 20px;
-                width: 100%;
-        }
-        table, td{
-            border-top: 1px solid rgb(238,238,238);
-            border-bottom: 1px solid rgb(238,238,238);
-            border-collapse: collapse;
-            padding: 12px;
-            text-align: justify;
-            }
-            table th:nth-child(1) {
-              width: 50px; /* NUM 열의 너비 조절 */
-            }
-            th{
-                        padding: 12px;
-
-            }
-                    .pagination{
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        padding: 0;
-                    }
-                    .pagination li{
-                        display: flex;
-                        width: 30px;
-                        flex-direction: column;
-                        text-align: center;
-                        align-items: center;
-                    }
-                    .disabled{
-                        padding: 15px 10px 10px 10px;
-                    }
-                    h2{
-                    font-size: 20px;
-                    }
+.content { width: 600px; margin: 0 auto; }
+#container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+table { margin-top: 20px; width: 100%; }
+table,
+td {
+  border-top: 1px solid rgb(238, 238, 238);
+  border-bottom: 1px solid rgb(238, 238, 238);
+  border-collapse: collapse;
+  padding: 12px;
+  text-align: justify;
+}
+table th:nth-child(1) { width: 50px; }
+th { padding: 12px; }
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.pagination li {
+  display: flex;
+  width: 30px;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.disabled { padding: 15px 10px 10px 10px; }
+h2 { font-size: 20px; }

@@ -2,11 +2,7 @@ package com.shop.repository;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.shop.dto.ItemSearchDto;
-import com.shop.dto.NoticeDto;
-import com.shop.entity.Item;
 import com.shop.entity.Notice;
-import com.shop.entity.QItem;
 import com.shop.entity.QNotice;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;

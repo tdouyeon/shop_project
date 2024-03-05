@@ -6,14 +6,11 @@ import com.shop.dto.MemberFormDto;
 import com.shop.entity.Member;
 import com.shop.service.EmailService;
 import com.shop.service.MemberService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +29,7 @@ public class MemberController {
     @GetMapping(value = "/new/{userType}")
     public String memberForm(@PathVariable String userType, Model model) {
         model.addAttribute("memberFormDto", new MemberFormDto());
-        if(userType.equals("admin")) {
+        if (userType.equals("admin")) {
             return "member/memberAdminForm";
         }
         return "member/memberForm";
@@ -43,6 +40,7 @@ public class MemberController {
     public String sendSMS(String to) throws IOException {
         return memberService.sendMmsByResourcePath(to);
     }
+
 
     @PostMapping("/{num}/confirmNum")
     @ResponseBody
@@ -56,7 +54,7 @@ public class MemberController {
     @PostMapping(value = "/new/{userType}")
     public String memberForm(@PathVariable String userType, @Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            if(userType.equals("admin")){
+            if (userType.equals("admin")) {
                 return "member/memberAdminForm";
             }
             return "member/memberForm";
@@ -151,5 +149,16 @@ public class MemberController {
     @ResponseBody
     public Member giveMemberinf(Principal principal) {
         return memberService.giveMember(memberService.checkEmail(principal));
+    }
+
+    @DeleteMapping(value = "/deleteMember/{email}")
+    ResponseEntity<String> deleteMember(@PathVariable String email) {
+        System.out.println("이메일" + email);
+        try {
+            memberService.deleteMember(email);
+            return new ResponseEntity<String>("회원 탈퇴가 완료 되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("회원 삭제 중 에러가 발생 했습니다.", HttpStatus.BAD_REQUEST);
+        }
     }
 }

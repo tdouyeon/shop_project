@@ -69,6 +69,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
     public Predicate createdByEq(String createdBy) {
         return QItem.item.createdBy.eq(createdBy);
     }
+
     @Override
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable, String email) {
         QueryResults<Item> results = queryFactory.selectFrom(QItem.item)

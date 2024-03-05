@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 <head>
-<link th:href="@{/css/sidebar.css}" rel="stylesheet">
+    <link th:href="@{/css/sidebar.css}" rel="stylesheet">
 </head>
 <body>
 <!-- Swiper -->
@@ -13,17 +13,16 @@
             <th:block th:each="item, iterStat : ${items.getContent()}" th:status="status">
                 <li class="card" th:id="'card' + ${iterStat.index + 1}">
                     <div class="image-container">
-                    <a th:href="'/item/' + ${item.id}" class="text-dark">
-                        <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" data-item-id="${item.id}">
-                    </a>
-                        <img th:if="${item.liked}" class="icon" src="/img/fill_heart.svg" th:attr="data-heart-id=${item.id}" data-liked="true">
-                        <img th:unless="${item.liked}" class="icon" src="/img/empty_heart.svg" th:attr="data-heart-id=${item.id}" data-liked="false">
-
+                        <a th:href="'/item/' + ${item.id}" class="text-dark">
+                            <img th:src="${item.imgUrl}" class="card-img-top" th:alt="${item.itemNm}" data-item-id="${item.id}">
+                        </a>
+                        <img th:if="${item.liked}" class="icon" th:src="@{/img/fill_heart.svg}" th:attr="data-heart-id=${item.id}" data-liked="true">
+                        <img th:unless="${item.liked}" class="icon" th:src="@{/img/empty_heart.svg}" th:attr="data-heart-id=${item.id}" data-liked="false">
                     </div>
-                        <div class="card-body">
-                            <h4 class="card-title">[[${item.itemNm}]]</h4>
-                            <h3 class="card-price">[[${item.price}]]won</h3>
-                        </div>
+                    <div class="card-body">
+                        <h4 class="card-title">[[${item.itemNm}]]</h4>
+                        <h3 class="card-price">[[${item.price}]]won</h3>
+                    </div>
                     </a>
                 </li>
             </th:block>
@@ -45,12 +44,11 @@ start + (maxPage - 1) : items.totalPages)})">
                     <a th:href="@{'/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' +${page + 1}}"
                        th:inline="text" class="page-link">[[${page}]]</a>
                 </li>
+                <!-- Next Page -->
                 <li class="disabled" th:classappend="${items.number+1 ge items.totalPages}?'disabled'">
-                    <a th:href="@{'/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number}}"
+                    <a th:if="${items.getTotalPages} != ${items.getNumber+1}" th:href="@{'/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery} + '&page=' + ${items.number +1 }}"
                        aria-label="Next" class="page-link">
-                        <div th:if="${items.getTotalPages} != ${items.getNumber}+1">
-                            <img src="/img/Next.png" alt="shop" width="20px" height="20px">
-                        </div>
+                        <img src="/img/next.png" alt="shop" width="20px" height="20px">
                     </a>
                 </li>
             </ul>

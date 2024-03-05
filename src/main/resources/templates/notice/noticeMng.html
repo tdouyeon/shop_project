@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/adminLayout}">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/adminLayout}"
+>
 <head>
-  <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
-  <link th:href="@{/css/noticeMng.css}" rel="stylesheet">
-
+  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+  <link th:href="@{/css/noticeMng.css}" rel="stylesheet" />
 </head>
 <body>
 <div layout:fragment="content">
@@ -22,7 +23,12 @@
       <tbody>
       <tr th:each="notice, status : ${notices.getContent()}">
         <td th:text="${status.index + 1}"></td>
-        <td><a th:href="'/notice/noticeDtl/' + ${notice.id}" th:text="${notice.title}"></a></td>
+        <td>
+          <a
+                  th:href="'/notice/noticeDtl/' + ${notice.id}"
+                  th:text="${notice.title}"
+          ></a>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -32,28 +38,56 @@
       <p class="no">공지사항이 존재하지 않습니다.</p>
     </div>
   </div>
-  <div th:with="start=${(notices.number/maxPage)*maxPage +1},
+  <div
+          th:with="start=${(notices.number/maxPage)*maxPage +1},
 end=(${(notices.totalPages == 0) ? 1 : (start + (maxPage-1) < notices.totalPages ?
-start + (maxPage - 1) : notices.totalPages)})">
+start + (maxPage - 1) : notices.totalPages)})"
+  >
     <ul class="pagination">
       <li th:classappend="${notices.number eq 0}?'disabled'">
-        <a th:href="@{'/' + '&page=' + ${notices.number-1}}"
-           aria-label='Previous' class="page-link">
+        <a
+                th:href="@{'/' + '&page=' + ${notices.number-1}}"
+                aria-label="Previous"
+                class="page-link"
+        >
           <div th:if="${notices.getNumber} != 0">
-            <img src="/img/previous.png" alt="shop" width="20px" height="20px">
+            <img
+                    src="/img/previous.png"
+                    alt="shop"
+                    width="20px"
+                    height="20px"
+            />
           </div>
         </a>
       </li>
-      <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
-          th:classappend="${notices.number eq page-1}?'active':''">
-        <a th:href="@{'/shop' + '&page=' +${page + 1}}"
-           th:inline="text" class="page-link">[[${page}]]</a>
+      <li
+              class="page-item"
+              th:each="page: ${#numbers.sequence(start,end)}"
+              th:classappend="${notices.number eq page-1}?'active':''"
+      >
+        <a
+                th:href="@{'/shop' + '&page=' +${page + 1}}"
+                th:inline="text"
+                class="page-link"
+        >[[${page}]]</a
+        >
       </li>
-      <li class="disabled" th:classappend="${notices.number+1 ge notices.totalPages}?'disabled'">
-        <a th:href="@{'/shop' + '&page=' + ${notices.number}}"
-           aria-label="Next" class="page-link">
+      <li
+              class="disabled"
+              th:classappend="${notices.number+1 ge notices.totalPages}?'disabled'"
+      >
+        <a
+                th:href="@{'/shop' + '&page=' + ${notices.number}}"
+                aria-label="Next"
+                class="page-link"
+        >
           <div th:if="${notices.getTotalPages} != ${notices.getNumber}+1">
-            <img src="/img/Next.png" alt="shop" width="20px" height="20px">
+            <img
+                    src="/img/Next.png"
+                    alt="shop"
+                    width="20px"
+                    height="20px"
+            />
           </div>
         </a>
       </li>

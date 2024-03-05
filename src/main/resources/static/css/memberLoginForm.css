@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin: 5vw 0vw;
 }
 .main{ width: 400px; }
 
@@ -146,11 +147,4 @@ span{
     width: 30px;
 }
 
-.sns{
-    display: flex;
-    justify-content: center;
-}
-
-@media screen and (max-width: 768px){
-.google{ margin: 30px 10px 30px 30%; }
-};
+.sns{ display: flex; justify-content: center; }

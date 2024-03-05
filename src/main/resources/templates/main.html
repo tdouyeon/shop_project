@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
 <head>
-
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <title>Swiper demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+    />
     <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-    <link th:href="@{/css/header.css}" rel="stylesheet">
-    <link th:href="@{/css/layout1.css}" rel="stylesheet">
-    <link th:href="@{/css/footer.css}" rel="stylesheet">
-    <link th:href="@{/css/main.css}" rel="stylesheet">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link th:href="@{/css/header.css}" rel="stylesheet" />
+    <link th:href="@{/css/layout1.css}" rel="stylesheet" />
+    <link th:href="@{/css/footer.css}" rel="stylesheet" />
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
     <!-- Demo styles -->
-
 </head>
 
 <body>
@@ -23,10 +29,10 @@
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <img src="img/big_title1.jpg">
+                <img src="img/big_title1.jpg" />
             </div>
             <div class="swiper-slide">
-                <img src="img/big_title2.jpg">
+                <img src="img/big_title2.jpg" />
             </div>
         </div>
         <div class="swiper-button-next"></div>
@@ -59,5 +65,4 @@
     });
 </script>
 </body>
-
 </html>

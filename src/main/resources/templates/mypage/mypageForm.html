@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+      layout:decorate="~{layouts/myPageLayout}">
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +23,7 @@
     <div id="container">
         <h2>MY PAGE</h2>
         <div class="order_title">
-        <h2 class="title_order">구매 이력</h2>
-            <a href="/orders">자세히 보러 가기</a>
+            <h2 class="my_title_order">주문 이력</h2>
         </div>
         <div th:if="${#lists.isEmpty(orders)}">
             <p class="noOrder">주문 이력이 없습니다.</p>
@@ -33,58 +32,85 @@
             <div th:each="order : ${orders}" class="flex">
                 <div th:each="orderItem : ${order.orderItemDtoList}" class="d-flex">
                     <div class="one_flex">
-                    <h4 class="m-flex" th:text="${order.orderDate} + '주문'"></h4>
-                    <img th:src="${orderItem.imgUrl}" class="rounded repImg" th:alt="${orderItem.itemNm}">
+                        <h4 class="m-flex" th:text="${order.orderDate} + '주문'"></h4>
+                        <img th:src="${orderItem.imgUrl}" class="rounded repImg" th:alt="${orderItem.itemNm}">
                     </div>
-                <div class="alignfont">
-                    <span th:text="${orderItem.itemNm}" class="fs24 font-weight-bold"></span>
-                    <div class="fs18 font-weight-light">
-                        <span th:text="${orderItem.orderPrice} +'원'"></span>
-                        <span th:text="${orderItem.count} +'개'"></span>
-                    </div>
-                </div>
-                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
-                    <button type="button" class="order_btn" th:value="${order.orderId}"
-                            onclick="cancelOrder(this.value)">주문취소
-                    </button>
-                </th:block>
-                <button type="button" class="order_btn"
-                        th:value="${order.orderId}" onclick="reOrder(this.value)">재주문
-                </button>
-                <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
-                    <span class="cancel">(취소 완료)</span></th:block>
-                <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER and orderItem.reviewStatus == T(com.shop.constant.ReviewStatus).NONE}">
-                    <button type="button" class="order_btn" th:value="${orderItem.id}"
-                            onclick="makeReview(this.value)">리뷰 작성
-                    </button>
-                </th:block>
-            </div>
-        </div>
-        </div>
-    </div>
-            <div class="review_title">REVIEW</div>
-            <div th:if="${not #lists.isEmpty(reviews)}">
-                <div #swiperRef="" class="swiper mySwiper">
-                    <div class="swiper-wrapper">
-                        <div th:each="reviewFormDto, idx : ${reviews}" class="reviewDto_form swiper-slide">
-                            <!-- 이미지가 존재하는 경우에만 이미지를 렌더링 -->
-                            <div th:if="${not #lists.isEmpty(reviewImgDtos) and idx.index lt #lists.size(reviewImgDtos)}" class="img_form">
-                                <img th:src="${reviewImgDtos[idx.index].imgUrl}" class="o-img" width="300">
-                            </div>
-                            <div th:each="star : ${#numbers.sequence(1, 5)}" class="star" th:classappend="${star le reviewFormDto.rating} ? 'filled' : ''"></div>
-                            <p th:text="${reviewFormDto.title}"></p>
-                            <p th:text="${reviewFormDto.comment}"></p>
+                    <div class="alignfont">
+                        <span th:text="${orderItem.itemNm}" class="fs24 font-weight-bold"></span>
+                        <div class="fs18 font-weight-light">
+                            <span th:text="${orderItem.orderPrice} +'원'"></span>
+                            <span th:text="${orderItem.count} +'개'"></span>
                         </div>
                     </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-pagination"></div>
+                    <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                        <button type="button" class="order_btn" th:value="${order.orderId}"
+                                onclick="cancelOrder(this.value)">주문취소
+                        </button>
+                    </th:block>
+                    <button type="button" class="order_btn"
+                            th:value="${order.orderId}" onclick="reOrder(this.value)">재주문
+                    </button>
+                    <th:block th:unless="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER}">
+                        <span class="cancel">(취소 완료)</span></th:block>
+                    <th:block th:if="${order.orderStatus == T(com.shop.constant.OrderStatus).ORDER and orderItem.reviewStatus == T(com.shop.constant.ReviewStatus).NONE}">
+                        <button type="button" class="order_btn" th:value="${orderItem.id}"
+                                onclick="makeReview(this.value)">리뷰 작성
+                        </button>
+                    </th:block>
                 </div>
             </div>
-            <div th:if="${#lists.isEmpty(reviews)}">
-                <p class="noReview">리뷰가 존재하지 않습니다.</p>
-            </div>
         </div>
+    </div>
+    <div class="review_container">
+        <div class="my_review_title">REVIEW</div>
+    </div>
+    <div th:if="${not #lists.isEmpty(reviews)}">
+        <div #swiperRef="" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div th:each="reviewFormDto, idx : ${reviews}" class="reviewDto_form swiper-slide">
+                    <!-- 이미지가 존재하는 경우에만 이미지를 렌더링 -->
+                    <div th:if="${not #lists.isEmpty(reviewImgDtos) and idx.index lt #lists.size(reviewImgDtos)}" class="img_form">
+                        <img th:src="${reviewImgDtos[idx.index].imgUrl}" class="o-img" width="300">
+                    </div>
+                    <div class="star_form">
+                        <div th:each="star : ${#numbers.sequence(1, 5)}" class="star" th:classappend="${star le reviewFormDto.rating} ? 'filled' : ''"></div>
+                    </div>
+                    <p th:text="${reviewFormDto.title}"></p>
+                    <p th:text="${reviewFormDto.comment}"></p>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(reviews)}" class="notEmpty_form">
+        <p class="noReview">리뷰가 존재하지 않습니다.</p>
+    </div>
 
+    <div class="likes_container">
+        <div class="my_likes_title">LIKES</div>
+    </div>
+    <div th:if="${not #lists.isEmpty(likeItems)}">
+        <div #swiperRef="" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div th:each="itemDto: ${likeItems}" class="reviewDto_form swiper-slide">
+                    <a th:href="'/item/' + ${itemDto.id}" class="text-dark">
+                        <img th:src="${itemDto.imgUrl}" class="img_form" width="300">
+                    </a>
+                    <p th:text="${itemDto.itemNm}" class="itemNm"></p>
+                    <p th:text="${itemDto.price}"></p>
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(likeItems)}" class="notEmpty_form">
+        <p class="noLikes">찜한 아이템이 존재하지 않습니다.</p>
+    </div>
+</div>
+</div>
 </body>
 </html>

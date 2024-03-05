@@ -267,9 +267,9 @@ function execDaumPostcode() {
 }
 // 문서 준비되면 실행되어야하는데 문서 ready 전 실행됨 아직 해결 못함
 document.addEventListener("DOMContentLoaded", function () {
-    var errorMessage = document.getElementById("errorMessage").value;
-    console.log(errorMessage);
+  var errorMessage = document.getElementById("errorMessage").value;
+  console.log(errorMessage);
   if (errorMessage != null && errorMessage !== "") {
-  alert(errorMessage);
+    alert(errorMessage);
   }
 });

@@ -12,10 +12,6 @@ import java.util.stream.Collectors;
 public class ReviewMapper {
     private static final ModelMapper modelMapper = new ModelMapper();
 
-    public static ReviewFormDto reviewFormDto(Review review) {
-        return modelMapper.map(review, ReviewFormDto.class);
-    }
-
     public static Review convertToEntity(ReviewFormDto reviewFormDto) {
         return modelMapper.map(reviewFormDto, Review.class);
     }

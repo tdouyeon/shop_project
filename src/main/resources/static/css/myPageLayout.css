@@ -1,0 +1,22 @@
+section{
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage_manu{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    margin-left: 5%;
+}
+.mypage_manu > a, .deleteMemberButton{
+    margin-bottom: 30%;
+    font-weight: 600;
+}
+
+.my_title_order, .my_review_title, .my_likes_title{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 20px;
+}
+.notEmpty_form{ display: flex; justify-content: center; }

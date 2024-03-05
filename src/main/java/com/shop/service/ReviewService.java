@@ -2,7 +2,10 @@ package com.shop.service;
 
 import com.shop.dto.ReviewFormDto;
 import com.shop.dto.ReviewImgDto;
-import com.shop.entity.*;
+import com.shop.entity.Item;
+import com.shop.entity.Member;
+import com.shop.entity.Review;
+import com.shop.entity.ReviewImg;
 import com.shop.modelmapper.ReviewImgMapper;
 import com.shop.modelmapper.ReviewMapper;
 import com.shop.repository.ReviewImgRepository;
@@ -10,7 +13,6 @@ import com.shop.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
@@ -80,7 +82,7 @@ public class ReviewService {
         List<ReviewImg> reviewImgList = new ArrayList<>();
         for (Review review : reviewList) {
             List<ReviewImg> reviewImgs = reviewImgRepository.findByReviewId(review.getId());
-            if(!reviewImgs.isEmpty()){
+            if (!reviewImgs.isEmpty()) {
                 reviewImgList.add(reviewImgs.get(0));
             }
         }

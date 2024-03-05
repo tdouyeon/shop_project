@@ -1,65 +1,104 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}"
+>
 <head>
     <meta charset="utf-8" />
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
+    />
     <!-- Link Swiper's CSS -->
-    <link th:href="@{/css/itemDtl.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link th:href="@{/css/itemDtl.css}" rel="stylesheet" />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/swiper/swiper-bundle.min.css"
+    />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="/js/itemDtl.js"></script>
     <!-- iamport.payment.js -->
-    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
-
+    <script
+            type="text/javascript"
+            src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
+    ></script>
 </head>
-<div layout:fragment="content" style="margin-left:25%;margin-right:25%" id="container">
-    <input type="hidden" id="itemId" th:value="${item.id}">
+<div
+        layout:fragment="content"
+        style="margin-left: 25%; margin-right: 25%"
+        id="container"
+>
+    <input type="hidden" id="itemId" th:value="${item.id}" />
 
     <div class="container">
         <div class="item-main-img">
-            <img th:src="${item.itemImgDtoList[0].imgUrl}" class="main-img" th:alt="${item.itemNm}">
+            <img
+                    th:src="${item.itemImgDtoList[0].imgUrl}"
+                    class="main-img"
+                    th:alt="${item.itemNm}"
+            />
             <div class="other-img">
                 <div th:each="itemImg, star : ${item.itemImgDtoList}">
-                    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)} and |${star.index}| != 0"
-                         th:src="${itemImg.imgUrl}"
-                         class="o-img">
+                    <img
+                            th:if="${not #strings.isEmpty(itemImg.imgUrl)} and |${star.index}| != 0"
+                            th:src="${itemImg.imgUrl}"
+                            class="o-img"
+                    />
                 </div>
             </div>
         </div>
         <div class="item-ifo">
             <div class="item-status">
-            <span th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
-                  class="item-status">판매중</span>
-                <span th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
-                      class="item-status">품절</span>
+          <span
+                  th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+                  class="item-status"
+          >판매중</span
+          >
+                <span
+                        th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+                        class="item-status"
+                >품절</span
+                >
             </div>
             <div class="itemNm" th:text="${item.itemNm}"></div>
             <div class="text-right">
                 <div class="item-price">
-                    <input type="hidden" th:value="${item.price}" id="price" name="price">
+                    <input
+                            type="hidden"
+                            th:value="${item.price}"
+                            id="price"
+                            name="price"
+                    />
                     <span th:text="${item.price}"></span>원
                 </div>
-                <input type="number" name="count" id="count" value="1" min="1">
+                <input type="number" name="count" id="count" value="1" min="1" />
             </div>
             <div class="order-price">
                 <span class="tt-price-name">주문 금액</span>
                 <h3 name="totalPrice" id="totalPrice"></h3>
             </div>
-            <div th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
-                 class="itemdtl-button">
-                <button type="button" class="btn cart-button"
-                        onclick="addCart()">
+            <div
+                    th:if="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+                    class="itemdtl-button"
+            >
+                <button type="button" class="btn cart-button" onclick="addCart()">
                     장바구니 담기
                 </button>
-                <button type="button" class="btn order-button" onclick="requestPay()">주문하기</button>
+                <button type="button" class="btn order-button" onclick="requestPay()">
+                    주문하기
+                </button>
             </div>
-            <div th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
-                 class="text-right">
+            <div
+                    th:unless="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL}"
+                    class="text-right"
+            >
                 <button type="button" class="btn btn-danger btn-lg">품절</button>
             </div>
         </div>
@@ -68,26 +107,45 @@
         <div class="">상세설명</div>
         <div class="">리뷰</div>
     </div>
-    <div th:each="itemDetailImg : ${item.itemDetailImgDtoList}" class="text-center">
-        <img th:if="${not #strings.isEmpty(itemDetailImg.imgUrl)}" th:src="${itemDetailImg.imgUrl}"
-             class="rounded mgb-15"
-             width="725">
+    <div
+            th:each="itemDetailImg : ${item.itemDetailImgDtoList}"
+            class="text-center"
+    >
+        <img
+                th:if="${not #strings.isEmpty(itemDetailImg.imgUrl)}"
+                th:src="${itemDetailImg.imgUrl}"
+                class="rounded mgb-15"
+                width="725"
+        />
     </div>
     <!-- ReviewImgDto 출력 -->
     <div class="review_title_c">
-    <div class="review_title">REVIEW</div>
+        <div class="review_title">REVIEW</div>
     </div>
     <div th:if="${not #lists.isEmpty(reviews)}">
         <div #swiperRef="" class="swiper mySwiper">
             <div class="swiper-wrapper">
-                <div th:each="reviewFormDto, idx : ${reviews}" class="reviewDto_form swiper-slide">
+                <div
+                        th:each="reviewFormDto, idx : ${reviews}"
+                        class="reviewDto_form swiper-slide"
+                >
                     <!-- 이미지가 존재하는 경우에만 이미지를 렌더링 -->
-                        <div th:if="${not #lists.isEmpty(reviewImgDtos) and idx.index lt #lists.size(reviewImgDtos)}">
-                            <img th:src="${reviewImgDtos[idx.index].imgUrl}" class="o-img" width="725">
-                        </div>
-                        <div th:each="star : ${#numbers.sequence(1, 5)}" class="star" th:classappend="${star le reviewFormDto.rating} ? 'filled' : ''"></div>
-                        <p th:text="${reviewFormDto.title}"></p>
-                        <p th:text="${reviewFormDto.comment}"></p>
+                    <div
+                            th:if="${not #lists.isEmpty(reviewImgDtos) and idx.index lt #lists.size(reviewImgDtos)}"
+                    >
+                        <img
+                                th:src="${reviewImgDtos[idx.index].imgUrl}"
+                                class="o-img"
+                                width="725"
+                        />
+                    </div>
+                    <div
+                            th:each="star : ${#numbers.sequence(1, 5)}"
+                            class="star"
+                            th:classappend="${star le reviewFormDto.rating} ? 'filled' : ''"
+                    ></div>
+                    <p th:text="${reviewFormDto.title}"></p>
+                    <p th:text="${reviewFormDto.comment}"></p>
                 </div>
             </div>
             <div class="swiper-button-next"></div>

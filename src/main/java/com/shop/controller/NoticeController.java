@@ -1,11 +1,6 @@
 package com.shop.controller;
 
-import com.shop.dto.ItemFormDto;
-import com.shop.dto.ItemSearchDto;
-import com.shop.dto.MemberFormDto;
 import com.shop.dto.NoticeDto;
-import com.shop.entity.Item;
-import com.shop.entity.Member;
 import com.shop.entity.Notice;
 import com.shop.service.NoticeService;
 import jakarta.validation.Valid;
@@ -16,7 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 

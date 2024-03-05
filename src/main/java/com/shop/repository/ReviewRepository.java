@@ -1,5 +1,6 @@
 package com.shop.repository;
 
+import com.shop.entity.Member;
 import com.shop.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT r FROM Review r WHERE r.member.id = :memberId")
     List<Review> findByMemberId(@Param("memberId") Long memberId);
+
+
+    List<Review> findByMember(Member member);
+
 }

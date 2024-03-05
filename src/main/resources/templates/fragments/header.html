@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <header th:fragment="header">
     <nav id="navbar" class="navbar">
         <a class="navber_icon" href="/">
-            <img src="/img/logo.png" alt="shop" height="30px">
+            <img src="/img/logo.png" alt="shop" height="30px" />
         </a>
         <ul class="navbar__menu">
-
             <li><a href="/shop">SHOP</a></li>
             <li><a href="/notice/notice">NOTICE</a></li>
             <li sec:authorize="isAuthenticated()" class="hover-container">
-                <a href="/mypage/mypage" class="hover-text" >MY PAGE</a>
+                <a href="/mypage/mypage" class="hover-text">MY PAGE</a>
                 <ul class="sub-elements">
-                    <li sec:authorize="isAuthenticated()"><a href="/cart">장바구니</a></li>
-                    <li sec:authorize="isAuthenticated()"><a href="/orders">구매이력</a></li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/cart">장바구니</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a href="/orders">구매이력</a>
+                    </li>
                     <li sec:authorize="isAuthenticated()">
                         <a href="/members/logout">로그아웃</a>
                     </li>
@@ -22,13 +27,22 @@
                 </ul>
             </li>
             <li sec:authorize="isAnonymous()">
-                <a href="/members/login/user">LOGIN</a></li>
+                <a href="/members/login/user">LOGIN</a>
+            </li>
         </ul>
         <div class="sear">
             <form class="navbar__search" th:action="@{/shop}" method="get">
-                <input class="search" name="searchQuery" type="search"
-                       aria-label="Search">
-                <button class="search_button" type="submit" onclick="searchInput()"></button>
+                <input
+                        class="search"
+                        name="searchQuery"
+                        type="search"
+                        aria-label="Search"
+                />
+                <button
+                        class="search_button"
+                        type="submit"
+                        onclick="searchInput()"
+                ></button>
             </form>
         </div>
     </nav>

@@ -8,12 +8,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+
 @Entity
 @Table(name = "member")
 @Getter
 @Setter
 @ToString
-public class Member extends BaseEntity{
+public class Member extends BaseEntity {
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,8 +36,14 @@ public class Member extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Role role;
     private String chk;
+
+
+    //Member 엔터티를 삭제할 때 관련된 Like 엔터티도 자동으로 삭제될 수 있도록 설정
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Like> likes;
+
     public static Member createMember(MemberFormDto memberFormDto,
-                                      PasswordEncoder passwordEncoder, String role){
+                                      PasswordEncoder passwordEncoder, String role) {
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
@@ -45,7 +53,7 @@ public class Member extends BaseEntity{
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
 
-        if(role.equals("admin")) {
+        if (role.equals("admin")) {
             member.setRole(Role.ADMIN);
         } else {
             member.setRole(Role.USER);

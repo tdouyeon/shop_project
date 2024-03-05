@@ -1,9 +1,7 @@
 package com.shop.dto;
 
-import com.shop.entity.Item;
 import com.shop.entity.Notice;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

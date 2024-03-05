@@ -8,8 +8,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -20,6 +18,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         // hidden input으로 전송한 userType 값을 읽어옴
         String userType = request.getParameter("userType");
 
-        response.sendRedirect("/members/login/error/"+userType);
+        response.sendRedirect("/members/login/error/" + userType);
     }
 }

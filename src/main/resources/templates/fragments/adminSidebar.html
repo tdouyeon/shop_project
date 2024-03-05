@@ -1,29 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
 <aside th:fragment="adminSidebar">
   <nav id="navbar" class="navbar">
     <a class="navber_icon" href="/adminMain">
-      <img class="logo" src="/img/logo.png" alt="shop" height="30px">
+      <img class="logo" src="/img/logo.png" alt="shop" height="30px" />
     </a>
     <ul class="navbar__menu">
-        <ul class="elements">
-          <li sec:authorize="isAnonymous()">
-            <a href="/members/login/admin">LOGIN</a></li>
-          <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-            <a href="/admin/item/new">상품등록</a>
-          </li>
-          <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-            <a href="/admin/items">상품관리</a>
-          </li>
-          <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-            <a href="/notice/make">공지등록</a>
-          </li>
-          <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
-            <a href="/notice/Mng">공지관리</a>
-          </li>
-          <!-- 추가적인 하위 요소들을 여기에 추가할 수 있습니다. -->
-        </ul>
+      <ul class="elements">
+        <li sec:authorize="isAnonymous()">
+          <a href="/members/login/admin">LOGIN</a>
+        </li>
+        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+          <a href="/admin/item/new">상품등록</a>
+        </li>
+        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+          <a href="/admin/items">상품관리</a>
+        </li>
+        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+          <a href="/notice/make">공지등록</a>
+        </li>
+        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
+          <a href="/notice/Mng">공지관리</a>
+        </li>
+        <!-- 추가적인 하위 요소들을 여기에 추가할 수 있습니다. -->
+      </ul>
     </ul>
   </nav>
 </aside>

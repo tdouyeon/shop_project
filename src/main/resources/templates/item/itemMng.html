@@ -1,38 +1,91 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/adminLayout}">
-
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/adminLayout}"
+>
 <head>
-    <link th:href="@{/css/itemMng.css}" rel="stylesheet">
+    <link th:href="@{/css/itemMng.css}" rel="stylesheet" />
+    <th:block th:fragment="script">
+        <script>
+            $(document).ready(function () {
+              $("searchBtn").on("click", function (e) {
+                // 버튼을 연속적으로 누르는 거 막음
+                e.preventDefault(); // 검색 버튼 클릭 시 form 태그 전송 막음
+                page(0);
+              });
+            });
+
+            function page(page) {
+              var searchDateType = $("#searchDateType").val();
+              var searchSellStatus = $("#searchSellStatus").val();
+              var searchBy = $("#searchBy").val();
+              var searchQuery = $("#searchQuery").val();
+
+              // 파라미터 값 갖고 Controller에 올라갔다 내려옴
+              location.href =
+                "/admin/items/" +
+                page +
+                "?searchDateType=" +
+                searchDateType +
+                "&searchSellStatus=" +
+                searchSellStatus +
+                "&searchBy=" +
+                searchBy +
+                "&searchQuery=" +
+                searchQuery;
+            }
+        </script>
+    </th:block>
 </head>
 
 <div layout:fragment="content">
     <div id="container">
         <h2 class="title_order">상품 관리</h2>
 
-        <form th:action="@{'/admin/items/'+${items.number}}" role="form" method="get" th:object="${items}"
-              class="Mng_form">
+        <form
+                th:action="@{'/admin/items/'+${items.number}}"
+                role="form"
+                method="get"
+                th:object="${items}"
+                class="Mng_form"
+        >
             <div class="align-items-center" th:object="${itemSearchDto}">
-                <select th:field="*{searchDateType}" class="sel1" style="width:auto;">
+                <select th:field="*{searchDateType}" class="sel1" style="width: auto">
                     <option value="all">전체기간</option>
                     <option value="1d">1일</option>
                     <option value="1w">1주</option>
                     <option value="1m">1개월</option>
                     <option value="6m">6개월</option>
                 </select>
-                <select th:field="*{searchSellStatus}" class="sel1" style="width:auto;">
+                <select
+                        th:field="*{searchSellStatus}"
+                        class="sel1"
+                        style="width: auto"
+                >
                     <option value="">판매상태(전체)</option>
                     <option value="SELL">판매</option>
                     <option value="SOLD_OUT">품절</option>
                 </select>
-                <select th:field="*{searchBy}" class="sel1" style="width:auto;">
+                <select th:field="*{searchBy}" class="sel1" style="width: auto">
                     <option value="itemNm">상품명</option>
                     <option value="createdBy">등록자</option>
                 </select>
-                <input th:field="*{searchQuery}" type="text" class="search_box" style="width:auto; margin-right: 15px;"
-                       placeholder="검색어를 입력해주세요">
-                <button id="searchBtn" type="submit" class="btn_search" style="width:auto">검색</button>
+                <input
+                        th:field="*{searchQuery}"
+                        type="text"
+                        class="search_box"
+                        style="width: auto; margin-right: 15px"
+                        placeholder="검색어를 입력해주세요"
+                />
+                <button
+                        id="searchBtn"
+                        type="submit"
+                        class="btn_search"
+                        style="width: auto"
+                >
+                    검색
+                </button>
             </div>
             <table class="table">
                 <thead>
@@ -48,9 +101,14 @@
                 <tr th:each="item, status : ${items.getContent()}">
                     <td th:text="${item.id}"></td>
                     <td>
-                        <a th:href="'/admin/item/'+${item.id}" th:text="${item.itemNm}"></a>
+                        <a
+                                th:href="'/admin/item/'+${item.id}"
+                                th:text="${item.itemNm}"
+                        ></a>
                     </td>
-                    <td th:text="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                    <td
+                            th:text="${item.itemSellStatus == T(com.shop.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"
+                    ></td>
                     <td th:text="${item.createdBy}"></td>
 
                     <td th:text="${#strings.substring(item.regTime, 0,10)}"></td>
@@ -58,29 +116,56 @@
                 </tbody>
             </table>
 
-            <div th:with="start=${(items.number/maxPage)*maxPage +1},
-        end=(${(items.totalPages == 0) ?
-        1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
+            <div
+                    th:with="start=${(items.number/maxPage)*maxPage+1},
+        end=(${(items.totalPages ==0) ? 1 : (start + (maxPage-1) < items.totalPages ? start + (maxPage-1): items.totalPages)})"
+            >
                 <ul class="pagination justify-content-center">
+                    <!--items.first: 첫 번째 페이지를 가리키고 있으면 previous 비활성화-->
                     <li class="page-item" th:classappend="${items.first}?'disabled'">
-                        <a th:onclick="'javascript:page('+${items.number - 1} + ')'" aria-label='Previous'
-                           class="page-link arrow">
-                            <div th:if="${items.getNumber} != 0">
-                                <img src="/img/previous.png" alt="shop" width="20px" height="20px">
-                            </div>
+                        <!--page() 0-1 이면 -1 로 앞으로 감-->
+                        <a
+                                th:onclick="'javascript:page('+${items.number-1} +')'"
+                                aria-label="Previous"
+                                class="page-link"
+                        >
+                            <img
+                                    src="/img/previous.png"
+                                    alt="shop"
+                                    width="20px"
+                                    height="20px"
+                            />
                         </a>
                     </li>
-                    <li class="page-item" th:each="page: ${#numbers.sequence(start,end)}"
-                        th:classappend="${items.number eq page-1}?'active':''">
-                        <a th:onclick="'javascript:page('+${page -1} + ')'" th:inline="text"
-                           class="page-link">[[${page}]]</a>
+                    <!--
+                            eq = equals 비교
+                            active 파란색 들어옴 근데 왜...?
+                            page는 view get으로 받아서 pageable에다 maxPage랑 같이 넣어서 옴
+                            -->
+                    <li
+                            class="page-item"
+                            th:each="page: ${#numbers.sequence(start, end)}"
+                            th:classappend="${items.number eq page-1}?'active':''"
+                    >
+                        <a
+                                th:onclick="'javascript:page('+${page-1}+ ')'"
+                                th:inline="text"
+                                class="page-link"
+                        >[[${page}]]</a
+                        >
                     </li>
-                    <li class="page-item arrow" th:classappend="${items.last}?'disabled'">
-                        <a th:onclick="'javascript:page(' + ${items.number + 1} + ')'" aria-label="Next"
-                           class="page-link">
-                            <div th:if="${items.getTotalPages} != ${items.getNumber}+1">
-                                <img src="/img/Next.png" alt="shop" width="20px" height="20px">
-                            </div>
+                    <li class="page-item" th:classappend="${items.last} ?'disabled'">
+                        <a
+                                th:onclick="'javascript:page(' + ${items.number + 1} + ')'"
+                                aria-label="Next"
+                                class="page-link"
+                        >
+                            <img
+                                    src="/img/Next.png"
+                                    alt="shop"
+                                    width="20px"
+                                    height="20px"
+                            />
                         </a>
                     </li>
                 </ul>

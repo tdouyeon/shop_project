@@ -1,193 +1,149 @@
-        html,
-        body {
-          position: relative;
-          height: 100%;
-        }
+html,
+body {
+  position: relative;
+  height: 100%;
+}
 
-        body {
-          font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-          font-size: 14px;
-          color: #000;
-          margin: 0;
-          padding: 0;
-        }
-        .sidebar{ display: flex;}
-        .category_shop > a {
-            display: fixed;
-            list-style: none;
-            text-decoration: none;
-            color: #000;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            box-shadow: 0 0 1px rgba(0,0,0,0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -moz-osx-font-smoothing: grayscale;
-            overflow: hidden;
-            -webkit-transition-duration: 0.3s;
-            transition-duration: 0.3s;
-            -webkit-transition-property: color,background-color;
-            transition-property: color,background-color;
-            }
-        .content{
-            margin: 0 auto;
-            }
-        .card-img-top{
-            width: 100%;
-            height: auto;
-        }
+body {
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+.sidebar { display: flex; }
+.category_shop > a {
+  display: fixed;
+  list-style: none;
+  text-decoration: none;
+  color: #000;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: color, background-color;
+  transition-property: color, background-color;
+}
+.content { margin: 0 auto; }
+.card-img-top { width: 100%; height: auto; }
 
-        .main__content{
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            flex-wrap: wrap;
-            width: 60%;
-        }
+.main__content {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 60%;
+}
 
-        .card{
-            display: flex;
-            width: 240px;
-            height: 400px;
-            padding: 20px;
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
-        }
-        .navbar__menu li{
-            text-decoration: none;
-            padding: 8px 12px;
-        }
+.card {
+  display: flex;
+  width: 240px;
+  height: 400px;
+  padding: 20px;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.navbar__menu li { text-decoration: none; padding: 8px 12px; }
 
-        .navber_icon{
-            display: flex;
-            padding: 0;
-            text-decoration: none;
-            font-weight: bold;
-            padding-left: 1px;
-            padding-right: 8px;
-        }
+.navber_icon {
+  display: flex;
+  padding: 0;
+  text-decoration: none;
+  font-weight: bold;
+  padding-left: 1px;
+  padding-right: 8px;
+}
 
-        .pagination{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-        }
-        .pagination li{
-            display: flex;
-            width: 30px;
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
-        }
-        .disabled{
-            padding: 15px 10px 10px 10px;
-        }
-        .page-item{
-            padding: 8px;
-        }
-        .shop_container{
-            display: flex;
-                flex-direction: column;
-                margin: 0 auto;
-            align-items: center;
-        }
-                        .category_m{
-                    list-style: none;
-                    position: fixed;
-                    padding: 1vw 6vw;
-                }
-                .category_m > li {
-                    margin-bottom: 5px;
-                }
-                a{
-                    text-decoration : none;
-                    color: black;
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.pagination li {
+  display: flex;
+  width: 30px;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.disabled { padding: 15px 10px 10px 10px; }
+.page-item { padding: 8px; }
+.shop_container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+}
+.category_m {
+  list-style: none;
+  position: fixed;
+  padding: 1vw 6vw;
+}
+.category_m > li { margin-bottom: 5px; }
+a { text-decoration: none; color: black; }
+.card-title {
+  font-size: 12px;
+  color: #555555;
+  font-weight: bold;
+}
+.card-price { font-size: 12px; color: #555555; }
+.category_ch > a {
+  color: silver;
+  margin-left: 5px;
+  transition: color 0.3s, font-weight 0.3s;
+}
+.category_ch {
+  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+}
+.category_ch.show {
+  display: block;
+  max-height: 200px; /* 적절한 최대 높이 설정 */
+  font-weight: 400;
+}
+.category_ch:hover > a { color: black; transition: all 0.5s ease-out; }
+.category_shop { list-style-type: none; padding: 0; }
 
-                }
-                .card-title{
-                    font-size: 12px;
-                    color: #555555;
-                    font-weight: bold;
+.category_shop a {
+  text-decoration: none;
+  color: black;
+  display: block;
+  padding: 15px 0px 3px 0px;
+  cursor: pointer;
+  font-weight: 500;
+}
 
-                }
-                .card-price{
-                    font-size: 12px;
-                    color: #555555;
-                }
-                .category_ch > a{
-                    color: silver;
-                    margin-left: 5px;
-                        transition: color 0.3s, font-weight 0.3s;
+.category_shop li { margin-bottom: 5px; }
 
-                }
-                .category_ch{
-                       display: none;
-                       max-height: 0;
-                       overflow: hidden;
-                       transition: all 0.3s ease-out;
-                }
-                .category_ch.show {
-                    display: block;
-                    max-height: 200px; /* 적절한 최대 높이 설정 */
-                    font-weight: 400;
-                }
-                .category_ch:hover > a {
-                    color: black;
-                       transition: all 0.5s ease-out;
-                }
-                 .category_shop {
-                            list-style-type: none;
-                            padding: 0;
-                        }
+.category_shop li.sub { padding-left: 20px; }
+.image-container { position: relative; width: 100%; }
 
-                        .category_shop a {
-                            text-decoration: none;
-                            color: black;
-                            display: block;
-                            padding: 15px 0px 3px 0px;
-                            cursor: pointer;
-                            font-weight: 500;
-                        }
+.image-container { position: relative; width: 100%; }
 
-                        .category_shop li {
-                            margin-bottom: 5px;
-                        }
+.card .icon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 24px;
+  height: 24px;
+  z-index: 1; /* 카드 위에 위치하도록 설정 */
+}
 
-                        .category_shop li.sub {
-                            padding-left: 20px;
-                        }
-                        .image-container {
-                            position: relative;
-                            width: 100%; /* 추가: 이미지 컨테이너가 100% 너비를 가지도록 함 */
-                        }
-
-                       .image-container {
-                           position: relative;
-                           width: 100%;
-                       }
-
-                       .card .icon {
-                           position: absolute;
-                           right: 10px;
-                           bottom: 10px;
-                           width: 24px;
-                           height: 24px;
-                               z-index: 1; /* 카드 위에 위치하도록 설정 */
-                       }
-
-
-                        @media (max-width: 750px) {
-                          .category_m {
-                            display: unset !important;
-                            position: unset;
-                            text-align: center;
-                          }
-                          .sidebar{
-                              justify-content: center;
-                          }
-                          .main__content{
-                              width: 300px;
-                          }
-                        }
+@media (max-width: 750px) {
+  .category_m {
+    display: unset !important;
+    position: unset;
+    text-align: center;
+  }
+  .sidebar { justify-content: center; }
+  .main__content { width: 300px; }
+}

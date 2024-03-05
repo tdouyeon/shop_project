@@ -1,9 +1,6 @@
 package com.shop.service;
 
-import com.shop.dto.ItemSearchDto;
 import com.shop.dto.NoticeDto;
-import com.shop.entity.Item;
-import com.shop.entity.Member;
 import com.shop.entity.Notice;
 import com.shop.modelmapper.NoticeMapper;
 import com.shop.repository.NoticeRepository;
@@ -27,6 +24,7 @@ public class NoticeService {
         Notice notice = noticeDto.createNotice();
         noticeRepository.save(notice);
     }
+
     public int countNotice(Principal principal) {
         return noticeRepository.countByCreatedBy(memberService.checkEmail(principal)).intValue();
     }

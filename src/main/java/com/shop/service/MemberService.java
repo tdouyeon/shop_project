@@ -4,15 +4,14 @@ import com.shop.constant.Role;
 import com.shop.dto.ChangePasswdFormDto;
 import com.shop.dto.MemberFindFormDto;
 import com.shop.dto.MemberFormDto;
-import com.shop.entity.Member;
-import com.shop.repository.MemberRepository;
+import com.shop.entity.*;
+import com.shop.modelmapper.MemberMapper;
+import com.shop.repository.*;
 import jakarta.validation.constraints.NotNull;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
-import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
-import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @Service // 나 서비스다.
@@ -37,6 +37,11 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
+    private final LikeRepository likeRepository;
+    private final OrderRepository orderRepository;
+    private final ReviewRepository reviewRepository;
+    private final ReviewImgRepository reviewImgRepository;
     @NotNull
     private DefaultMessageService messageService;
     private static int number;  // 랜덤 인증 코드
@@ -61,7 +66,7 @@ public class MemberService implements UserDetailsService {
     }
 
     public Member saveMember(MemberFormDto memberFormDto, String userType) {
-        Member member = Member.createMember(memberFormDto,passwordEncoder,userType);
+        Member member = Member.createMember(memberFormDto, passwordEncoder, userType);
         String chk = String.join(", ", memberFormDto.getChk());
         member.setChk(chk);
         validateDuplicateMember(member);
@@ -78,6 +83,12 @@ public class MemberService implements UserDetailsService {
             return false;
         }
         return true;
+    }
+
+    public MemberFormDto giveMemberForm(Principal principal) {
+        String email = checkEmail(principal);
+        Member member = memberRepository.findByEmail(email);
+        return MemberMapper.convertToDto(member);
     }
 
     ;
@@ -116,7 +127,7 @@ public class MemberService implements UserDetailsService {
 
     public boolean checkAdmin(Principal principal) {
         Member member = memberRepository.findByEmailAndRole(checkEmail(principal), Role.ADMIN);
-        if(member != null) {
+        if (member != null) {
             return true;
         }
         return false;
@@ -211,5 +222,42 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    public void deleteMember(String email) {
+        // Member 엔터티 조회
+        Member member = memberRepository.findByEmail(email);
+
+        // Member 엔터티가 존재하는 경우에만 삭제 진행
+        if (member != null) {
+            // ReviewImg 삭제
+            List<Review> reviewList = reviewRepository.findByMember(member);
+            for (Review review : reviewList) {
+                List<ReviewImg> reviewImgs = reviewImgRepository.findByReview(review);
+                reviewImgRepository.deleteAll(reviewImgs);
+            }
+
+            // Review 삭제
+            reviewRepository.deleteAll(reviewList);
+
+            // Like 삭제
+            List<Like> likes = likeRepository.findByMember(member);
+            likeRepository.deleteAll(likes);
+
+            // Cart 삭제
+            List<Cart> carts = cartRepository.findByMember(member);
+            if (!carts.isEmpty()) {
+                cartRepository.deleteAll(carts);
+            }
+
+            // Order 삭제
+            List<Order> orders = orderRepository.findByMember(member);
+            if (!orders.isEmpty()) {
+                orderRepository.deleteAll(orders);
+            }
+
+            // Member 삭제
+            memberRepository.delete(member);
+        }
     }
 }

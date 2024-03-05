@@ -1,20 +1,19 @@
 package com.shop.service;
 
-import com.shop.dto.ItemFormDto;
-import com.shop.entity.Category;
+import com.shop.dto.ItemDto;
 import com.shop.entity.Item;
 import com.shop.entity.ItemImg;
+import com.shop.modelmapper.ItemMapper;
 import com.shop.repository.ItemImgRepository;
-import com.shop.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -70,6 +69,16 @@ public class ItemImgService {
             //※ 영속성 상태여야함 사용가능
             savedItemImg.updateItemImg(oriImgName, imgName, imgUrl);
         }
+    }
+
+    public List<String> getImgUrl(List<ItemDto> itemDtoList) {
+        List<Item> itemList = ItemMapper.convertToEntityList(itemDtoList);
+        List<ItemImg> itemImgList = itemImgRepository.findByItemIn(itemList);
+        List<String> imgUrlLists = new ArrayList<>();
+        for (ItemImg itemImg : itemImgList) {
+            imgUrlLists.add(itemImg.getImgUrl());
+        }
+        return imgUrlLists;
     }
 
 }

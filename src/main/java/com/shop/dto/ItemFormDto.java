@@ -3,10 +3,10 @@ package com.shop.dto;
 import com.shop.constant.ItemSellStatus;
 import com.shop.entity.Category;
 import com.shop.entity.Item;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
 
 import java.util.ArrayList;

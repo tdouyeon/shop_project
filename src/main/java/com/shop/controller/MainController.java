@@ -1,7 +1,7 @@
 package com.shop.controller;
 
-import com.shop.dto.*;
-import com.shop.entity.Item;
+import com.shop.dto.ItemSearchDto;
+import com.shop.dto.MainItemDto;
 import com.shop.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -37,20 +36,23 @@ public class MainController {
 
     @GetMapping(value = "/shop")
     public String shopMain(ItemSearchDto itemSearchDto, Optional<Integer> page, Model model, Principal principal) {
-        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 8);
+        Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 9);
         if (itemSearchDto.getSearchQuery() == null) {
             itemSearchDto.setSearchQuery("");
         }
         if (principal != null) {
             Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable, "", principal);
+            System.out.println("겟넘버" + items.getNumber());
+            System.out.println("토탈 페이지" + items.getTotalPages());
             model.addAttribute("items", items);
         } else {
             Page<MainItemDto> items = itemService.getMainItemPage(itemSearchDto, pageable, "");
             model.addAttribute("items", items);
         }
 
+
         model.addAttribute("itemSearchDto", itemSearchDto);
-        model.addAttribute("maxPage", 8);
+        model.addAttribute("maxPage", 9);
         return "category/shop";
     }
 
@@ -58,10 +60,8 @@ public class MainController {
     @ResponseBody
     public ResponseEntity<Page<MainItemDto>> shopMain(ItemSearchDto itemSearchDto,
                                                       Optional<Integer> page,
-                                                      @PathVariable(name = "categoryName", required = false) String categoryName,
-                                                      Principal principal) {
-
-        Pageable pageable = PageRequest.of(page.orElse(0), 8);
+                                                      @PathVariable(name = "categoryName", required = false) String categoryName) {
+        Pageable pageable = PageRequest.of(page.orElse(0), 9);
         if (itemSearchDto.getSearchQuery() == null) {
             itemSearchDto.setSearchQuery("");
         }
@@ -69,9 +69,9 @@ public class MainController {
         Page<MainItemDto> items;
         if (categoryName != null) {
             String lowerCaseCategoryName = categoryName.toLowerCase();
-            items = itemService.getMainItemPage(itemSearchDto, pageable, lowerCaseCategoryName, principal);
+            items = itemService.getMainItemPage(itemSearchDto, pageable, lowerCaseCategoryName);
         } else {
-            items = itemService.getMainItemPage(itemSearchDto, pageable, "", principal);
+            items = itemService.getMainItemPage(itemSearchDto, pageable, "");
         }
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
@@ -99,15 +99,17 @@ public class MainController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping(value = "/adminMain")
-    public String adminMain (Principal principal, Model model) {
-        if(!memberService.checkAdmin(principal)) {
-            return "member/memberAdminForm";
+    public String adminMain(Principal principal, Model model) {
+        if (principal == null || !memberService.checkAdmin(principal)) {
+            model.addAttribute("userType", "admin");
+            return "member/memberLoginForm";
         }
         int itemCount = itemService.giveItemCount(principal);
         int noticeCount = noticeService.countNotice(principal);
         model.addAttribute("itemCount", itemCount);
-        model.addAttribute("noticeCount",noticeCount);
+        model.addAttribute("noticeCount", noticeCount);
         return "adminMain";
 
     }

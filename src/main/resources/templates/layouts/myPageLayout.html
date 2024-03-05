@@ -20,8 +20,9 @@
   initial-scale="1”"
   />
   <!-- CSS only -->
+  <link th:href="@{/css/myPageLayout.css}" rel="stylesheet" />
+  <link th:href="@{/css/header.css}" rel="stylesheet" />
   <link th:href="@{/css/footer.css}" rel="stylesheet" />
-  <link th:href="@{/css/adminLayout.css}" rel="stylesheet" />
 
   <th:block layout:fragment="css"></th:block>
 
@@ -32,8 +33,9 @@
   <th:block layout:fragment="script"></th:block>
 </head>
 <body>
+<div th:replace="~{fragments/header::header}"></div>
 <section>
-  <div th:replace="~{fragments/adminSidebar :: adminSidebar}"></div>
+  <div th:replace="~{fragments/myPageSidebar :: myPageSidebar}"></div>
   <div layout:fragment="content" class="content"></div>
 </section>
 

@@ -1,11 +1,7 @@
 package com.shop.controller;
 
 import com.shop.dto.*;
-import com.shop.entity.Item;
-import com.shop.repository.ItemRepository;
-import com.shop.service.ItemService;
-import com.shop.service.OrderService;
-import com.shop.service.ReviewService;
+import com.shop.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,11 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/mypage")
@@ -27,6 +25,8 @@ public class MyPageController {
     private final ItemService itemService;
     private final ReviewService reviewService;
     private final OrderService orderService;
+    private final LikeService likeService;
+    private final MemberService memberService;
 
     @GetMapping(value = "/mypage")
     public String mypage(Principal principal, Model model) {
@@ -34,9 +34,13 @@ public class MyPageController {
         List<OrderHistDto> orderHistDtoList = orderService.getOrderList(principal);
         List<ReviewFormDto> reviewFormDtos = reviewService.giveMemberReview(principal);
         List<ReviewImgDto> reviewImgDtos = reviewService.giveReviewImg(principal);
+        List<ItemDto> itemDtoList = likeService.getLikedItemsByEmail(principal);
+        String email = memberService.checkEmail(principal);
+        model.addAttribute("email", email);
         model.addAttribute("orders", orderHistDtoList);
         model.addAttribute("reviews", reviewFormDtos);
         model.addAttribute("reviewImgDtos", reviewImgDtos);
+        model.addAttribute("likeItems", itemDtoList);
         return "mypage/mypageForm";
     }
 

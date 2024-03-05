@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/adminLayout}">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}"
+>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-Type" content="text/html; charset=UTF-8">
-    <link th:href="@{/css/notice.css}" rel="stylesheet">
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/notice.css}" rel="stylesheet" />
     <script src="/js/notice.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <div id="container">
-<h2>자주 찾는 도움말</h2>
+        <h2>자주 찾는 도움말</h2>
         <!-- Check if notices list is not empty before rendering -->
-        <div th:if="${notices.getContent().size() > 0}" id="notice" th:each="notice, status : ${notices.getContent()}">
+        <div
+                th:if="${notices.getContent().size() > 0}"
+                id="notice"
+                th:each="notice, status : ${notices.getContent()}"
+        >
             <div class="notice_id" th:text="${notice.id}"></div>
-            <button type="button" class="notice_title" th:text="${notice.title}" onclick="collapse(this);">제목</button>
+            <button
+                    type="button"
+                    class="notice_title"
+                    th:text="${notice.title}"
+                    onclick="collapse(this);"
+            >
+                제목
+            </button>
             <div class="notice_content">
                 <p class="content2">[[${notice.content}]]</p>
             </div>
@@ -26,7 +39,8 @@
         <div th:if="${notices.getContent().size() == 0}">
             <p class="no">공지사항이 존재하지 않습니다.</p>
         </div>
-</div>
+    </div>
 </div>
 </body>
+</html>
 </html>

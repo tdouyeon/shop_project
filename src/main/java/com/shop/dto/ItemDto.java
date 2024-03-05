@@ -17,4 +17,5 @@ public class ItemDto {
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
     private Category category;
+    private String imgUrl;
 }

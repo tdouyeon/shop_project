@@ -1,8 +1,4 @@
-        html,
-body {
-  position: relative;
-  height: 100%;
-}
+html, body { position: relative; height: 100%; }
 
 body {
   color: #000;
@@ -10,10 +6,7 @@ body {
   padding: 0;
 }
 
-.swiper {
-  width: 100%;
-  height: 100%;
-}
+.swiper { width: 100%; height: 100%; }
 
 .swiper-slide {
   text-align: center;
@@ -37,134 +30,101 @@ body {
   margin: 20px auto;
 }
 
-
-    #container{
-        width: 725px;
-        margin: 0 auto;
-        }
-        .container{
-        display: flex;
-        flex-direction: row;
-        }
-        .other-img > div > img{
-        width: 150px;
-        height: 150px;
-    }
-    .other-img{
-        display: flex;
-    }
-    .item-main-img{
-        display: flex;
-        flex-direction: column;
-    }
-    .main-img{
-        width: 90%;
-    }
-    .item-status{
-        border-radius: 5px;
-        padding: 3px 5px;
-        background-color: lightgray;
-        width: 58px;
-        text-align: center;
-    }
-    .itemNm{
-        margin: 15px 0px;
-    }
-    .item-price{
-        font-size: 14px;
-    }
-    #price{
-        font-weight: bolder;
-    }
-    #count{
-        padding: 5px 10px;
-        border: 1px solid #aaaa;
-        border-radius: 5px;
-        margin-right: 3px;
-        width: 20px;
-        margin-top: 20px;
-    }
-    .order-price{
-        display: flex;
-        justify-content: space-between;
-        text-align: center;
-    }
-    .tt-price-name{
-        line-height: 60px;
-    }
-    .itemdtl-button{
-        display: flex;
-        margin-top: 10%;
-        justify-content: space-between;
-    }
-    .btn{
-        min-width: 120px;
-        font-size: 12px;
-        display: inline-block;
-        padding: 10px 12px;
-        border: 1px solid #666;
-        border-radius: 2px;
-        background-color: #000;
-        text-align: center;
-        color: #fff;
-        margin-bottom: 50px;
-            font-weight: 600;
-    }
-    .order-button{
-        background-color: black;
-        color: white;
-    }
-    .cart-button{
-        background-color: rgb(255, 255, 255);
-        color: rgb(0,32,83);
-        border-color: #aaaa;
-        margin-right: 30px;
-    }
-    .star {
-width: 20px;
-height: 20px;
-display: inline-block;
-background-image: url('/img/star.svg');
-background-size: cover;
+#container { width: 725px; margin: 0 auto; }
+.container { display: flex; flex-direction: row; }
+.other-img > div > img { width: 150px; height: 150px; }
+.other-img { display: flex; }
+.item-main-img { display: flex; flex-direction: column; }
+.main-img { width: 90%; }
+.item-status {
+  border-radius: 5px;
+  padding: 3px 5px;
+  background-color: lightgray;
+  width: 58px;
+  text-align: center;
+}
+.itemNm { margin: 15px 0px; }
+.item-price { font-size: 14px; }
+#price { font-weight: bolder; }
+#count {
+  padding: 5px 10px;
+  border: 1px solid #aaaa;
+  border-radius: 5px;
+  margin-right: 3px;
+  width: 20px;
+  margin-top: 20px;
+}
+.order-price {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+.tt-price-name { line-height: 60px; }
+.itemdtl-button {
+  display: flex;
+  margin-top: 10%;
+  justify-content: space-between;
+}
+.btn {
+  min-width: 120px;
+  font-size: 12px;
+  display: inline-block;
+  padding: 10px 12px;
+  border: 1px solid #666;
+  border-radius: 2px;
+  background-color: #000;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 50px;
+  font-weight: 600;
+}
+.order-button { background-color: black; color: white; }
+.cart-button {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 32, 83);
+  border-color: #aaaa;
+  margin-right: 30px;
+}
+.star {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-image: url("/img/star.svg");
+  background-size: cover;
 }
 
-.star.filled {
-background-image: url('/img/fillStar.svg');
+.star.filled { background-image: url("/img/fillStar.svg"); }
+.swiper-horizontal { touch-action: pan-y; background-color: #f9f9f9; }
+.swiper-button-next:after,
+.swiper-rtl .swiper-button-prev:after {
+  color: lightgray;
 }
-        .swiper-horizontal {
-    touch-action: pan-y;
-    background-color: #f9f9f9;
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+  color: lightgray;
 }
-        .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
-            color: lightgray;
-        }
-        .swiper-button-next.swiper-button-disabled, .swiper-button-prev.swiper-button-disabled{
-                    color: lightgray;
-        }
-        .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after{
-                            color: lightgray;
-        }
+.swiper-button-prev:after,
+.swiper-rtl .swiper-button-next:after {
+  color: lightgray;
+}
 
-        .item_dtl_header{
-        display: flex;
-    margin-bottom: 20px;
-    justify-content: space-around;
-    font-size: 16px;
-        }
+.item_dtl_header {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-around;
+  font-size: 16px;
+}
 
-    .item_dtl_header div {
-        flex: 1; /* 각각의 자식 요소에 1:1 비율을 부여 */
-        border: 1px solid #ccc; /* 테두리를 추가하거나 원하는 스타일을 적용할 수 있습니다. */
-        text-align: center; /* 텍스트를 가운데 정렬하거나 필요에 따라 스타일을 조절합니다. */
-        padding: 10px; /* 여백을 조절할 수 있습니다. */
-    }
-        .review_title_c{
-        display: flex;
-    justify-content: center;
-margin-top: 100px;
-    margin-bottom: 40px;
-        }
-        .review_title{
-    font-size: 20px;
-    font-weight: 500;
-        }
+.item_dtl_header div {
+  flex: 1;
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+}
+.review_title_c {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+.review_title { font-size: 20px; font-weight: 500; }

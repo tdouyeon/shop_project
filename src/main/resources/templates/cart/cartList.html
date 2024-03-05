@@ -7,6 +7,7 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <script src="/js/cartList.js"></script>
     <link th:href="@{/css/cartList.css}" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 </head>
 <div layout:fragment="content" class="content-mg">
 
@@ -43,6 +44,6 @@
     <h2 class="total">
         총 주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
     </h2>
-    <button type="button" class="orders" onclick="orders()">주문하기</button>
+    <button type="button" class="orders btn" onclick="orders()">주문하기</button>
 </div>
 </html>

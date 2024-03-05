@@ -1,53 +1,78 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout1}">
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/layout1}"
+>
 <head>
     <!-- 사용자 CSS 추가 -->
-    <link th:href="@{/css/memberLoginForm.css}" rel="stylesheet">
+    <link th:href="@{/css/memberLoginForm.css}" rel="stylesheet" />
 </head>
 
 <div layout:fragment="content">
     <div id="container">
         <form action="/members/login" role="form" method="post" class="main">
-            <input type="hidden" name="userType" th:value="${userType}">
-            <span class="login_title" th:if="${userType == 'admin'}">COMPANY LOGIN</span>
-            <span class="login_title" th:unless="${userType == 'admin'}">LOGIN</span>
+            <input type="hidden" name="userType" th:value="${userType}" />
+            <span class="login_title" th:if="${userType == 'admin'}"
+            >COMPANY LOGIN</span
+            >
+            <span class="login_title" th:unless="${userType == 'admin'}"
+            >LOGIN</span
+            >
             <div class="mainForm emailForm">
-                <input type="email" name="email" class="form email" required>
+                <input type="email" name="email" class="form email" required />
                 <label>ID</label>
                 <span class="hin"></span>
             </div>
             <div class="mainForm passwordForm">
-                <input type="password" name="password" class="form password" required>
+                <input
+                        type="password"
+                        name="password"
+                        class="form password"
+                        required
+                />
                 <label>PASSWORD</label>
                 <span class="hin"></span>
             </div>
-            <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}"></p>
+            <p
+                    th:if="${loginErrorMsg}"
+                    class="error"
+                    th:text="${loginErrorMsg}"
+            ></p>
             <div class="etc">
-                    <span>
+          <span>
             FORGOT &nbsp;
             <a href="/members/findId" class="find"> ID </a>
             &nbsp; OR &nbsp;
             <a href="/members/findPasswd" class="find"> PASSWORD ?</a>
-        </span>
+          </span>
                 <div class="lo_jo">
                     <button class="btn btn_login">LOGIN</button>
-                    <button type="button" class="btn btn_join" onclick="location.href='/members/new/${userType}'">JOIN</button>
+                    <button
+                            type="button"
+                            class="btn btn_join"
+                            onclick="location.href='/members/new/${userType}'"
+                    >
+                        JOIN
+                    </button>
                 </div>
-                <div class="sns">
+                <div th:if="${userType != 'admin'}" class="sns">
                     <a href="/oauth2/authorization/google">
-                        <img src="/img/google.png" alt="shop" class="google">
+                        <img src="/img/google.png" alt="shop" class="google" />
                     </a>
                     <a href="/oauth2/authorization/naver">
-                        <img src="/img/naver.png" alt="shop" class="naver">
+                        <img src="/img/naver.png" alt="shop" class="naver" />
                     </a>
                     <a href="/oauth2/authorization/kakao">
-                        <img src="/img/kakao.png" alt="shop" class="kakao">
+                        <img src="/img/kakao.png" alt="shop" class="kakao" />
                     </a>
                 </div>
             </div>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"
+            />
         </form>
     </div>
 </div>
