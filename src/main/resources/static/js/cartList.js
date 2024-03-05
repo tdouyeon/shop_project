@@ -160,7 +160,7 @@ function orders() {
                 cache: false,
                 success: function (result, status) {
                   alert("주문이 완료 되었습니다.");
-                  location.href = "/orders";
+                  location.href = "/cart";
                 },
                 error: function (jqXHR, status, error) {
                   if (jqXHR.status == "401") {
