@@ -12,3 +12,6 @@
 
 <h3>3. 개발 환경</h3>
 <img width="988" alt="스크린샷 2024-03-05 오후 3 18 31" src="https://github.com/tdouyeon/shop_project/assets/158057604/c06346c9-e6f2-464d-a923-8885d286c8ea">
+
+<h3>4. DB 구성</h3>
+<img width="817" alt="image" src="https://github.com/tdouyeon/shop_project/assets/158057604/0e813e28-3b58-40c5-9a51-54ff24a6f085">
