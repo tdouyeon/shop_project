@@ -1,4 +1,6 @@
-![image](https://github.com/tdouyeon/shop_project/assets/158057604/c4900bd0-7e6d-4c56-a970-549352122d12)<h4>배포 주소: http://ec2-13-54-240-49.ap-southeast-2.compute.amazonaws.com/</h4>
+<h4>배포 주소: http://ec2-13-54-240-49.ap-southeast-2.compute.amazonaws.com/</h4>
+<h4>ppt: https://github.com/tdouyeon/shop_project/files/14612473/CRANK._.pptx</h4>
+
 
 <h3>1. 기획 의도</h3>
 <p>
