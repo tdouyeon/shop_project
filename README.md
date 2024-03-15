@@ -24,6 +24,7 @@
 <p>☻ Swiper 라이브러리를 사용하여 메인 이미지를 슬라이드 형식으로 자동으로 넘어가게 구현</p>
 <p>☻ Thymeleaf Layout Dialect 라이브러리를 사용하여 header, content, foooter로 레이아웃 나눠 놓음</p>
 
+<br>
 <h4>5-2. SHOP 메인 화면 / 찜기능</h4>
 <img width="682" alt="스크린샷 2024-03-15 오후 4 37 13" src="https://github.com/tdouyeon/shop_project/assets/158057604/25a55215-7f1f-436c-9f70-90ac7a92f633">
 <p>☻ ajax를 통해 principal 매개변수 받아서 로그인 체크</p>
